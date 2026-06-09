@@ -1,6 +1,5 @@
 import type { AgentAddr } from './AgentAddr.js';
-import type { AgentID } from '@nanda/shared';
-import type { ProtocolVersion, ServerStatus } from '@nanda/shared';
+import type { AgentID, ProtocolVersion, ServerStatus, SignedAttestation } from '@nanda/shared';
 
 // ── Request / response bodies ────────────────────────────────────────────────
 
@@ -13,7 +12,8 @@ export type UpdateAgentRequest = AgentAddr;
 // GET /agents/:id  → AgentAddr
 export type GetAgentResponse = AgentAddr;
 
-// DELETE /agents/:id  → 204 No Content
+// DELETE /agents/:id  — body is a signed attestation
+export type DeleteAgentRequest = SignedAttestation<'delete-agent'>;
 
 // GET /version  → ProtocolVersion
 export type IndexGetVersionResponse = ProtocolVersion;
@@ -27,7 +27,7 @@ export interface LeanIndexClient {
   getAgent(id: AgentID): Promise<AgentAddr>;
   registerAgent(record: AgentAddr): Promise<void>;
   updateAgent(id: AgentID, record: AgentAddr): Promise<void>;
-  deleteAgent(id: AgentID): Promise<void>;
+  deleteAgent(id: AgentID, attestation: SignedAttestation<'delete-agent'>): Promise<void>;
   getVersion(): Promise<ProtocolVersion>;
   getStatus(): Promise<ServerStatus>;
 }

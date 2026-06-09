@@ -1,4 +1,4 @@
-import type { AgentID, AgentName, Endpoint } from '@nanda/shared';
+import type { AgentID, AgentName, Endpoint, Signature } from '@nanda/shared';
 
 export interface RotatingEndpoint {
   url: Endpoint;
@@ -74,5 +74,5 @@ export interface AgentFacts {
   evaluations?: AgentFactsEvaluations;
   telemetry?: AgentFactsTelemetry;
   certification: AgentFactsCertification;
-  proof: string; // base64url-encoded Ed25519 over all other fields, keys sorted
+  proof: Signature; // Ed25519 over all other fields, keys sorted
 }

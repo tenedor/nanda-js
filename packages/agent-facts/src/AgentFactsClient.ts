@@ -1,6 +1,5 @@
 import type { AgentFacts } from './AgentFacts.js';
-import type { AgentID } from '@nanda/shared';
-import type { ProtocolVersion, ServerStatus } from '@nanda/shared';
+import type { AgentID, ProtocolVersion, ServerStatus, SignedAttestation } from '@nanda/shared';
 
 // ── Request / response bodies ────────────────────────────────────────────────
 
@@ -13,7 +12,8 @@ export type UpdateFactsRequest = AgentFacts;
 // GET /facts/:id  → AgentFacts
 export type GetFactsResponse = AgentFacts;
 
-// POST /facts/:id/invalidate  → 204 No Content
+// POST /facts/:id/invalidate  — body is a signed attestation
+export type InvalidateFactsRequest = SignedAttestation<'invalidate-facts'>;
 
 // GET /version  → ProtocolVersion
 export type FactsGetVersionResponse = ProtocolVersion;
@@ -26,8 +26,8 @@ export type FactsGetStatusResponse = ServerStatus;
 export interface AgentFactsClient {
   getFacts(id: AgentID): Promise<AgentFacts>;
   registerFacts(facts: AgentFacts): Promise<void>;
-  updateFacts(id: AgentID, facts: AgentFacts): Promise<void>;
-  invalidateFacts(id: AgentID): Promise<void>;
+  updateFacts(facts: AgentFacts): Promise<void>;
+  invalidateFacts(id: AgentID, attestation: SignedAttestation<'invalidate-facts'>): Promise<void>;
   getVersion(): Promise<ProtocolVersion>;
   getStatus(): Promise<ServerStatus>;
 }
