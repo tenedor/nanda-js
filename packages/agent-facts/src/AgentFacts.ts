@@ -1,20 +1,20 @@
-import type { AgentID } from '../lean-index/AgentAddr.js';
+import type { AgentID, AgentName, Endpoint } from '@nanda/shared';
 
-export interface ServiceEndpoint {
-  url: string;
+export interface RotatingEndpoint {
+  url: Endpoint;
   ttl: number; // seconds
 }
 
 export interface AgentFactsProvider {
   name: string;
-  url: string;
+  url: Endpoint;
   did?: string;
 }
 
 export interface AgentFactsEndpoints {
-  static?: string[];
-  rotating?: ServiceEndpoint[];
-  adaptiveResolver?: string;
+  static?: Endpoint[];
+  rotating?: RotatingEndpoint[];
+  adaptiveResolver?: Endpoint;
 }
 
 export interface AgentFactsCapabilities {
@@ -54,7 +54,7 @@ export interface AgentFactsTelemetry {
 export interface AgentFactsCertification {
   level: string;
   issuer: string;
-  issuanceDate: string;  // ISO 8601
+  issuanceDate: string;   // ISO 8601
   expirationDate: string; // ISO 8601
   statusListUrl: string;
 }
@@ -62,7 +62,7 @@ export interface AgentFactsCertification {
 export interface AgentFacts {
   '@context': string[];
   id: AgentID;
-  agentName: string;
+  agentName: AgentName;
   label: string;
   description: string;
   version: string;

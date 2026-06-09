@@ -1,5 +1,6 @@
-import type { AgentAddr, AgentID } from './AgentAddr.js';
-import type { ProtocolVersion, ServerStatus } from '../common/types.js';
+import type { AgentAddr } from './AgentAddr.js';
+import type { AgentID } from '@nanda/shared';
+import type { ProtocolVersion, ServerStatus } from '@nanda/shared';
 
 // ── Request / response bodies ────────────────────────────────────────────────
 

@@ -1,5 +1,5 @@
 import type { DIDDocument, DIDVerificationMethod } from './DIDDocument.js';
-import { fetchJson } from '../network/index.js';
+import { fetchJson } from '../network/client.js';
 import { base64urlToPublicKey } from '../crypto/keys.js';
 
 // Converts a did:web DID to the HTTPS URL of its DID document.

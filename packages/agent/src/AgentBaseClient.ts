@@ -1,5 +1,4 @@
-import type { DIDDocument } from '../../identity/DIDDocument.js';
-import type { ProtocolVersion, ServerStatus } from '../common/types.js';
+import type { DIDDocument, ProtocolVersion, ServerStatus } from '@nanda/shared';
 
 // ── Request / response bodies ────────────────────────────────────────────────
 
