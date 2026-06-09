@@ -57,15 +57,22 @@ export async function createDb(filename: string): Promise<AgentAddrStorage> {
     },
 
     async insertAgent(record) {
-      await db.run(
-        `INSERT INTO agent_addrs
-           (agent_id, agent_name, primary_facts_url, private_facts_url,
-            adaptive_resolver_url, ttl, signature)
-         VALUES (?, ?, ?, ?, ?, ?, ?)`,
-        record.agentId, record.agentName, record.primaryFactsUrl,
-        record.privateFactsUrl ?? null, record.adaptiveResolverUrl ?? null,
-        record.ttl, record.signature,
-      );
+      try {
+        await db.run(
+          `INSERT INTO agent_addrs
+             (agent_id, agent_name, primary_facts_url, private_facts_url,
+              adaptive_resolver_url, ttl, signature)
+           VALUES (?, ?, ?, ?, ?, ?, ?)`,
+          record.agentId, record.agentName, record.primaryFactsUrl,
+          record.privateFactsUrl ?? null, record.adaptiveResolverUrl ?? null,
+          record.ttl, record.signature,
+        );
+      } catch (e) {
+        if ((e as Error).message.includes('UNIQUE constraint failed')) {
+          throw new ConflictError(record.agentId);
+        }
+        throw e;
+      }
     },
 
     async updateAgent(record) {

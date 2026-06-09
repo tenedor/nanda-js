@@ -1,5 +1,7 @@
 import Fastify, { type FastifyInstance } from 'fastify';
 import { metadataRoutes } from './routes/metadata.js';
+import { agentIndexRoutes } from './routes/agent-index.js';
+import type { AgentAddrStorage } from './db.js';
 
 export const PROTOCOL_VERSION = 'nanda-0.0.0-index';
 
@@ -7,7 +9,10 @@ export interface AppOptions {
   logger?: boolean;
 }
 
-export async function createApp(options: AppOptions = {}): Promise<FastifyInstance> {
+export async function createApp(
+  db: AgentAddrStorage,
+  options: AppOptions = {},
+): Promise<FastifyInstance> {
   const app = Fastify({
     logger: options.logger !== false ? { level: 'info' } : false,
   });
@@ -18,6 +23,7 @@ export async function createApp(options: AppOptions = {}): Promise<FastifyInstan
   });
 
   await app.register(metadataRoutes);
+  await app.register(agentIndexRoutes, { db });
 
   return app;
 }
