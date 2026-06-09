@@ -150,8 +150,7 @@ See appendix in NANDA paper.
 **`ErrorResponse`**
 ```typescript
 {
-  error: string                   // machine-readable code
-  message: string                 // human-readable description
+  message: string
 }
 ```
 

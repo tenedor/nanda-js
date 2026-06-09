@@ -1,4 +1,6 @@
-import type { ErrorResponse } from '../services/common/types.js';
+export interface ErrorResponse {
+  message: string;
+}
 
 export class HttpClientError extends Error {
   constructor(
@@ -28,7 +30,7 @@ export async function fetchJson<T>(url: string, init?: RequestInit): Promise<T> 
   try {
     body = JSON.parse(text);
   } catch {
-    body = { error: 'parse_error', message: text };
+    body = { message: text };
   }
 
   if (!res.ok) {

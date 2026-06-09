@@ -5,8 +5,3 @@ export interface ProtocolVersion {
 export interface ServerStatus {
   status: 'ok' | 'degraded' | 'unavailable';
 }
-
-export interface ErrorResponse {
-  error: string;   // machine-readable code
-  message: string; // human-readable description
-}
