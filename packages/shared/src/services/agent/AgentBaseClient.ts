@@ -1,4 +1,5 @@
-import type { DIDDocument, ProtocolVersion, ServerStatus, ErrorResponse } from '../types.js';
+import type { DIDDocument } from '../../identity/DIDDocument.js';
+import type { ProtocolVersion, ServerStatus } from '../common/types.js';
 
 // ── Request / response bodies ────────────────────────────────────────────────
 
@@ -20,6 +21,3 @@ export interface AgentBaseClient {
   getVersion(): Promise<ProtocolVersion>;
   getStatus(): Promise<ServerStatus>;
 }
-
-// ── Re-export error shape for convenience ───────────────────────────────────
-export type { ErrorResponse };

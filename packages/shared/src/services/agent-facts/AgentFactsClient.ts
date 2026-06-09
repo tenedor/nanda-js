@@ -1,4 +1,6 @@
-import type { AgentFacts, AgentID, ProtocolVersion, ServerStatus, ErrorResponse } from '../types.js';
+import type { AgentFacts } from './AgentFacts.js';
+import type { AgentID } from '../lean-index/AgentAddr.js';
+import type { ProtocolVersion, ServerStatus } from '../common/types.js';
 
 // ── Request / response bodies ────────────────────────────────────────────────
 
@@ -8,10 +10,10 @@ export type RegisterFactsRequest = AgentFacts;
 // PUT /facts/:id  — body is the updated signed AgentFacts
 export type UpdateFactsRequest = AgentFacts;
 
-// GET /facts/:id  → AgentFacts | ErrorResponse
+// GET /facts/:id  → AgentFacts
 export type GetFactsResponse = AgentFacts;
 
-// POST /facts/:id/invalidate  → 204 No Content (no body)
+// POST /facts/:id/invalidate  → 204 No Content
 
 // GET /version  → ProtocolVersion
 export type FactsGetVersionResponse = ProtocolVersion;
@@ -29,6 +31,3 @@ export interface AgentFactsClient {
   getVersion(): Promise<ProtocolVersion>;
   getStatus(): Promise<ServerStatus>;
 }
-
-// ── Re-export error shape for convenience ───────────────────────────────────
-export type { ErrorResponse };

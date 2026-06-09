@@ -1,4 +1,4 @@
-import type { ErrorResponse } from '../types.js';
+import type { ErrorResponse } from '../services/common/types.js';
 
 export class HttpClientError extends Error {
   constructor(
@@ -18,7 +18,7 @@ export async function fetchJson<T>(url: string, init?: RequestInit): Promise<T> 
     ...init,
     headers: {
       'Content-Type': 'application/json',
-      'Accept': 'application/json',
+      Accept: 'application/json',
       ...init?.headers,
     },
   });

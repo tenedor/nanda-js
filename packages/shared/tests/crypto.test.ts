@@ -6,7 +6,7 @@ import {
   canonicalize,
   publicKeyToBase64url,
   base64urlToPublicKey,
-} from '../src/crypto.js';
+} from '../src/crypto/index.js';
 
 describe('generateKeyPair', () => {
   it('produces a 32-byte private key and 32-byte public key', () => {

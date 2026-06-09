@@ -1,4 +1,5 @@
-import type { AgentAddr, AgentID, ProtocolVersion, ServerStatus, ErrorResponse } from '../types.js';
+import type { AgentAddr, AgentID } from './AgentAddr.js';
+import type { ProtocolVersion, ServerStatus } from '../common/types.js';
 
 // ── Request / response bodies ────────────────────────────────────────────────
 
@@ -8,10 +9,10 @@ export type RegisterAgentRequest = AgentAddr;
 // PUT /agents/:id  — body is the updated signed AgentAddr
 export type UpdateAgentRequest = AgentAddr;
 
-// GET /agents/:id  → AgentAddr | ErrorResponse
+// GET /agents/:id  → AgentAddr
 export type GetAgentResponse = AgentAddr;
 
-// DELETE /agents/:id  → 204 No Content (no body)
+// DELETE /agents/:id  → 204 No Content
 
 // GET /version  → ProtocolVersion
 export type IndexGetVersionResponse = ProtocolVersion;
@@ -29,6 +30,3 @@ export interface LeanIndexClient {
   getVersion(): Promise<ProtocolVersion>;
   getStatus(): Promise<ServerStatus>;
 }
-
-// ── Re-export error shape for convenience ───────────────────────────────────
-export type { ErrorResponse };

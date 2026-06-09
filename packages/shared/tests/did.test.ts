@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { didWebToUrl, extractPublicKey, resolveDid } from '../src/did.js';
-import { generateKeyPair, publicKeyToBase64url } from '../src/crypto.js';
-import type { DIDDocument } from '../src/types.js';
+import { didWebToUrl, extractPublicKey, resolveDid } from '../src/identity/resolution.js';
+import { generateKeyPair, publicKeyToBase64url } from '../src/crypto/index.js';
+import type { DIDDocument } from '../src/identity/DIDDocument.js';
 
 describe('didWebToUrl', () => {
   it('converts a root domain DID to .well-known path', () => {
