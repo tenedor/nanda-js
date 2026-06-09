@@ -1,0 +1,6 @@
+{
+  "name": "nanda-prototype",
+  "private": true,
+  "workspaces": ["packages/*"],
+  "engines": { "node": ">=20" }
+}
