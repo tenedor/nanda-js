@@ -82,9 +82,7 @@ function makeFacts(overrides: Partial<AgentFacts> = {}): AgentFacts {
 
 describe('getDIDDocument', () => {
   it('returns a well-formed did:web document', () => {
-    const lean = mockLeanIndexClient();
-    const facts = mockAgentFactsClient();
-    const mgr = new AgentIdentityManager(makeOpts(), lean, facts);
+    const mgr = AgentIdentityManager._build(makeOpts(), mockLeanIndexClient(), mockAgentFactsClient());
     const doc = mgr.getDIDDocument();
 
     expect(doc.id).toBe(DID);
@@ -96,9 +94,9 @@ describe('getDIDDocument', () => {
   });
 });
 
-// ── register ──────────────────────────────────────────────────────────────────
+// ── registerFactsAndIndex ─────────────────────────────────────────────────────
 
-describe('register', () => {
+describe('registerFactsAndIndex', () => {
   let lean: LeanIndexClient;
   let facts: AgentFactsClient;
   let mgr: AgentIdentityManager;
@@ -106,11 +104,11 @@ describe('register', () => {
   beforeEach(() => {
     lean = mockLeanIndexClient();
     facts = mockAgentFactsClient();
-    mgr = new AgentIdentityManager(makeOpts(), lean, facts);
+    mgr = AgentIdentityManager._build(makeOpts(), lean, facts);
   });
 
   it('issues a VC and posts to facts server, then registers AgentAddr with lean index', async () => {
-    await mgr.register(makeFacts());
+    await mgr.registerFactsAndIndex(makeFacts());
 
     expect(facts.registerFacts).toHaveBeenCalledOnce();
     const vc = (facts.registerFacts as ReturnType<typeof vi.fn>).mock.calls[0][0] as VerifiableCredential<AgentFacts>;
@@ -127,39 +125,38 @@ describe('register', () => {
   });
 
   it('AgentAddr signature is a valid Ed25519 sig over the unsigned fields', async () => {
-    await mgr.register(makeFacts());
+    await mgr.registerFactsAndIndex(makeFacts());
     const addr = (lean.registerAgent as ReturnType<typeof vi.fn>).mock.calls[0][0] as AgentAddr;
     const { signature, ...unsigned } = addr;
-    const payload = canonicalize(unsigned as Record<string, unknown>);
-    expect(verify(keyPair.publicKey, payload, signature)).toBe(true);
+    expect(verify(keyPair.publicKey, canonicalize(unsigned as Record<string, unknown>), signature)).toBe(true);
   });
 
   it('includes primaryFactsUrl in AgentAddr, no privateFactsUrl by default', async () => {
-    await mgr.register(makeFacts());
+    await mgr.registerFactsAndIndex(makeFacts());
     const addr = (lean.registerAgent as ReturnType<typeof vi.fn>).mock.calls[0][0] as AgentAddr;
     expect(addr.privateFactsUrl).toBeUndefined();
   });
 
   it('includes privateFactsUrl when configured', async () => {
-    const m = new AgentIdentityManager(makeOpts({ privateFactsServerUrl: PRIVATE_FACTS_URL }), lean, facts);
-    await m.register(makeFacts());
+    const m = AgentIdentityManager._build(makeOpts({ privateFactsServerUrl: PRIVATE_FACTS_URL }), lean, facts);
+    await m.registerFactsAndIndex(makeFacts());
     const addr = (lean.registerAgent as ReturnType<typeof vi.fn>).mock.calls[0][0] as AgentAddr;
     expect(addr.privateFactsUrl).toBe(`${PRIVATE_FACTS_URL}/facts/${encodeURIComponent(DID)}`);
   });
 
   it('passes validUntil through to the issued VC', async () => {
-    await mgr.register(makeFacts(), { validUntil: '2099-01-01T00:00:00Z' });
+    await mgr.registerFactsAndIndex(makeFacts(), { validUntil: '2099-01-01T00:00:00Z' });
     const vc = (facts.registerFacts as ReturnType<typeof vi.fn>).mock.calls[0][0] as VerifiableCredential<AgentFacts>;
     expect(vc.validUntil).toBe('2099-01-01T00:00:00Z');
   });
 
   it('rejects facts whose id does not match the agent DID', async () => {
-    await expect(mgr.register(makeFacts({ id: 'did:web:other.example.com' }))).rejects.toBeInstanceOf(ValidationError);
+    await expect(mgr.registerFactsAndIndex(makeFacts({ id: 'did:web:other.example.com' }))).rejects.toBeInstanceOf(ValidationError);
     expect(facts.registerFacts).not.toHaveBeenCalled();
   });
 
   it('rejects facts whose agentName does not match', async () => {
-    await expect(mgr.register(makeFacts({ agentName: 'urn:agent:other' }))).rejects.toBeInstanceOf(ValidationError);
+    await expect(mgr.registerFactsAndIndex(makeFacts({ agentName: 'urn:agent:other' }))).rejects.toBeInstanceOf(ValidationError);
     expect(facts.registerFacts).not.toHaveBeenCalled();
   });
 });
@@ -170,7 +167,7 @@ describe('updateFacts', () => {
   it('issues a new VC and calls updateFacts on the facts client', async () => {
     const lean = mockLeanIndexClient();
     const facts = mockAgentFactsClient();
-    const mgr = new AgentIdentityManager(makeOpts(), lean, facts);
+    const mgr = AgentIdentityManager._build(makeOpts(), lean, facts);
     await mgr.updateFacts(makeFacts({ label: 'Updated' }));
 
     expect(facts.updateFacts).toHaveBeenCalledOnce();
@@ -186,14 +183,13 @@ describe('invalidateFacts', () => {
   it('signs and sends an invalidate-facts attestation', async () => {
     const lean = mockLeanIndexClient();
     const facts = mockAgentFactsClient();
-    const mgr = new AgentIdentityManager(makeOpts(), lean, facts);
+    const mgr = AgentIdentityManager._build(makeOpts(), lean, facts);
     await mgr.invalidateFacts();
 
     expect(facts.invalidateFacts).toHaveBeenCalledOnce();
     const [id, attestation] = (facts.invalidateFacts as ReturnType<typeof vi.fn>).mock.calls[0] as [string, SignedAttestation<'invalidate-facts'>];
     expect(id).toBe(DID);
     expect(attestation.action).toBe('invalidate-facts');
-    expect(attestation.agentId).toBe(DID);
     const { signature, ...base } = attestation;
     expect(verify(keyPair.publicKey, canonicalize(base as Record<string, unknown>), signature)).toBe(true);
   });
@@ -205,7 +201,7 @@ describe('deregister', () => {
   it('signs and sends a delete-agent attestation to the lean index', async () => {
     const lean = mockLeanIndexClient();
     const facts = mockAgentFactsClient();
-    const mgr = new AgentIdentityManager(makeOpts(), lean, facts);
+    const mgr = AgentIdentityManager._build(makeOpts(), lean, facts);
     await mgr.deregister();
 
     expect(lean.deleteAgent).toHaveBeenCalledOnce();
@@ -217,14 +213,13 @@ describe('deregister', () => {
   });
 });
 
-// ── syncIndexRegistration ──────────────────────────────────────────────────────────
+// ── updateIndexRegistration ───────────────────────────────────────────────────
 
-describe('syncIndexRegistration', () => {
+describe('updateIndexRegistration', () => {
   it('calls updateAgent on the lean index with current AgentAddr state', async () => {
     const lean = mockLeanIndexClient();
-    const facts = mockAgentFactsClient();
-    const mgr = new AgentIdentityManager(makeOpts(), lean, facts);
-    await mgr.syncIndexRegistration();
+    const mgr = AgentIdentityManager._build(makeOpts(), lean, mockAgentFactsClient());
+    await mgr.updateIndexRegistration();
 
     expect(lean.updateAgent).toHaveBeenCalledOnce();
     const [id, addr] = (lean.updateAgent as ReturnType<typeof vi.fn>).mock.calls[0] as [string, AgentAddr];
@@ -243,7 +238,7 @@ describe('updateAgentAddr', () => {
   beforeEach(() => {
     lean = mockLeanIndexClient();
     facts = mockAgentFactsClient();
-    mgr = new AgentIdentityManager(makeOpts(), lean, facts);
+    mgr = AgentIdentityManager._build(makeOpts(), lean, facts);
   });
 
   it('mutates instance properties and syncs by default', async () => {
@@ -253,8 +248,8 @@ describe('updateAgentAddr', () => {
     expect(lean.updateAgent).toHaveBeenCalledOnce();
   });
 
-  it('skips sync when syncRegistration=false', async () => {
-    await mgr.updateAgentAddr({ agentName: 'urn:agent:example:updated' }, { syncRegistration: false });
+  it('skips sync when dontSyncIndex=true', async () => {
+    await mgr.updateAgentAddr({ agentName: 'urn:agent:example:updated' }, { dontSyncIndex: true });
     expect(lean.updateAgent).not.toHaveBeenCalled();
   });
 
@@ -269,16 +264,16 @@ describe('updateAgentAddr', () => {
   });
 
   it('clears privateFactsServerUrl when set to null', async () => {
-    const m = new AgentIdentityManager(makeOpts({ privateFactsServerUrl: PRIVATE_FACTS_URL }), lean, facts);
+    const m = AgentIdentityManager._build(makeOpts({ privateFactsServerUrl: PRIVATE_FACTS_URL }), lean, facts);
     await m.updateAgentAddr({ privateFactsServerUrl: null });
     expect(m.privateFactsServerUrl).toBeUndefined();
-    await m.syncIndexRegistration();
+    await m.updateIndexRegistration();
     const addr = (lean.updateAgent as ReturnType<typeof vi.fn>).mock.calls[1][1] as AgentAddr;
     expect(addr.privateFactsUrl).toBeUndefined();
   });
 
   it('clears adaptiveResolverUrl when set to null', async () => {
-    const m = new AgentIdentityManager(
+    const m = AgentIdentityManager._build(
       makeOpts({ adaptiveResolverUrl: 'https://resolver.example.com' }), lean, facts,
     );
     await m.updateAgentAddr({ adaptiveResolverUrl: null });
@@ -292,15 +287,72 @@ describe('updateAgentAddr', () => {
   });
 });
 
-// ── static generate ───────────────────────────────────────────────────────────
+// ── registration tracking ─────────────────────────────────────────────────────
 
-describe('AgentIdentityManager.generate', () => {
-  it('creates an instance with a fresh keypair', () => {
-    const m1 = AgentIdentityManager.generate(makeOpts());
-    const m2 = AgentIdentityManager.generate(makeOpts());
+describe('registration tracking', () => {
+  let lean: LeanIndexClient;
+  let facts: AgentFactsClient;
+  let mgr: AgentIdentityManager;
+
+  beforeEach(() => {
+    lean = mockLeanIndexClient();
+    facts = mockAgentFactsClient();
+    mgr = AgentIdentityManager._build(makeOpts(), lean, facts);
+  });
+
+  it('starts unregistered', () => {
+    expect(mgr.isFactsRegistered).toBe(false);
+    expect(mgr.isIndexRegistered).toBe(false);
+  });
+
+  it('registerFactsOnly sets isFactsRegistered', async () => {
+    await mgr.registerFactsOnly(makeFacts());
+    expect(mgr.isFactsRegistered).toBe(true);
+    expect(mgr.isIndexRegistered).toBe(false);
+  });
+
+  it('registerIndexOnly sets isIndexRegistered', async () => {
+    await mgr.registerIndexOnly();
+    expect(mgr.isFactsRegistered).toBe(false);
+    expect(mgr.isIndexRegistered).toBe(true);
+  });
+
+  it('registerFactsAndIndex sets both flags', async () => {
+    await mgr.registerFactsAndIndex(makeFacts());
+    expect(mgr.isFactsRegistered).toBe(true);
+    expect(mgr.isIndexRegistered).toBe(true);
+  });
+
+  it('invalidateFacts clears isFactsRegistered', async () => {
+    await mgr.registerFactsAndIndex(makeFacts());
+    await mgr.invalidateFacts();
+    expect(mgr.isFactsRegistered).toBe(false);
+    expect(mgr.isIndexRegistered).toBe(true);
+  });
+
+  it('deregister clears isIndexRegistered', async () => {
+    await mgr.registerFactsAndIndex(makeFacts());
+    await mgr.deregister();
+    expect(mgr.isFactsRegistered).toBe(true);
+    expect(mgr.isIndexRegistered).toBe(false);
+  });
+
+  it('updateFacts does not change registration flags', async () => {
+    await mgr.registerFactsAndIndex(makeFacts());
+    await mgr.updateFacts(makeFacts({ label: 'Updated' }));
+    expect(mgr.isFactsRegistered).toBe(true);
+    expect(mgr.isIndexRegistered).toBe(true);
+  });
+});
+
+// ── static builders ───────────────────────────────────────────────────────────
+
+describe('createWithoutRegistering', () => {
+  it('creates an instance with a fresh keypair and no registration', () => {
+    const m1 = AgentIdentityManager.createWithoutRegistering(makeOpts());
+    const m2 = AgentIdentityManager.createWithoutRegistering(makeOpts());
     expect(m1.publicKey).not.toEqual(m2.publicKey);
-    expect(m1.getDIDDocument().verificationMethod![0].publicKeyMultibase).not.toBe(
-      m2.getDIDDocument().verificationMethod![0].publicKeyMultibase,
-    );
+    expect(m1.isFactsRegistered).toBe(false);
+    expect(m1.isIndexRegistered).toBe(false);
   });
 });

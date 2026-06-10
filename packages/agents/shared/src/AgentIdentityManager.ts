@@ -10,7 +10,6 @@ import {
   type Endpoint,
   type Signature,
   type DIDDocument,
-  type SignedAttestation,
   type KeyPair,
 } from '@nanda/shared';
 import type { LeanIndexClient, AgentAddr } from '@nanda/lean-index';
@@ -53,15 +52,18 @@ export class AgentIdentityManager {
   adaptiveResolverUrl: Endpoint | undefined;
   ttl: number;
 
+  /** True after registerFactsOnly or registerFactsAndIndex; false after invalidateFacts. */
+  isFactsRegistered: boolean = false;
+  /** True after registerIndexOnly or registerFactsAndIndex; false after deregister. */
+  isIndexRegistered: boolean = false;
+
   private _leanIndexClient: LeanIndexClient;
   private _primaryFactsClient: AgentFactsClient;
   private _privateFactsClient: AgentFactsClient | undefined;
 
-  constructor(
+  private constructor(
     opts: AgentIdentityManagerOptions,
-    /** @internal testing only — inject mock lean-index client */
     _leanClient?: LeanIndexClient,
-    /** @internal testing only — inject mock primary facts client */
     _primaryFactsClient?: AgentFactsClient,
   ) {
     this.did = opts.did;
@@ -81,9 +83,36 @@ export class AgentIdentityManager {
     }
   }
 
-  static generate(opts: Omit<AgentIdentityManagerOptions, 'keyPair'>): AgentIdentityManager {
+  // ── Static builders ──────────────────────────────────────────────────────────
+
+  /** Creates a manager and immediately registers facts and the lean-index entry. */
+  static async createAndRegister(
+    opts: Omit<AgentIdentityManagerOptions, 'keyPair'>,
+    facts: AgentFacts,
+    registrationOpts: { validUntil?: string } = {},
+  ): Promise<AgentIdentityManager> {
+    const manager = new AgentIdentityManager({ ...opts, keyPair: generateKeyPair() });
+    await manager.registerFactsAndIndex(facts, registrationOpts);
+    return manager;
+  }
+
+  /** Creates a manager without registering. Register explicitly when ready. */
+  static createWithoutRegistering(
+    opts: Omit<AgentIdentityManagerOptions, 'keyPair'>,
+  ): AgentIdentityManager {
     return new AgentIdentityManager({ ...opts, keyPair: generateKeyPair() });
   }
+
+  /** @internal testing only — constructs with injected mock clients. */
+  static _build(
+    opts: AgentIdentityManagerOptions,
+    _leanClient?: LeanIndexClient,
+    _primaryFactsClient?: AgentFactsClient,
+  ): AgentIdentityManager {
+    return new AgentIdentityManager(opts, _leanClient, _primaryFactsClient);
+  }
+
+  // ── Identity ─────────────────────────────────────────────────────────────────
 
   getDIDDocument(): DIDDocument {
     return {
@@ -99,38 +128,7 @@ export class AgentIdentityManager {
     };
   }
 
-  private factsUrl(serverUrl: Endpoint): Endpoint {
-    return `${serverUrl}/facts/${encodeURIComponent(this.did)}`;
-  }
-
-  private buildAgentAddr(): AgentAddr {
-    const unsigned: Omit<AgentAddr, 'signature'> = {
-      agentId: this.did,
-      agentName: this.agentName,
-      primaryFactsUrl: this.factsUrl(this.primaryFactsServerUrl),
-      ...(this.privateFactsServerUrl && { privateFactsUrl: this.factsUrl(this.privateFactsServerUrl) }),
-      ...(this.adaptiveResolverUrl && { adaptiveResolverUrl: this.adaptiveResolverUrl }),
-      ttl: this.ttl,
-    };
-    const signature: Signature = sign(
-      this.privateKey,
-      canonicalize(unsigned as Record<string, unknown>),
-    );
-    return { ...unsigned, signature };
-  }
-
-  private validateFacts(facts: AgentFacts): void {
-    if (facts.id !== this.did) {
-      throw new ValidationError(
-        `AgentFacts.id "${facts.id}" does not match agent DID "${this.did}"`,
-      );
-    }
-    if (facts.agentName !== this.agentName) {
-      throw new ValidationError(
-        `AgentFacts.agentName "${facts.agentName}" does not match agent name "${this.agentName}"`,
-      );
-    }
-  }
+  // ── Registration ─────────────────────────────────────────────────────────────
 
   async registerFactsAndIndex(facts: AgentFacts, opts: { validUntil?: string } = {}): Promise<void> {
     await this.registerFactsOnly(facts, opts);
@@ -146,10 +144,12 @@ export class AgentIdentityManager {
       validUntil: opts.validUntil,
     });
     await this._primaryFactsClient.registerFacts(vc);
+    this.isFactsRegistered = true;
   }
 
   async registerIndexOnly(): Promise<void> {
     await this._leanIndexClient.registerAgent(this.buildAgentAddr());
+    this.isIndexRegistered = true;
   }
 
   async updateFacts(facts: AgentFacts, opts: { validUntil?: string } = {}): Promise<void> {
@@ -171,6 +171,7 @@ export class AgentIdentityManager {
     };
     const signature: Signature = sign(this.privateKey, canonicalize(base as Record<string, unknown>));
     await this._primaryFactsClient.invalidateFacts(this.did, { ...base, signature });
+    this.isFactsRegistered = false;
   }
 
   async deregister(): Promise<void> {
@@ -181,6 +182,7 @@ export class AgentIdentityManager {
     };
     const signature: Signature = sign(this.privateKey, canonicalize(base as Record<string, unknown>));
     await this._leanIndexClient.deleteAgent(this.did, { ...base, signature });
+    this.isIndexRegistered = false;
   }
 
   async updateIndexRegistration(): Promise<void> {
@@ -213,6 +215,41 @@ export class AgentIdentityManager {
     }
     if (!opts.dontSyncIndex) {
       await this.updateIndexRegistration();
+    }
+  }
+
+  // ── Private helpers ───────────────────────────────────────────────────────────
+
+  private factsUrl(serverUrl: Endpoint): Endpoint {
+    return `${serverUrl}/facts/${encodeURIComponent(this.did)}`;
+  }
+
+  private buildAgentAddr(): AgentAddr {
+    const unsigned: Omit<AgentAddr, 'signature'> = {
+      agentId: this.did,
+      agentName: this.agentName,
+      primaryFactsUrl: this.factsUrl(this.primaryFactsServerUrl),
+      ...(this.privateFactsServerUrl && { privateFactsUrl: this.factsUrl(this.privateFactsServerUrl) }),
+      ...(this.adaptiveResolverUrl && { adaptiveResolverUrl: this.adaptiveResolverUrl }),
+      ttl: this.ttl,
+    };
+    const signature: Signature = sign(
+      this.privateKey,
+      canonicalize(unsigned as Record<string, unknown>),
+    );
+    return { ...unsigned, signature };
+  }
+
+  private validateFacts(facts: AgentFacts): void {
+    if (facts.id !== this.did) {
+      throw new ValidationError(
+        `AgentFacts.id "${facts.id}" does not match agent DID "${this.did}"`,
+      );
+    }
+    if (facts.agentName !== this.agentName) {
+      throw new ValidationError(
+        `AgentFacts.agentName "${facts.agentName}" does not match agent name "${this.agentName}"`,
+      );
     }
   }
 }
