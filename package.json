@@ -1,6 +1,6 @@
 {
   "name": "nanda-prototype",
   "private": true,
-  "workspaces": ["packages/*"],
+  "workspaces": ["packages/*", "packages/agents/*"],
   "engines": { "node": ">=20" }
 }
