@@ -41,18 +41,18 @@ docker compose down -v && docker compose up --build
 
 ```bash
 # Service health
-curl -k https://localhost:8443/status   # lean-index
-curl -k https://localhost:8444/status   # agent-facts-1
+./scripts/curl-formatted.sh https://localhost:8443/status
+./scripts/curl-formatted.sh https://localhost:8444/status
 
 # DID documents
-curl -k https://localhost:8445/.well-known/did.json   # trivial-agent-1
-curl -k https://localhost:8446/.well-known/did.json   # trivial-agent-2
+./scripts/curl-formatted.sh https://localhost:8445/.well-known/did.json
+./scripts/curl-formatted.sh https://localhost:8446/.well-known/did.json
 
 # Lean index entries
-curl -k "https://localhost:8443/agents/did%3Aweb%3Atrivial-agent-1%253A8445"
-curl -k "https://localhost:8443/agents/did%3Aweb%3Atrivial-agent-2%253A8446"
+./scripts/curl-formatted.sh "https://localhost:8443/agents/did%3Aweb%3Atrivial-agent-1%253A8445"
+./scripts/curl-formatted.sh "https://localhost:8443/agents/did%3Aweb%3Atrivial-agent-2%253A8446"
 
 # Agent facts
-curl -k "https://localhost:8444/facts/did%3Aweb%3Atrivial-agent-1%253A8445"
-curl -k "https://localhost:8444/facts/did%3Aweb%3Atrivial-agent-2%253A8446"
+./scripts/curl-formatted.sh "https://localhost:8444/facts/did%3Aweb%3Atrivial-agent-1%253A8445"
+./scripts/curl-formatted.sh "https://localhost:8444/facts/did%3Aweb%3Atrivial-agent-2%253A8446"
 ```
