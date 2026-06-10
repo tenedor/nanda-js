@@ -1,6 +1,7 @@
 import Fastify, { type FastifyInstance } from 'fastify';
 import type { AgentIdentityManager } from '../AgentIdentityManager.js';
 import { metadataRoutes, type GetStatus } from './routes/metadata.js';
+export type { GetStatus };
 import { identityRoutes } from './routes/identity.js';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
