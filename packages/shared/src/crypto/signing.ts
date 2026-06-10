@@ -1,15 +1,27 @@
 import * as ed from '@noble/ed25519';
 import { base64urlToPublicKey } from './keys.js';
 
-// Returns canonical JSON of an object with the given field omitted and keys sorted.
+// Returns canonical JSON of an object with keys sorted at all levels (JCS).
+// The optional omitField is excluded from the top-level only.
 // Used to produce a stable byte representation for signing.
-export function canonicalize(obj: Record<string, unknown>, omitField: string): string {
-  const copy = Object.fromEntries(
-    Object.entries(obj)
-      .filter(([k]) => k !== omitField)
-      .sort(([a], [b]) => a.localeCompare(b)),
+export function canonicalize(obj: Record<string, unknown>, omitField?: string): string {
+  function sortedValue(v: unknown): unknown {
+    if (v === null || typeof v !== 'object') return v;
+    if (Array.isArray(v)) return v.map(sortedValue);
+    return Object.fromEntries(
+      Object.entries(v as Record<string, unknown>)
+        .sort(([a], [b]) => a.localeCompare(b))
+        .map(([k, val]) => [k, sortedValue(val)]),
+    );
+  }
+  return JSON.stringify(
+    Object.fromEntries(
+      Object.entries(obj)
+        .filter(([k]) => k !== omitField)
+        .sort(([a], [b]) => a.localeCompare(b))
+        .map(([k, v]) => [k, sortedValue(v)]),
+    ),
   );
-  return JSON.stringify(copy);
 }
 
 export function sign(privateKey: Uint8Array, payload: string): string {
