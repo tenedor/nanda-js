@@ -7,9 +7,11 @@ CERTS_DIR="$REPO_ROOT/certs"
 
 mkdir -p "$CERTS_DIR"
 
-mkcert -install || true
+# Unset JAVA_HOME to prevent mkcert from attempting the Java keystore,
+# which fails when no JDK is configured and causes mkcert to abort.
+JAVA_HOME="" mkcert -install
 
-mkcert \
+JAVA_HOME="" mkcert \
   -cert-file "$CERTS_DIR/cert.pem" \
   -key-file  "$CERTS_DIR/key.pem" \
   lean-index \
@@ -17,7 +19,7 @@ mkcert \
   trivial-agent-1 \
   trivial-agent-2 \
   localhost \
-  127.0.0.1 || true
+  127.0.0.1
 
 [[ -f "$CERTS_DIR/cert.pem" ]] || { echo "ERROR: cert.pem was not created" >&2; exit 1; }
 
