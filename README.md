@@ -22,6 +22,21 @@ docker compose up --build
 
 Wait for both `Trivial agent registered` log lines before testing.
 
+## Stopping
+
+```bash
+docker compose down -v
+```
+
+The `-v` flag removes the SQLite volumes for a clean slate on next start.
+Omit `-v` only if you intentionally want to resume persisted state.
+
+## Rebuilding after code changes
+
+```bash
+docker compose down -v && docker compose up --build
+```
+
 ## Observing
 
 ```bash
