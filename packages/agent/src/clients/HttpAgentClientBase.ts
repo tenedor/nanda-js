@@ -1,4 +1,4 @@
-import type { AgentBaseClient } from '../AgentBaseClient.js';
+import type { AgentClientBase as AgentClientBase } from '../AgentClientBase.js';
 import {
   fetchJson,
   type DIDDocument,
@@ -7,7 +7,7 @@ import {
   type ServerStatus,
 } from '@nanda/shared';
 
-export class HttpAgentBaseClient implements AgentBaseClient {
+export class HttpAgentClientBase implements AgentClientBase {
   constructor(private readonly baseUrl: Endpoint) {}
 
   async getDIDDocument(): Promise<DIDDocument> {

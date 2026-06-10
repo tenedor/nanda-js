@@ -15,7 +15,7 @@ export type AgentGetStatusResponse = ServerStatus;
 
 // ── Client interface ─────────────────────────────────────────────────────────
 
-export interface AgentBaseClient {
+export interface AgentClientBase {
   getDIDDocument(): Promise<DIDDocument>;
   getVersion(): Promise<ProtocolVersion>;
   getStatus(): Promise<ServerStatus>;
