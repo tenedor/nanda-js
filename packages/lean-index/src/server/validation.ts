@@ -9,9 +9,8 @@ import type { DIDDocument } from '@nanda/shared';
 
 type ResolveDid = (did: string) => Promise<DIDDocument>;
 
-// Validity window for SignedAttestation timestamps: ±5 minutes.
 // Production should use a shorter window or a nonce.
-const ATTESTATION_VALIDITY_MS = 5 * 60 * 1000;
+const ATTESTATION_VALIDITY_MS = 5 * 60_000;
 
 export class ValidationError extends Error {
   constructor(message: string, public readonly statusCode = 400) {

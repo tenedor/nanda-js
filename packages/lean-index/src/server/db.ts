@@ -3,6 +3,8 @@ import sqlite3 from 'sqlite3';
 import type { AgentAddr } from '../AgentAddr.js';
 import type { AgentID } from '@nanda/shared';
 
+const DEFAULT_PING_TIMEOUT_MS = 30_000;
+
 export interface AgentAddrStorage {
   ping(timeoutMillis?: number): Promise<void>;
   getAgent(id: AgentID): Promise<AgentAddr | undefined>;
@@ -50,7 +52,7 @@ export async function createDb(filename: string): Promise<AgentAddrStorage> {
   `);
 
   return {
-    async ping(timeoutMillis = 500) {
+    async ping(timeoutMillis = DEFAULT_PING_TIMEOUT_MS) {
       const timeout = new Promise<never>((_, reject) =>
         setTimeout(() => reject(new Error('ping timeout')), timeoutMillis),
       );
