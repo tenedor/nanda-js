@@ -1,8 +1,9 @@
 import { readFileSync } from 'node:fs';
 import Fastify from 'fastify';
 import type { Http2SecureServer } from 'node:http2';
-import { AgentIdentityManager, FASTIFY_BASE_OPTIONS, configureApp } from '@nanda/agent';
-import { generateKeyPair, publicKeyToBase64url } from '@nanda/shared';
+import { AgentIdentityManager, FASTIFY_BASE_OPTIONS, configureApp, PROTOCOL_VERSION } from '@nanda/agent';
+import { buildAgentFacts } from '@nanda/agent-facts';
+import { publicKeyToBase64url } from '@nanda/shared';
 
 const PORT = parseInt(process.env.PORT ?? '8445', 10);
 const TLS_CERT = process.env.TLS_CERT_PATH ?? '/certs/cert.pem';
@@ -12,24 +13,41 @@ const did = process.env.AGENT_DID;
 const agentName = process.env.AGENT_NAME;
 const leanIndexUrl = process.env.LEAN_INDEX_URL;
 const primaryFactsServerUrl = process.env.PRIMARY_FACTS_SERVER_URL;
+const providerName = process.env.PROVIDER_NAME ?? 'NANDA Prototype';
+const providerUrl = process.env.PROVIDER_URL ?? 'https://nanda.example';
+const agentLabel = process.env.AGENT_LABEL ?? 'Trivial Agent';
+const agentDescription = process.env.AGENT_DESCRIPTION ?? 'A trivial NANDA agent';
+const agentEndpoint = process.env.AGENT_ENDPOINT;
 
 if (!did) throw new Error('AGENT_DID is required');
 if (!agentName) throw new Error('AGENT_NAME is required');
 if (!leanIndexUrl) throw new Error('LEAN_INDEX_URL is required');
 if (!primaryFactsServerUrl) throw new Error('PRIMARY_FACTS_SERVER_URL is required');
+if (!agentEndpoint) throw new Error('AGENT_ENDPOINT is required');
 
-const keyPair = generateKeyPair();
-
-const manager = new AgentIdentityManager({
-  did,
-  keyPair,
+const facts = buildAgentFacts({
+  id: did,
   agentName,
-  leanIndexUrl,
-  primaryFactsServerUrl,
-  privateFactsServerUrl: process.env.PRIVATE_FACTS_SERVER_URL,
-  adaptiveResolverUrl: process.env.ADAPTIVE_RESOLVER_URL,
-  ttl: parseInt(process.env.AGENT_TTL ?? '3600', 10),
+  label: agentLabel,
+  description: agentDescription,
+  version: PROTOCOL_VERSION,
+  providerName,
+  providerUrl,
+  endpoints: [agentEndpoint],
 });
+
+const manager = await AgentIdentityManager.createAndRegister(
+  {
+    did,
+    agentName,
+    leanIndexUrl,
+    primaryFactsServerUrl,
+    privateFactsServerUrl: process.env.PRIVATE_FACTS_SERVER_URL,
+    adaptiveResolverUrl: process.env.ADAPTIVE_RESOLVER_URL,
+    ttl: parseInt(process.env.AGENT_TTL ?? '3600', 10),
+  },
+  facts,
+);
 
 const app = Fastify<Http2SecureServer>({
   ...FASTIFY_BASE_OPTIONS,

@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@nanda/agent": "*",
+    "@nanda/agent-facts": "*",
     "@nanda/shared": "*",
     "fastify": "^5.8.5"
   },
