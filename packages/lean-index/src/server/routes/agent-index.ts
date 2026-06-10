@@ -14,7 +14,7 @@ export const agentIndexRoutes: FastifyPluginAsync<AgentIndexOptions> = async (ap
   const { db } = opts;
 
   app.get<{ Params: { id: string } }>('/agents/:id', async (req, reply) => {
-    const id = decodeURIComponent(req.params.id);
+    const id = req.params.id;
     const record = await db.getAgent(id);
     if (!record) {
       return reply.code(404).send({ message: `Agent not found: ${id}` });
@@ -48,7 +48,7 @@ export const agentIndexRoutes: FastifyPluginAsync<AgentIndexOptions> = async (ap
       '/agents/:id',
       { schema: { body: agentAddrSchema } },
       async (req, reply) => {
-    const id = decodeURIComponent(req.params.id);
+    const id = req.params.id;
     const record = req.body;
     if (record.agentId !== id) {
       return reply.code(400).send({ message: 'agentId in body does not match path' });
@@ -74,7 +74,7 @@ export const agentIndexRoutes: FastifyPluginAsync<AgentIndexOptions> = async (ap
       '/agents/:id',
       { schema: { body: deleteAgentSchema } },
       async (req, reply) => {
-    const id = decodeURIComponent(req.params.id);
+    const id = req.params.id;
     const attestation = req.body;
     try {
       await verifyAttestation(attestation, 'delete-agent', id);

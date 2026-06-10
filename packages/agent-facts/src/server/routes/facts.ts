@@ -14,7 +14,7 @@ export const factsRoutes: FastifyPluginAsync<FactsOptions> = async (app, opts) =
   const { db } = opts;
 
   app.get<{ Params: { id: string } }>('/facts/:id', async (req, reply) => {
-    const id = decodeURIComponent(req.params.id);
+    const id = req.params.id;
     const record = await db.getFacts(id);
     if (!record) {
       return reply.code(404).send({ message: `Agent facts not found: ${id}` });
@@ -54,7 +54,7 @@ export const factsRoutes: FastifyPluginAsync<FactsOptions> = async (app, opts) =
       '/facts/:id',
       { schema: { body: agentFactsVcSchema } },
       async (req, reply) => {
-    const id = decodeURIComponent(req.params.id);
+    const id = req.params.id;
     const vc = req.body;
     if (vc.credentialSubject.id !== id) {
       return reply.code(400).send({ message: 'credentialSubject.id in body does not match path' });
@@ -80,7 +80,7 @@ export const factsRoutes: FastifyPluginAsync<FactsOptions> = async (app, opts) =
       '/facts/:id/invalidate',
       { schema: { body: invalidateFactsSchema } },
       async (req, reply) => {
-    const id = decodeURIComponent(req.params.id);
+    const id = req.params.id;
     const attestation = req.body;
     try {
       await verifyAttestation(attestation, 'invalidate-facts', id);
