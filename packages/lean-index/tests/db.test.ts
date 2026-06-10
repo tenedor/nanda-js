@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
-import { createDb, NotFoundError, type AgentAddrStorage } from '../src/server/db.js';
+import { createDb, type AgentAddrStorage } from '../src/server/db.js';
+import { NotFoundError } from '@nanda/shared';
 import type { AgentAddr } from '../src/AgentAddr.js';
 
 const testRecord: AgentAddr = {

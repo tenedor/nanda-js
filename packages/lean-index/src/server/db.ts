@@ -2,6 +2,7 @@ import { open, type Database } from 'sqlite';
 import sqlite3 from 'sqlite3';
 import type { AgentAddr } from '../AgentAddr.js';
 import type { AgentID } from '@nanda/shared';
+import { NotFoundError, ConflictError } from '@nanda/shared';
 
 const DEFAULT_PING_TIMEOUT_MS = 30_000;
 
@@ -113,18 +114,4 @@ export async function createDb(filename: string): Promise<AgentAddrStorage> {
       await db.close();
     },
   };
-}
-
-export class NotFoundError extends Error {
-  constructor(public readonly agentId: AgentID) {
-    super(`Agent not found: ${agentId}`);
-    this.name = 'NotFoundError';
-  }
-}
-
-export class ConflictError extends Error {
-  constructor(public readonly agentId: AgentID) {
-    super(`Agent already exists: ${agentId}`);
-    this.name = 'ConflictError';
-  }
 }

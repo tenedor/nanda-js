@@ -1,5 +1,6 @@
 import { describe, it, expect, vi } from 'vitest';
-import { verifyAgentAddrSignature, verifyAttestation, ValidationError } from '../src/server/validation.js';
+import { verifyAgentAddrSignature, verifyAttestation } from '../src/server/validation.js';
+import { ValidationError } from '@nanda/shared';
 import { generateKeyPair, sign, canonicalize, publicKeyToBase64url } from '@nanda/shared';
 import type { AgentAddr } from '../src/AgentAddr.js';
 import type { DIDDocument } from '@nanda/shared';

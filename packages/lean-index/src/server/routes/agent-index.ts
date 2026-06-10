@@ -1,7 +1,7 @@
 import type { FastifyPluginAsync } from 'fastify';
 import type { AgentAddrStorage } from '../db.js';
-import { NotFoundError, ConflictError } from '../db.js';
-import { verifyAgentAddrSignature, verifyAttestation, ValidationError } from '../validation.js';
+import { NotFoundError, ConflictError, ValidationError } from '@nanda/shared';
+import { verifyAgentAddrSignature, verifyAttestation } from '../validation.js';
 import type { AgentAddr } from '../../AgentAddr.js';
 import type { DeleteAgentRequest } from '../../LeanIndexClient.js';
 

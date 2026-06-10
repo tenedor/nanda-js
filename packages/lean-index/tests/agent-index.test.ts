@@ -8,9 +8,6 @@ import type { AgentAddr } from '../src/AgentAddr.js';
 vi.mock('../src/server/validation.js', () => ({
   verifyAgentAddrSignature: vi.fn().mockResolvedValue(undefined),
   verifyAttestation: vi.fn().mockResolvedValue(undefined),
-  ValidationError: class ValidationError extends Error {
-    constructor(message: string, public statusCode = 400) { super(message); }
-  },
 }));
 
 const testRecord: AgentAddr = {

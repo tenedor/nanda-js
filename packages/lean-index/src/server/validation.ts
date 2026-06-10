@@ -1,23 +1,15 @@
 import {
   canonicalize, verify,
   extractPublicKey, resolveDid,
-  type SignedAttestation,
+  type SignedAttestation, type AgentID, type DIDDocument,
+  ValidationError,
 } from '@nanda/shared';
 import type { AgentAddr } from '../AgentAddr.js';
-import type { AgentID } from '@nanda/shared';
-import type { DIDDocument } from '@nanda/shared';
 
 type ResolveDid = (did: string) => Promise<DIDDocument>;
 
 // Production should use a shorter window or a nonce.
 const ATTESTATION_VALIDITY_MS = 5 * 60_000;
-
-export class ValidationError extends Error {
-  constructor(message: string, public readonly statusCode = 400) {
-    super(message);
-    this.name = 'ValidationError';
-  }
-}
 
 async function resolvePublicKey(did: AgentID, resolve: ResolveDid): Promise<Uint8Array> {
   let doc: DIDDocument;

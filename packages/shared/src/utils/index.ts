@@ -1,1 +1,1 @@
-// Reserved for generic TypeScript utilities (non-domain-specific).
+export * from './errors.js';
