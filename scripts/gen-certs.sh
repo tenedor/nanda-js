@@ -17,7 +17,9 @@ mkcert \
   trivial-agent-1 \
   trivial-agent-2 \
   localhost \
-  127.0.0.1
+  127.0.0.1 || true
+
+[[ -f "$CERTS_DIR/cert.pem" ]] || { echo "ERROR: cert.pem was not created" >&2; exit 1; }
 
 cp "$(mkcert -CAROOT)/rootCA.pem" "$CERTS_DIR/rootCA.pem"
 
