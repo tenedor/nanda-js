@@ -1,6 +1,6 @@
 import Fastify, { type FastifyInstance } from 'fastify';
 import type { AgentIdentityManager } from '../AgentIdentityManager.js';
-import { metadataRoutes } from './routes/metadata.js';
+import { metadataRoutes, type GetStatus } from './routes/metadata.js';
 import { identityRoutes } from './routes/identity.js';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -21,13 +21,14 @@ export async function configureApp(
   app: FastifyInstance<any, any, any>,
   manager: AgentIdentityManager,
   registerRoutes?: RouteRegistrar,
+  getStatus?: GetStatus,
 ): Promise<void> {
   app.setErrorHandler((error: Error & { statusCode?: number }, _req, reply) => {
     app.log.error(error);
     void reply.code(error.statusCode ?? 500).send({ message: error.message });
   });
 
-  await app.register(metadataRoutes);
+  await app.register(metadataRoutes, { getStatus });
   await app.register(identityRoutes, { manager });
 
   if (registerRoutes) {
@@ -37,12 +38,12 @@ export async function configureApp(
 
 export async function createApp(
   manager: AgentIdentityManager,
-  options: { logger?: boolean; registerRoutes?: RouteRegistrar } = {},
+  options: { logger?: boolean; registerRoutes?: RouteRegistrar; getStatus?: GetStatus } = {},
 ): Promise<FastifyInstance> {
   const app = Fastify({
     ...FASTIFY_BASE_OPTIONS,
     logger: options.logger ? { level: 'info' } : false,
   });
-  await configureApp(app, manager, options.registerRoutes);
+  await configureApp(app, manager, options.registerRoutes, options.getStatus);
   return app;
 }

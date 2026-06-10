@@ -33,10 +33,20 @@ describe('metadata routes', () => {
     expect(res.json()).toEqual({ version: PROTOCOL_VERSION });
   });
 
-  it('GET /status returns ok', async () => {
+  it('GET /status returns ok by default', async () => {
     const res = await app.inject({ method: 'GET', url: '/status' });
     expect(res.statusCode).toBe(200);
     expect(res.json()).toEqual({ status: 'ok' });
+  });
+
+  it('GET /status delegates to a custom getStatus function', async () => {
+    const customApp = await createApp(makeManager(), {
+      getStatus: () => ({ status: 'degraded' }),
+    });
+    await customApp.ready();
+    const res = await customApp.inject({ method: 'GET', url: '/status' });
+    expect(res.json()).toEqual({ status: 'degraded' });
+    await customApp.close();
   });
 });
 
