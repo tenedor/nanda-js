@@ -5,6 +5,7 @@ import { setGlobalDispatcher, Agent } from 'undici';
 import { AgentIdentityManager, FASTIFY_BASE_OPTIONS, configureApp, PROTOCOL_VERSION } from '@nanda/agent';
 import { buildAgentFacts } from '@nanda/agent-facts';
 import { publicKeyToBase64url } from '@nanda/shared';
+import { selfManagementRoutes } from './selfManagementRoutes.js';
 
 const PORT = parseInt(process.env.PORT ?? '8445', 10);
 const TLS_CERT = process.env.TLS_CERT_PATH ?? '/certs/cert.pem';
@@ -66,6 +67,7 @@ const app = Fastify<Http2SecureServer>({
 
 await configureApp(app, manager, async (a) => {
   a.get('/name', async () => ({ agentName: manager.agentName }));
+  await a.register(selfManagementRoutes, { manager, facts });
 });
 
 await app.listen({ port: PORT, host: '0.0.0.0' });
