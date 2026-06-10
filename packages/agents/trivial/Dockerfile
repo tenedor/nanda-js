@@ -34,6 +34,4 @@ COPY --from=build /app/packages/agents/trivial/package.json ./packages/agents/tr
 
 RUN npm install --workspaces --if-present --omit=dev
 
-EXPOSE 8445
-
 CMD ["node", "packages/agents/trivial/dist/server-entry.js"]

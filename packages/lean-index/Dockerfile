@@ -1,4 +1,4 @@
-FROM node:20-alpine AS builder
+FROM node:22-alpine AS builder
 RUN apk add --no-cache python3 make g++
 WORKDIR /app
 
@@ -18,7 +18,7 @@ COPY packages/lean-index ./packages/lean-index
 RUN npm run build --workspace=packages/lean-index
 
 # ── Runtime image ─────────────────────────────────────────────────────────────
-FROM node:20-alpine
+FROM node:22-alpine
 RUN apk add --no-cache python3 make g++
 WORKDIR /app
 
@@ -31,12 +31,5 @@ COPY --from=builder /app/packages/shared/dist ./packages/shared/dist
 COPY --from=builder /app/packages/lean-index/dist ./packages/lean-index/dist
 
 RUN mkdir -p /data
-
-EXPOSE 8443
-ENV PORT=8443 \
-    DB_PATH=/data/lean-index.db \
-    TLS_CERT_PATH=/certs/cert.pem \
-    TLS_KEY_PATH=/certs/key.pem \
-    LOG_LEVEL=info
 
 CMD ["node", "packages/lean-index/dist/server-entry.js"]

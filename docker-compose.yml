@@ -1,0 +1,108 @@
+services:
+  lean-index:
+    build:
+      context: .
+      dockerfile: packages/lean-index/Dockerfile
+    ports:
+      - "8443:8443"
+    volumes:
+      - lean-index-data:/data
+      - ./certs:/certs:ro
+    environment:
+      PORT: "8443"
+      DB_PATH: /data/lean-index.db
+      TLS_CERT_PATH: /certs/cert.pem
+      TLS_KEY_PATH: /certs/key.pem
+      LOG_LEVEL: info
+      NODE_EXTRA_CA_CERTS: /certs/rootCA.pem
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--no-check-certificate", "-O-", "https://localhost:8443/status"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+
+  agent-facts-1:
+    build:
+      context: .
+      dockerfile: packages/agent-facts/Dockerfile
+    ports:
+      - "8444:8444"
+    volumes:
+      - agent-facts-1-data:/data
+      - ./certs:/certs:ro
+    environment:
+      PORT: "8444"
+      DB_PATH: /data/agent-facts.db
+      TLS_CERT_PATH: /certs/cert.pem
+      TLS_KEY_PATH: /certs/key.pem
+      LOG_LEVEL: info
+      NODE_EXTRA_CA_CERTS: /certs/rootCA.pem
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--no-check-certificate", "-O-", "https://localhost:8444/status"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+
+  trivial-agent-1:
+    build:
+      context: .
+      dockerfile: packages/agents/trivial/Dockerfile
+    ports:
+      - "8445:8445"
+    volumes:
+      - ./certs:/certs:ro
+    environment:
+      PORT: "8445"
+      TLS_CERT_PATH: /certs/cert.pem
+      TLS_KEY_PATH: /certs/key.pem
+      LOG_LEVEL: info
+      NODE_EXTRA_CA_CERTS: /certs/rootCA.pem
+      AGENT_DID: "did:web:trivial-agent-1%3A8445"
+      AGENT_NAME: "urn:agent:nanda-prototype:trivial-alpha"
+      AGENT_LABEL: "Trivial Agent Alpha"
+      AGENT_DESCRIPTION: "First trivial NANDA agent"
+      AGENT_ENDPOINT: "https://trivial-agent-1:8445"
+      LEAN_INDEX_URL: "https://lean-index:8443"
+      PRIMARY_FACTS_SERVER_URL: "https://agent-facts-1:8444"
+      PROVIDER_NAME: "NANDA Prototype"
+      PROVIDER_URL: "https://trivial-agent-1:8445"
+    depends_on:
+      lean-index:
+        condition: service_healthy
+      agent-facts-1:
+        condition: service_healthy
+
+  trivial-agent-2:
+    build:
+      context: .
+      dockerfile: packages/agents/trivial/Dockerfile
+    ports:
+      - "8446:8446"
+    volumes:
+      - ./certs:/certs:ro
+    environment:
+      PORT: "8446"
+      TLS_CERT_PATH: /certs/cert.pem
+      TLS_KEY_PATH: /certs/key.pem
+      LOG_LEVEL: info
+      NODE_EXTRA_CA_CERTS: /certs/rootCA.pem
+      AGENT_DID: "did:web:trivial-agent-2%3A8446"
+      AGENT_NAME: "urn:agent:nanda-prototype:trivial-beta"
+      AGENT_LABEL: "Trivial Agent Beta"
+      AGENT_DESCRIPTION: "Second trivial NANDA agent"
+      AGENT_ENDPOINT: "https://trivial-agent-2:8446"
+      LEAN_INDEX_URL: "https://lean-index:8443"
+      PRIMARY_FACTS_SERVER_URL: "https://agent-facts-1:8444"
+      PROVIDER_NAME: "NANDA Prototype"
+      PROVIDER_URL: "https://trivial-agent-2:8446"
+    depends_on:
+      lean-index:
+        condition: service_healthy
+      agent-facts-1:
+        condition: service_healthy
+
+volumes:
+  lean-index-data:
+  agent-facts-1-data:
