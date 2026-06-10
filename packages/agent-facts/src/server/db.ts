@@ -1,22 +1,23 @@
 import { open, type Database } from 'sqlite';
 import sqlite3 from 'sqlite3';
 import type { AgentFacts } from '../AgentFacts.js';
-import type { AgentID } from '@nanda/shared';
+import type { AgentID, VerifiableCredential } from '@nanda/shared';
 import { NotFoundError, ConflictError } from '@nanda/shared';
 
 const DEFAULT_PING_TIMEOUT_MS = 30_000;
 
 export interface FactsRecord {
-  facts: AgentFacts;
+  vc: VerifiableCredential<AgentFacts>;
   invalidated: boolean;
-  expiresAt: string; // ISO 8601 — derived from facts.certification.expirationDate at write time
+  // Derived from vc.validUntil at write time. Empty string means no expiry.
+  expiresAt: string;
 }
 
 export interface AgentFactsStorage {
   ping(timeoutMillis?: number): Promise<void>;
   getFacts(id: AgentID): Promise<FactsRecord | undefined>;
-  insertFacts(facts: AgentFacts): Promise<void>;
-  updateFacts(facts: AgentFacts): Promise<void>;
+  insertFacts(vc: VerifiableCredential<AgentFacts>): Promise<void>;
+  updateFacts(vc: VerifiableCredential<AgentFacts>): Promise<void>;
   invalidateFacts(id: AgentID): Promise<void>;
   close(): Promise<void>;
 }
@@ -30,7 +31,7 @@ interface FactsRow {
 
 function rowToRecord(row: FactsRow): FactsRecord {
   return {
-    facts: JSON.parse(row.facts_json) as AgentFacts,
+    vc: JSON.parse(row.facts_json) as VerifiableCredential<AgentFacts>,
     invalidated: row.invalidated === 1,
     expiresAt: row.expires_at,
   };
@@ -41,10 +42,10 @@ export async function createDb(filename: string): Promise<AgentFactsStorage> {
 
   await db.run(`
     CREATE TABLE IF NOT EXISTS agent_facts (
-      agent_id   TEXT PRIMARY KEY,
-      facts_json TEXT NOT NULL,
+      agent_id    TEXT PRIMARY KEY,
+      facts_json  TEXT NOT NULL,
       invalidated INTEGER NOT NULL DEFAULT 0,
-      expires_at TEXT NOT NULL
+      expires_at  TEXT NOT NULL
     )
   `);
 
@@ -63,35 +64,35 @@ export async function createDb(filename: string): Promise<AgentFactsStorage> {
       return row ? rowToRecord(row) : undefined;
     },
 
-    async insertFacts(facts) {
+    async insertFacts(vc) {
       try {
         await db.run(
           `INSERT INTO agent_facts (agent_id, facts_json, invalidated, expires_at)
            VALUES (?, ?, 0, ?)`,
-          facts.id,
-          JSON.stringify(facts),
-          facts.certification.expirationDate,
+          vc.credentialSubject.id,
+          JSON.stringify(vc),
+          vc.validUntil ?? '',
         );
       } catch (e) {
         if ((e as Error).message.includes('UNIQUE constraint failed')) {
-          throw new ConflictError(facts.id);
+          throw new ConflictError(vc.credentialSubject.id);
         }
         throw e;
       }
     },
 
-    async updateFacts(facts) {
+    async updateFacts(vc) {
       // Re-publishing clears the invalidation flag — valid facts replace revoked ones.
       const result = await db.run(
         `UPDATE agent_facts
             SET facts_json = ?, invalidated = 0, expires_at = ?
           WHERE agent_id = ?`,
-        JSON.stringify(facts),
-        facts.certification.expirationDate,
-        facts.id,
+        JSON.stringify(vc),
+        vc.validUntil ?? '',
+        vc.credentialSubject.id,
       );
       if (result.changes === 0) {
-        throw new NotFoundError(facts.id);
+        throw new NotFoundError(vc.credentialSubject.id);
       }
     },
 

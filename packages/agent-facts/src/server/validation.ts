@@ -1,7 +1,8 @@
 import {
-  canonicalize, verify,
-  extractPublicKey, resolveDid,
-  type SignedAttestation, type AgentID, type DIDDocument,
+  verifyCredential, resolveDid,
+  type VerifiableCredential, type AgentID, type DIDDocument,
+  type SignedAttestation,
+  canonicalize, verify, extractPublicKey,
   ValidationError,
 } from '@nanda/shared';
 import type { AgentFacts } from '../AgentFacts.js';
@@ -10,6 +11,13 @@ type ResolveDid = (did: string) => Promise<DIDDocument>;
 
 // Production should use a shorter window or a nonce.
 const ATTESTATION_VALIDITY_MS = 5 * 60_000;
+
+export async function verifyAgentFactsVc(
+  vc: VerifiableCredential<AgentFacts>,
+  resolve: ResolveDid = resolveDid,
+): Promise<void> {
+  await verifyCredential(vc, resolve);
+}
 
 async function resolvePublicKey(did: AgentID, resolve: ResolveDid): Promise<Uint8Array> {
   let doc: DIDDocument;
@@ -24,17 +32,6 @@ async function resolvePublicKey(did: AgentID, resolve: ResolveDid): Promise<Uint
     throw new ValidationError(
       `Invalid DID document for ${did}: ${(e as Error).message}`, 400,
     );
-  }
-}
-
-export async function verifyAgentFactsProof(
-  facts: AgentFacts,
-  resolve: ResolveDid = resolveDid,
-): Promise<void> {
-  const publicKey = await resolvePublicKey(facts.id, resolve);
-  const payload = canonicalize(facts as unknown as Record<string, unknown>, 'proof');
-  if (!verify(publicKey, payload, facts.proof)) {
-    throw new ValidationError('Invalid AgentFacts proof', 401);
   }
 }
 

@@ -1,16 +1,16 @@
 import type { AgentFacts } from './AgentFacts.js';
-import type { AgentID, ProtocolVersion, ServerStatus, SignedAttestation } from '@nanda/shared';
+import type { AgentID, ProtocolVersion, ServerStatus, SignedAttestation, VerifiableCredential } from '@nanda/shared';
 
 // ── Request / response bodies ────────────────────────────────────────────────
 
-// POST /facts  — body is the signed AgentFacts itself
-export type RegisterFactsRequest = AgentFacts;
+// POST /facts  — body is a VC whose credentialSubject is the AgentFacts content
+export type RegisterFactsRequest = VerifiableCredential<AgentFacts>;
 
-// PUT /facts/:id  — body is the updated signed AgentFacts
-export type UpdateFactsRequest = AgentFacts;
+// PUT /facts/:id  — body is an updated VC<AgentFacts>
+export type UpdateFactsRequest = VerifiableCredential<AgentFacts>;
 
-// GET /facts/:id  → AgentFacts
-export type GetFactsResponse = AgentFacts;
+// GET /facts/:id  → VC<AgentFacts>
+export type GetFactsResponse = VerifiableCredential<AgentFacts>;
 
 // POST /facts/:id/invalidate  — body is a signed attestation
 export type InvalidateFactsRequest = SignedAttestation<'invalidate-facts'>;
@@ -24,9 +24,9 @@ export type FactsGetStatusResponse = ServerStatus;
 // ── Client interface ─────────────────────────────────────────────────────────
 
 export interface AgentFactsClient {
-  getFacts(id: AgentID): Promise<AgentFacts>;
-  registerFacts(facts: AgentFacts): Promise<void>;
-  updateFacts(facts: AgentFacts): Promise<void>;
+  getFacts(id: AgentID): Promise<VerifiableCredential<AgentFacts>>;
+  registerFacts(vc: VerifiableCredential<AgentFacts>): Promise<void>;
+  updateFacts(vc: VerifiableCredential<AgentFacts>): Promise<void>;
   invalidateFacts(id: AgentID, attestation: SignedAttestation<'invalidate-facts'>): Promise<void>;
   getVersion(): Promise<ProtocolVersion>;
   getStatus(): Promise<ServerStatus>;

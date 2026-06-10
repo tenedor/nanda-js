@@ -1,8 +1,8 @@
 import { describe, it, expect, vi } from 'vitest';
-import { verifyAgentFactsProof, verifyAttestation } from '../src/server/validation.js';
+import { verifyAgentFactsVc, verifyAttestation } from '../src/server/validation.js';
 import {
   generateKeyPair, sign, canonicalize, publicKeyToBase64url,
-  ValidationError,
+  issueCredential, ValidationError,
 } from '@nanda/shared';
 import type { AgentFacts } from '../src/AgentFacts.js';
 import type { DIDDocument } from '@nanda/shared';
@@ -21,7 +21,7 @@ function makeDIDDoc(did: string, publicKey: Uint8Array): DIDDocument {
   };
 }
 
-function makeFacts(id: string): Omit<AgentFacts, 'proof'> {
+function makeFactsContent(id: string): AgentFacts {
   return {
     '@context': ['https://www.w3.org/ns/did/v1'],
     id,
@@ -42,36 +42,44 @@ function makeFacts(id: string): Omit<AgentFacts, 'proof'> {
   };
 }
 
-function signFacts(base: Omit<AgentFacts, 'proof'>, privateKey: Uint8Array): AgentFacts {
-  const payload = canonicalize(base as Record<string, unknown>, 'proof');
-  return { ...base, proof: sign(privateKey, payload) };
-}
-
-describe('verifyAgentFactsProof', () => {
-  it('accepts a valid proof', async () => {
+describe('verifyAgentFactsVc', () => {
+  it('accepts a valid VC', async () => {
     const { publicKey, privateKey } = generateKeyPair();
     const did = 'did:web:agent.example.com';
-    const facts = signFacts(makeFacts(did), privateKey);
+    const vc = issueCredential(makeFactsContent(did), {
+      issuerDid: did,
+      verificationMethodId: `${did}#key-1`,
+      privateKey,
+      validUntil: '2099-01-01T00:00:00Z',
+    });
     const resolve = vi.fn().mockResolvedValue(makeDIDDoc(did, publicKey));
-    await expect(verifyAgentFactsProof(facts, resolve)).resolves.toBeUndefined();
+    await expect(verifyAgentFactsVc(vc, resolve)).resolves.toBeUndefined();
   });
 
-  it('rejects a tampered facts document', async () => {
+  it('rejects a tampered VC', async () => {
     const { publicKey, privateKey } = generateKeyPair();
     const did = 'did:web:agent.example.com';
-    const facts = signFacts(makeFacts(did), privateKey);
-    const tampered = { ...facts, label: 'Tampered' };
+    const vc = issueCredential(makeFactsContent(did), {
+      issuerDid: did,
+      verificationMethodId: `${did}#key-1`,
+      privateKey,
+      validUntil: '2099-01-01T00:00:00Z',
+    });
+    const tampered = { ...vc, credentialSubject: { ...vc.credentialSubject, label: 'Tampered' } };
     const resolve = vi.fn().mockResolvedValue(makeDIDDoc(did, publicKey));
-    await expect(verifyAgentFactsProof(tampered, resolve))
-      .rejects.toBeInstanceOf(ValidationError);
+    await expect(verifyAgentFactsVc(tampered, resolve)).rejects.toBeInstanceOf(ValidationError);
   });
 
   it('rejects when DID resolution fails', async () => {
     const { privateKey } = generateKeyPair();
-    const facts = signFacts(makeFacts('did:web:agent.example.com'), privateKey);
+    const did = 'did:web:agent.example.com';
+    const vc = issueCredential(makeFactsContent(did), {
+      issuerDid: did,
+      verificationMethodId: `${did}#key-1`,
+      privateKey,
+    });
     const resolve = vi.fn().mockRejectedValue(new Error('network error'));
-    await expect(verifyAgentFactsProof(facts, resolve))
-      .rejects.toBeInstanceOf(ValidationError);
+    await expect(verifyAgentFactsVc(vc, resolve)).rejects.toBeInstanceOf(ValidationError);
   });
 });
 
@@ -82,8 +90,7 @@ describe('verifyAttestation', () => {
     const base = { agentId: did, action: 'invalidate-facts' as const, issuedAt: new Date().toISOString() };
     const attestation = { ...base, signature: sign(privateKey, canonicalize(base as Record<string, unknown>, 'signature')) };
     const resolve = vi.fn().mockResolvedValue(makeDIDDoc(did, publicKey));
-    await expect(verifyAttestation(attestation, 'invalidate-facts', did, resolve))
-      .resolves.toBeUndefined();
+    await expect(verifyAttestation(attestation, 'invalidate-facts', did, resolve)).resolves.toBeUndefined();
   });
 
   it('rejects an expired attestation', async () => {
@@ -92,8 +99,7 @@ describe('verifyAttestation', () => {
     const base = { agentId: did, action: 'invalidate-facts' as const, issuedAt: new Date(Date.now() - 10 * 60_000).toISOString() };
     const attestation = { ...base, signature: sign(privateKey, canonicalize(base as Record<string, unknown>, 'signature')) };
     const resolve = vi.fn().mockResolvedValue(makeDIDDoc(did, publicKey));
-    await expect(verifyAttestation(attestation, 'invalidate-facts', did, resolve))
-      .rejects.toBeInstanceOf(ValidationError);
+    await expect(verifyAttestation(attestation, 'invalidate-facts', did, resolve)).rejects.toBeInstanceOf(ValidationError);
   });
 
   it('rejects a wrong action', async () => {
@@ -102,7 +108,6 @@ describe('verifyAttestation', () => {
     const base = { agentId: did, action: 'invalidate-facts' as const, issuedAt: new Date().toISOString() };
     const attestation = { ...base, signature: sign(privateKey, canonicalize(base as Record<string, unknown>, 'signature')) };
     const resolve = vi.fn().mockResolvedValue(makeDIDDoc(did, publicKey));
-    await expect(verifyAttestation(attestation, 'delete-agent' as never, did, resolve))
-      .rejects.toBeInstanceOf(ValidationError);
+    await expect(verifyAttestation(attestation, 'delete-agent' as never, did, resolve)).rejects.toBeInstanceOf(ValidationError);
   });
 });
