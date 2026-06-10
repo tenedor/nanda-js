@@ -1,27 +1,21 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import type { FastifyInstance } from 'fastify';
 import { createApp, PROTOCOL_VERSION } from '../src/server/app.js';
-import type { AgentFactsStorage } from '../src/server/db.js';
-
-function makeStubDb(): AgentFactsStorage {
-  return {
-    ping: vi.fn().mockResolvedValue(undefined),
-    close: vi.fn().mockResolvedValue(undefined),
-  };
-}
+import { createDb, type AgentFactsStorage } from '../src/server/db.js';
 
 describe('metadata routes', () => {
   let app: FastifyInstance;
   let db: AgentFactsStorage;
 
   beforeEach(async () => {
-    db = makeStubDb();
+    db = await createDb(':memory:');
     app = await createApp(db, { logger: false });
     await app.ready();
   });
 
   afterEach(async () => {
     await app.close();
+    await db.close();
   });
 
   describe('GET /version', () => {

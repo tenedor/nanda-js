@@ -1,5 +1,6 @@
 import Fastify, { type FastifyInstance } from 'fastify';
 import { metadataRoutes } from './routes/metadata.js';
+import { factsRoutes } from './routes/facts.js';
 import type { AgentFactsStorage } from './db.js';
 
 export const PROTOCOL_VERSION = 'nanda-0.0.0-facts';
@@ -23,6 +24,7 @@ export async function configureApp(
   });
 
   await app.register(metadataRoutes, { db });
+  await app.register(factsRoutes, { db });
 }
 
 export async function createApp(
