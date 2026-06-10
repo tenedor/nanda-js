@@ -16,6 +16,8 @@ JAVA_HOME="" mkcert \
   -key-file  "$CERTS_DIR/key.pem" \
   lean-index \
   agent-facts-1 \
+  agent-facts-2 \
+  agent-facts-private-1 \
   trivial-agent-1 \
   trivial-agent-2 \
   localhost \

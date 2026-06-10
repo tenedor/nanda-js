@@ -45,6 +45,52 @@ services:
       retries: 10
       start_period: 10s
 
+  agent-facts-2:
+    build:
+      context: .
+      dockerfile: packages/agent-facts/Dockerfile
+    ports:
+      - "8447:8447"
+    volumes:
+      - agent-facts-2-data:/data
+      - ./certs:/certs:ro
+    environment:
+      PORT: "8447"
+      DB_PATH: /data/agent-facts.db
+      TLS_CERT_PATH: /certs/cert.pem
+      TLS_KEY_PATH: /certs/key.pem
+      LOG_LEVEL: info
+      NODE_EXTRA_CA_CERTS: /certs/rootCA.pem
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('net').connect({port:8447,host:'localhost'}).on('connect',function(){this.end();process.exit(0)}).on('error',()=>process.exit(1))"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+
+  agent-facts-private-1:
+    build:
+      context: .
+      dockerfile: packages/agent-facts/Dockerfile
+    ports:
+      - "8448:8448"
+    volumes:
+      - agent-facts-private-1-data:/data
+      - ./certs:/certs:ro
+    environment:
+      PORT: "8448"
+      DB_PATH: /data/agent-facts.db
+      TLS_CERT_PATH: /certs/cert.pem
+      TLS_KEY_PATH: /certs/key.pem
+      LOG_LEVEL: info
+      NODE_EXTRA_CA_CERTS: /certs/rootCA.pem
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('net').connect({port:8448,host:'localhost'}).on('connect',function(){this.end();process.exit(0)}).on('error',()=>process.exit(1))"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+
   trivial-agent-1:
     image: nanda-trivial-agent
     build:
@@ -108,3 +154,5 @@ services:
 volumes:
   lean-index-data:
   agent-facts-1-data:
+  agent-facts-2-data:
+  agent-facts-private-1-data:
