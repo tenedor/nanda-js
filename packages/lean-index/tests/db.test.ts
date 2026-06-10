@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, afterEach } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { createDb, NotFoundError, type AgentAddrStorage } from '../src/server/db.js';
 import type { AgentAddr } from '../src/AgentAddr.js';
 
@@ -9,6 +9,25 @@ const testRecord: AgentAddr = {
   ttl: 3600,
   signature: 'dGVzdHNpZ25hdHVyZQ',
 };
+
+describe('ping', () => {
+  let db: AgentAddrStorage;
+
+  beforeEach(async () => { db = await createDb(':memory:'); });
+  afterEach(async () => { await db.close(); });
+
+  it('resolves when the database is reachable', async () => {
+    await expect(db.ping()).resolves.toBeUndefined();
+  });
+
+  it('rejects when the timeout elapses before the query returns', async () => {
+    vi.useFakeTimers();
+    const pingPromise = db.ping(100);
+    vi.runAllTimers();
+    await expect(pingPromise).rejects.toThrow('ping timeout');
+    vi.useRealTimers();
+  });
+});
 
 describe('AgentAddrStorage', () => {
   let db: AgentAddrStorage;

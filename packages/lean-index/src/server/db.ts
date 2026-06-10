@@ -4,7 +4,7 @@ import type { AgentAddr } from '../AgentAddr.js';
 import type { AgentID } from '@nanda/shared';
 
 export interface AgentAddrStorage {
-  ping(): Promise<void>;
+  ping(timeoutMillis?: number): Promise<void>;
   getAgent(id: AgentID): Promise<AgentAddr | undefined>;
   insertAgent(record: AgentAddr): Promise<void>;
   updateAgent(record: AgentAddr): Promise<void>;
@@ -50,8 +50,11 @@ export async function createDb(filename: string): Promise<AgentAddrStorage> {
   `);
 
   return {
-    async ping() {
-      await db.get('SELECT 1');
+    async ping(timeoutMillis = 500) {
+      const timeout = new Promise<never>((_, reject) =>
+        setTimeout(() => reject(new Error('ping timeout')), timeoutMillis),
+      );
+      await Promise.race([db.get('SELECT 1'), timeout]);
     },
 
     async getAgent(id) {
