@@ -5,6 +5,7 @@
 - Node.js 22+
 - Docker Desktop (`brew install --cask docker`)
 - mkcert (`brew install mkcert`)
+- Python 3.10+ and pip
 
 ## Setup (once per machine)
 
