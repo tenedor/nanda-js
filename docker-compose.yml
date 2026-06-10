@@ -46,11 +46,10 @@ services:
       start_period: 10s
 
   trivial-agent-1:
+    image: nanda-trivial-agent
     build:
       context: .
       dockerfile: packages/agents/trivial/Dockerfile
-      tags:
-        - nanda-trivial-agent
     ports:
       - "8445:8445"
     volumes:
