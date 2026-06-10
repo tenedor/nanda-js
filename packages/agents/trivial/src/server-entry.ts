@@ -61,13 +61,13 @@ await configureApp(app, manager, async (a) => {
 });
 
 await app.listen({ port: PORT, host: '0.0.0.0' });
+app.log.info(
+  { did: manager.did, publicKey: publicKeyToBase64url(manager.publicKey) },
+  'Trivial agent started',
+);
 
 // Register only after the server is listening: the agent-facts server resolves
 // this agent's DID during VC verification, which requires /.well-known/did.json
 // to be reachable at the DID endpoint before registration is attempted.
 await manager.registerFactsAndIndex(facts);
-
-app.log.info(
-  { did: manager.did, publicKey: publicKeyToBase64url(manager.publicKey) },
-  'Trivial agent started and registered',
-);
+app.log.info({ did: manager.did }, 'Trivial agent registered');
