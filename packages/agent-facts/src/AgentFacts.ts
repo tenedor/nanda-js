@@ -59,6 +59,11 @@ export interface AgentFactsCertification {
   statusListUrl: string;
 }
 
+// TODO: The paper (Section V.E) says AgentFacts has "its own ttl value" governing how long
+// capabilities and evaluations may be considered fresh by clients, but the appendix schema
+// has no top-level ttl field — the paper may be conflating this with certification.expirationDate.
+// Add a ttl field (seconds) here once the distinction is clarified; it should govern client-side
+// caching of received AgentFacts independently of when the VC credential expires.
 export interface AgentFacts {
   '@context': string[];
   id: AgentID;
