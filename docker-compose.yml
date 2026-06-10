@@ -77,6 +77,9 @@ services:
 
   trivial-agent-2:
     image: nanda-trivial-agent
+    build:
+      context: .
+      dockerfile: packages/agents/trivial/Dockerfile
     ports:
       - "8446:8446"
     volumes:
