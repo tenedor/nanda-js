@@ -175,7 +175,7 @@ export class AgentIdentityManager {
     await this._leanIndexClient.deleteAgent(this.did, { ...base, signature });
   }
 
-  async syncRegistration(): Promise<void> {
+  async syncIndexRegistration(): Promise<void> {
     await this._leanIndexClient.updateAgent(this.did, this.buildAgentAddr());
   }
 
@@ -204,7 +204,7 @@ export class AgentIdentityManager {
         : undefined;
     }
     if (opts.syncRegistration ?? true) {
-      await this.syncRegistration();
+      await this.syncIndexRegistration();
     }
   }
 }
