@@ -15,11 +15,18 @@ export async function createApp(
 ): Promise<FastifyInstance> {
   const app = Fastify({
     logger: options.logger !== false ? { level: 'info' } : false,
+    ajv: {
+      customOptions: { removeAdditional: false },
+    },
+    schemaErrorFormatter: (errors) => {
+      const message = errors.map((e) => `${e.instancePath || 'body'}: ${e.message}`).join('; ');
+      return new Error(message);
+    },
   });
 
-  app.setErrorHandler((error, _req, reply) => {
+  app.setErrorHandler((error: Error & { statusCode?: number }, _req, reply) => {
     app.log.error(error);
-    void reply.code(500).send({ message: 'Internal server error' });
+    void reply.code(error.statusCode ?? 500).send({ message: error.message });
   });
 
   await app.register(metadataRoutes, { db });
