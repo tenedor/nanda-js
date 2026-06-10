@@ -132,7 +132,12 @@ export class AgentIdentityManager {
     }
   }
 
-  async register(facts: AgentFacts, opts: { validUntil?: string } = {}): Promise<void> {
+  async registerFactsAndIndex(facts: AgentFacts, opts: { validUntil?: string } = {}): Promise<void> {
+    await this.registerFactsOnly(facts, opts);
+    await this.registerIndexOnly();
+  }
+
+  async registerFactsOnly(facts: AgentFacts, opts: { validUntil?: string } = {}): Promise<void> {
     this.validateFacts(facts);
     const vc = issueCredential(facts, {
       issuerDid: this.did,
@@ -141,6 +146,9 @@ export class AgentIdentityManager {
       validUntil: opts.validUntil,
     });
     await this._primaryFactsClient.registerFacts(vc);
+  }
+
+  async registerIndexOnly(): Promise<void> {
     await this._leanIndexClient.registerAgent(this.buildAgentAddr());
   }
 
@@ -175,13 +183,13 @@ export class AgentIdentityManager {
     await this._leanIndexClient.deleteAgent(this.did, { ...base, signature });
   }
 
-  async syncIndexRegistration(): Promise<void> {
+  async updateIndexRegistration(): Promise<void> {
     await this._leanIndexClient.updateAgent(this.did, this.buildAgentAddr());
   }
 
   async updateAgentAddr(
     changes: AgentAddrUpdate,
-    opts: { syncRegistration?: boolean } = {},
+    opts: { dontSyncIndex?: boolean } = {},
     /** @internal testing only — inject mock client for new primaryFactsServerUrl */
     _newPrimaryFactsClient?: AgentFactsClient,
     /** @internal testing only — inject mock client for new privateFactsServerUrl */
@@ -203,8 +211,8 @@ export class AgentIdentityManager {
         ? (_newPrivateFactsClient ?? new HttpAgentFactsClient(this.privateFactsServerUrl))
         : undefined;
     }
-    if (opts.syncRegistration ?? true) {
-      await this.syncIndexRegistration();
+    if (!opts.dontSyncIndex) {
+      await this.updateIndexRegistration();
     }
   }
 }
