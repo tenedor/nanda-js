@@ -16,7 +16,7 @@ services:
       LOG_LEVEL: info
       NODE_EXTRA_CA_CERTS: /certs/rootCA.pem
     healthcheck:
-      test: ["CMD", "wget", "-q", "--no-check-certificate", "-O-", "https://localhost:8443/status"]
+      test: ["CMD", "node", "-e", "fetch('https://localhost:8443/status').then(r=>r.ok?process.exit(0):process.exit(1)).catch(()=>process.exit(1))"]
       interval: 5s
       timeout: 5s
       retries: 10
@@ -39,7 +39,7 @@ services:
       LOG_LEVEL: info
       NODE_EXTRA_CA_CERTS: /certs/rootCA.pem
     healthcheck:
-      test: ["CMD", "wget", "-q", "--no-check-certificate", "-O-", "https://localhost:8444/status"]
+      test: ["CMD", "node", "-e", "fetch('https://localhost:8444/status').then(r=>r.ok?process.exit(0):process.exit(1)).catch(()=>process.exit(1))"]
       interval: 5s
       timeout: 5s
       retries: 10
