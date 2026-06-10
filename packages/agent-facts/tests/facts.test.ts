@@ -172,10 +172,10 @@ describe('facts routes', () => {
       expect(res.statusCode).toBe(400);
     });
 
-    it('rejects a POST body missing validUntil', async () => {
+    it('accepts a POST body without validUntil (credential does not expire)', async () => {
       const { validUntil: _, ...noExpiry } = testVc;
       const res = await app.inject({ method: 'POST', url: '/facts', payload: noExpiry });
-      expect(res.statusCode).toBe(400);
+      expect(res.statusCode).toBe(201);
     });
 
     it('rejects a proof that is not a DataIntegrityProof', async () => {

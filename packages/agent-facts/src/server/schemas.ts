@@ -78,7 +78,7 @@ const dataIntegrityProofSchema = {
 
 export const agentFactsVcSchema = {
   type: 'object',
-  required: ['@context', 'type', 'issuer', 'validFrom', 'validUntil', 'credentialSubject', 'proof'],
+  required: ['@context', 'type', 'issuer', 'validFrom', 'credentialSubject', 'proof'],
   additionalProperties: false,
   properties: {
     '@context':        { type: 'array', items: { type: 'string' }, minItems: 1 },
