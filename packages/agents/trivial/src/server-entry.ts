@@ -36,18 +36,15 @@ const facts = buildAgentFacts({
   endpoints: [agentEndpoint],
 });
 
-const manager = await AgentIdentityManager.createAndRegister(
-  {
-    did,
-    agentName,
-    leanIndexUrl,
-    primaryFactsServerUrl,
-    privateFactsServerUrl: process.env.PRIVATE_FACTS_SERVER_URL,
-    adaptiveResolverUrl: process.env.ADAPTIVE_RESOLVER_URL,
-    ttl: parseInt(process.env.AGENT_TTL ?? '3600', 10),
-  },
-  facts,
-);
+const manager = AgentIdentityManager.createWithoutRegistering({
+  did,
+  agentName,
+  leanIndexUrl,
+  primaryFactsServerUrl,
+  privateFactsServerUrl: process.env.PRIVATE_FACTS_SERVER_URL,
+  adaptiveResolverUrl: process.env.ADAPTIVE_RESOLVER_URL,
+  ttl: parseInt(process.env.AGENT_TTL ?? '3600', 10),
+});
 
 const app = Fastify<Http2SecureServer>({
   ...FASTIFY_BASE_OPTIONS,
@@ -64,7 +61,13 @@ await configureApp(app, manager, async (a) => {
 });
 
 await app.listen({ port: PORT, host: '0.0.0.0' });
+
+// Register only after the server is listening: the agent-facts server resolves
+// this agent's DID during VC verification, which requires /.well-known/did.json
+// to be reachable at the DID endpoint before registration is attempted.
+await manager.registerFactsAndIndex(facts);
+
 app.log.info(
   { did: manager.did, publicKey: publicKeyToBase64url(manager.publicKey) },
-  'Trivial agent started',
+  'Trivial agent started and registered',
 );
