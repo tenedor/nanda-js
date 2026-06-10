@@ -6,11 +6,11 @@ and deregistration using the self-management endpoints on trivial agents.
 
 Usage (from repo root, with services running):
   pip install -r scripts/requirements.txt
-  python scripts/smoke_test.py
+  python3 scripts/smoke_test.py
 """
 
 import sys
-import requests
+import httpx
 from urllib.parse import quote
 
 # ── Config ────────────────────────────────────────────────────────────────────
@@ -26,14 +26,19 @@ AGENT_1         = "https://localhost:8445"
 AGENT_2         = "https://localhost:8446"
 
 # Docker-internal base URLs used in migration request bodies (called from inside Docker).
-AF1_DOCKER = "https://agent-facts-1:8444"
-AF2_DOCKER = "https://agent-facts-2:8447"
+AF1_DOCKER    = "https://agent-facts-1:8444"
+AF2_DOCKER    = "https://agent-facts-2:8447"
 AF_PVT_DOCKER = "https://agent-facts-private-1:8448"
 
 # Raw DID values as stored in the database (from AGENT_DID env vars in docker-compose.yml).
 # The port colon is percent-encoded as %3A within the DID itself.
 DID_1 = "did:web:trivial-agent-1%3A8445"
 DID_2 = "did:web:trivial-agent-2%3A8446"
+
+# ── HTTP client ───────────────────────────────────────────────────────────────
+
+# http2=True is required — the Fastify servers only accept HTTP/2 connections.
+_client = httpx.Client(http2=True, verify=CA_CERT, timeout=10)
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
 
@@ -50,7 +55,7 @@ def check(name: str, ok: bool, detail: str = "") -> bool:
 
 def get(url: str, expected_status: int = 200) -> tuple[bool, dict]:
     try:
-        r = requests.get(url, verify=CA_CERT, timeout=10)
+        r = _client.get(url)
         ok = r.status_code == expected_status
         body: dict = {}
         try:
@@ -59,15 +64,13 @@ def get(url: str, expected_status: int = 200) -> tuple[bool, dict]:
             pass
         return ok, body
     except Exception as e:
+        print(f"    [ERR] {url}: {e}")
         return False, {"error": str(e)}
 
 
 def post(url: str, expected_status: int = 204, json_body: dict | None = None) -> tuple[bool, dict]:
     try:
-        kwargs: dict = {"verify": CA_CERT, "timeout": 10}
-        if json_body is not None:
-            kwargs["json"] = json_body
-        r = requests.post(url, **kwargs)
+        r = _client.post(url, json=json_body)
         ok = r.status_code == expected_status
         body: dict = {}
         try:
@@ -76,6 +79,7 @@ def post(url: str, expected_status: int = 204, json_body: dict | None = None) ->
             pass
         return ok, body
     except Exception as e:
+        print(f"    [ERR] {url}: {e}")
         return False, {"error": str(e)}
 
 
@@ -151,25 +155,6 @@ def test_agent_facts_retrieval() -> None:
         check(f"{label} AgentFacts VC with valid proof", valid, subject.get("id", ""))
 
 
-def test_invalidation_lifecycle() -> None:
-    print("\n# Invalidation lifecycle (trivial-agent-1)")
-
-    ok, _ = post(f"{AGENT_1}/self/invalidate-facts")
-    check("POST /self/invalidate-facts → 204", ok)
-
-    ok, _ = get(facts_url(DID_1), expected_status=410)
-    check("GET facts → 410 after invalidation", ok)
-
-    ok, _ = post(f"{AGENT_1}/self/restore-facts")
-    check("POST /self/restore-facts → 204", ok)
-
-    ok, body = get(facts_url(DID_1))
-    check(
-        "GET facts → 200 with valid proof after restore",
-        ok and body.get("proof", {}).get("type") == "DataIntegrityProof",
-    )
-
-
 def test_migrate_primary_facts() -> None:
     print("\n# Primary facts server migration (trivial-agent-1: agent-facts-1 → agent-facts-2)")
 
@@ -224,6 +209,25 @@ def test_add_private_facts_server() -> None:
     )
 
 
+def test_invalidation_lifecycle() -> None:
+    print("\n# Invalidation lifecycle (trivial-agent-1)")
+
+    ok, _ = post(f"{AGENT_1}/self/invalidate-facts")
+    check("POST /self/invalidate-facts → 204", ok)
+
+    ok, _ = get(f"{AGENT_FACTS_2}/facts/{quote(DID_1, safe='')}", expected_status=410)
+    check("GET facts → 410 after invalidation", ok)
+
+    ok, _ = post(f"{AGENT_1}/self/restore-facts")
+    check("POST /self/restore-facts → 204", ok)
+
+    ok, body = get(f"{AGENT_FACTS_2}/facts/{quote(DID_1, safe='')}")
+    check(
+        "GET facts → 200 with valid proof after restore",
+        ok and body.get("proof", {}).get("type") == "DataIntegrityProof",
+    )
+
+
 def test_deregistration_lifecycle() -> None:
     print("\n# Deregistration lifecycle (trivial-agent-1)")
 
@@ -257,6 +261,8 @@ def main() -> None:
     test_add_private_facts_server()
     test_invalidation_lifecycle()
     test_deregistration_lifecycle()
+
+    _client.close()
 
     total = len(_results)
     passed = sum(1 for _, ok, _ in _results if ok)
