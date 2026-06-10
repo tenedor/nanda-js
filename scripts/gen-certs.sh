@@ -7,7 +7,7 @@ CERTS_DIR="$REPO_ROOT/certs"
 
 mkdir -p "$CERTS_DIR"
 
-mkcert -install
+mkcert -install || true
 
 mkcert \
   -cert-file "$CERTS_DIR/cert.pem" \
