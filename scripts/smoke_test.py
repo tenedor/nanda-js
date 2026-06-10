@@ -18,10 +18,17 @@ from urllib.parse import quote
 # Path to the mkcert root CA — run from repo root.
 CA_CERT = "certs/rootCA.pem"
 
-LEAN_INDEX  = "https://localhost:8443"
-AGENT_FACTS = "https://localhost:8444"
-AGENT_1     = "https://localhost:8445"
-AGENT_2     = "https://localhost:8446"
+LEAN_INDEX      = "https://localhost:8443"
+AGENT_FACTS     = "https://localhost:8444"  # agent-facts-1
+AGENT_FACTS_2   = "https://localhost:8447"  # agent-facts-2
+AGENT_FACTS_PVT = "https://localhost:8448"  # agent-facts-private-1
+AGENT_1         = "https://localhost:8445"
+AGENT_2         = "https://localhost:8446"
+
+# Docker-internal base URLs used in migration request bodies (called from inside Docker).
+AF1_DOCKER = "https://agent-facts-1:8444"
+AF2_DOCKER = "https://agent-facts-2:8447"
+AF_PVT_DOCKER = "https://agent-facts-private-1:8448"
 
 # Raw DID values as stored in the database (from AGENT_DID env vars in docker-compose.yml).
 # The port colon is percent-encoded as %3A within the DID itself.
@@ -55,9 +62,12 @@ def get(url: str, expected_status: int = 200) -> tuple[bool, dict]:
         return False, {"error": str(e)}
 
 
-def post(url: str, expected_status: int = 204) -> tuple[bool, dict]:
+def post(url: str, expected_status: int = 204, json_body: dict | None = None) -> tuple[bool, dict]:
     try:
-        r = requests.post(url, verify=CA_CERT, timeout=10)
+        kwargs: dict = {"verify": CA_CERT, "timeout": 10}
+        if json_body is not None:
+            kwargs["json"] = json_body
+        r = requests.post(url, **kwargs)
         ok = r.status_code == expected_status
         body: dict = {}
         try:
@@ -84,10 +94,12 @@ def facts_url(did: str) -> str:
 def test_health() -> None:
     print("\n# Service health")
     services = [
-        ("lean-index",     f"{LEAN_INDEX}/status"),
-        ("agent-facts-1",  f"{AGENT_FACTS}/status"),
-        ("trivial-agent-1", f"{AGENT_1}/status"),
-        ("trivial-agent-2", f"{AGENT_2}/status"),
+        ("lean-index",            f"{LEAN_INDEX}/status"),
+        ("agent-facts-1",         f"{AGENT_FACTS}/status"),
+        ("agent-facts-2",         f"{AGENT_FACTS_2}/status"),
+        ("agent-facts-private-1", f"{AGENT_FACTS_PVT}/status"),
+        ("trivial-agent-1",       f"{AGENT_1}/status"),
+        ("trivial-agent-2",       f"{AGENT_2}/status"),
     ]
     for label, url in services:
         ok, body = get(url)
@@ -158,6 +170,60 @@ def test_invalidation_lifecycle() -> None:
     )
 
 
+def test_migrate_primary_facts() -> None:
+    print("\n# Primary facts server migration (trivial-agent-1: agent-facts-1 → agent-facts-2)")
+
+    ok, _ = post(f"{AGENT_1}/self/migrate-facts", json_body={"primaryFactsServerUrl": AF2_DOCKER})
+    check("POST /self/migrate-facts (primary af1 → af2) → 204", ok)
+
+    # Facts should now be on agent-facts-2.
+    ok, body = get(f"{AGENT_FACTS_2}/facts/{quote(DID_1, safe='')}")
+    check("GET facts from agent-facts-2 → 200 after migration", ok and "proof" in body)
+
+    # Old primary should be invalidated.
+    ok, _ = get(f"{AGENT_FACTS}/facts/{quote(DID_1, safe='')}", expected_status=410)
+    check("GET facts from agent-facts-1 → 410 after migration", ok)
+
+    # AgentAddr in lean-index should point to agent-facts-2.
+    ok, body = get(agent_url(DID_1))
+    primary_url = body.get("primaryFactsUrl", "")
+    check(
+        "lean-index AgentAddr primaryFactsUrl updated to agent-facts-2",
+        ok and "agent-facts-2" in primary_url,
+        primary_url,
+    )
+
+
+def test_add_private_facts_server() -> None:
+    print("\n# Add private facts server (trivial-agent-2: + agent-facts-private-1)")
+
+    ok, _ = post(
+        f"{AGENT_2}/self/migrate-facts",
+        json_body={
+            "primaryFactsServerUrl": AF1_DOCKER,
+            "privateFactsServerUrl": AF_PVT_DOCKER,
+        },
+    )
+    check("POST /self/migrate-facts (add private) → 204", ok)
+
+    # Primary facts should remain on agent-facts-1.
+    ok, body = get(f"{AGENT_FACTS}/facts/{quote(DID_2, safe='')}")
+    check("GET facts from agent-facts-1 still 200 after adding private", ok and "proof" in body)
+
+    # Facts should also be on the private server.
+    ok, body = get(f"{AGENT_FACTS_PVT}/facts/{quote(DID_2, safe='')}")
+    check("GET facts from agent-facts-private-1 → 200 after adding private", ok and "proof" in body)
+
+    # AgentAddr should now include a privateFactsUrl.
+    ok, body = get(agent_url(DID_2))
+    private_url = body.get("privateFactsUrl", "")
+    check(
+        "lean-index AgentAddr has privateFactsUrl pointing to agent-facts-private-1",
+        ok and "agent-facts-private-1" in private_url,
+        private_url,
+    )
+
+
 def test_deregistration_lifecycle() -> None:
     print("\n# Deregistration lifecycle (trivial-agent-1)")
 
@@ -187,6 +253,8 @@ def main() -> None:
     test_did_documents()
     test_lean_index_resolution()
     test_agent_facts_retrieval()
+    test_migrate_primary_facts()
+    test_add_private_facts_server()
     test_invalidation_lifecycle()
     test_deregistration_lifecycle()
 
