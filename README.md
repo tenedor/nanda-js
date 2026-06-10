@@ -44,7 +44,7 @@ With services running, from the repo root:
 
 ```bash
 pip install -r scripts/requirements.txt
-python scripts/smoke_test.py
+python3 scripts/smoke_test.py
 ```
 
 The test covers:
