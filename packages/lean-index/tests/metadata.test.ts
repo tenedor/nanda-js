@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, afterEach } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { type FastifyInstance } from 'fastify';
 import { createApp, PROTOCOL_VERSION } from '../src/server/app.js';
 import { createDb, type AgentAddrStorage } from '../src/server/db.js';
@@ -27,10 +27,17 @@ describe('metadata routes', () => {
   });
 
   describe('GET /status', () => {
-    it('returns 200 with ok status', async () => {
+    it('returns ok when the database is reachable', async () => {
       const res = await app.inject({ method: 'GET', url: '/status' });
       expect(res.statusCode).toBe(200);
       expect(res.json()).toEqual({ status: 'ok' });
+    });
+
+    it('returns unavailable when the database ping fails', async () => {
+      vi.spyOn(db, 'ping').mockRejectedValueOnce(new Error('db gone'));
+      const res = await app.inject({ method: 'GET', url: '/status' });
+      expect(res.statusCode).toBe(200);
+      expect(res.json()).toEqual({ status: 'unavailable' });
     });
   });
 });

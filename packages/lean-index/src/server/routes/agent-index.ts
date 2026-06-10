@@ -1,14 +1,15 @@
-import type { FastifyInstance } from 'fastify';
+import type { FastifyPluginAsync } from 'fastify';
 import type { AgentAddrStorage } from '../db.js';
 import { NotFoundError, ConflictError } from '../db.js';
 import { verifyAgentAddrSignature, verifyAttestation, ValidationError } from '../validation.js';
 import type { AgentAddr } from '../../AgentAddr.js';
 import type { DeleteAgentRequest } from '../../LeanIndexClient.js';
 
-export async function agentIndexRoutes(
-  app: FastifyInstance,
-  opts: { db: AgentAddrStorage },
-): Promise<void> {
+interface AgentIndexOptions {
+  db: AgentAddrStorage;
+}
+
+export const agentIndexRoutes: FastifyPluginAsync<AgentIndexOptions> = async (app, opts) => {
   const { db } = opts;
 
   app.get<{ Params: { id: string } }>('/agents/:id', async (req, reply) => {
@@ -81,4 +82,4 @@ export async function agentIndexRoutes(
     }
     return reply.code(204).send();
   });
-}
+};

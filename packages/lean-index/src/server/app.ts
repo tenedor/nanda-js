@@ -22,7 +22,7 @@ export async function createApp(
     void reply.code(500).send({ message: 'Internal server error' });
   });
 
-  await app.register(metadataRoutes);
+  await app.register(metadataRoutes, { db });
   await app.register(agentIndexRoutes, { db });
 
   return app;

@@ -26,7 +26,7 @@ app.setErrorHandler((error, _req, reply) => {
   void reply.code(500).send({ message: 'Internal server error' });
 });
 
-await app.register(metadataRoutes);
+await app.register(metadataRoutes, { db });
 await app.register(agentIndexRoutes, { db });
 
 await app.listen({ port: PORT, host: '0.0.0.0' });
