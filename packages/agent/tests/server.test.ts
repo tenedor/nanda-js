@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import type { FastifyInstance } from 'fastify';
-import { createApp } from '../src/server/app.js';
+import { createApp, PROTOCOL_VERSION } from '../src/server/app.js';
 import { AgentIdentityManager } from '../src/AgentIdentityManager.js';
 import { generateKeyPair, publicKeyToBase64url } from '@nanda/shared';
 
@@ -17,7 +17,30 @@ function makeManager() {
   });
 }
 
-describe('DID document server', () => {
+describe('metadata routes', () => {
+  let app: FastifyInstance;
+
+  beforeEach(async () => {
+    app = await createApp(makeManager());
+    await app.ready();
+  });
+
+  afterEach(async () => { await app.close(); });
+
+  it('GET /version returns the protocol version', async () => {
+    const res = await app.inject({ method: 'GET', url: '/version' });
+    expect(res.statusCode).toBe(200);
+    expect(res.json()).toEqual({ version: PROTOCOL_VERSION });
+  });
+
+  it('GET /status returns ok', async () => {
+    const res = await app.inject({ method: 'GET', url: '/status' });
+    expect(res.statusCode).toBe(200);
+    expect(res.json()).toEqual({ status: 'ok' });
+  });
+});
+
+describe('identity routes', () => {
   let app: FastifyInstance;
 
   beforeEach(async () => {

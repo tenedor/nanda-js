@@ -1,8 +1,12 @@
 import Fastify, { type FastifyInstance } from 'fastify';
 import type { AgentIdentityManager } from '../AgentIdentityManager.js';
+import { metadataRoutes } from './routes/metadata.js';
+import { identityRoutes } from './routes/identity.js';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type RouteRegistrar = (app: FastifyInstance<any, any, any>) => Promise<void>;
+
+export const PROTOCOL_VERSION = 'nanda-0.0.0-agent';
 
 export const FASTIFY_BASE_OPTIONS = {
   ajv: { customOptions: { removeAdditional: false } },
@@ -23,9 +27,8 @@ export async function configureApp(
     void reply.code(error.statusCode ?? 500).send({ message: error.message });
   });
 
-  app.get('/.well-known/did.json', async (_req, reply) => {
-    return reply.send(manager.getDIDDocument());
-  });
+  await app.register(metadataRoutes);
+  await app.register(identityRoutes, { manager });
 
   if (registerRoutes) {
     await registerRoutes(app);

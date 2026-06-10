@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { HttpLeanIndexClient } from '../src/clients/HttpLeanIndexClient.js';
 import { HttpAgentFactsClient } from '../src/clients/HttpAgentFactsClient.js';
-import { HttpAgentBaseClient } from '../src/clients/HttpAgentBaseClient.js';
+import { HttpAgentClientBase } from '../src/clients/HttpAgentClientBase.js';
 import { HttpClientError } from '@nanda/shared';
 import type { AgentAddr } from '@nanda/lean-index';
 import type { AgentFacts } from '@nanda/agent-facts';
@@ -199,10 +199,10 @@ describe('HttpAgentFactsClient', () => {
 
 // ── HttpAgentBaseClient ───────────────────────────────────────────────────────
 
-describe('HttpAgentBaseClient', () => {
+describe('HttpAgentClientBase', () => {
   const AGENT_BASE = 'https://agent.example.com';
-  let client: HttpAgentBaseClient;
-  beforeEach(() => { client = new HttpAgentBaseClient(AGENT_BASE); });
+  let client: HttpAgentClientBase;
+  beforeEach(() => { client = new HttpAgentClientBase(AGENT_BASE); });
 
   it('getDIDDocument — GET /.well-known/did.json', async () => {
     const doc = { '@context': ['https://www.w3.org/ns/did/v1'], id: DID };

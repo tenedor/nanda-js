@@ -217,14 +217,14 @@ describe('deregister', () => {
   });
 });
 
-// ── syncRegistration ──────────────────────────────────────────────────────────
+// ── syncIndexRegistration ──────────────────────────────────────────────────────────
 
-describe('syncRegistration', () => {
+describe('syncIndexRegistration', () => {
   it('calls updateAgent on the lean index with current AgentAddr state', async () => {
     const lean = mockLeanIndexClient();
     const facts = mockAgentFactsClient();
     const mgr = new AgentIdentityManager(makeOpts(), lean, facts);
-    await mgr.syncRegistration();
+    await mgr.syncIndexRegistration();
 
     expect(lean.updateAgent).toHaveBeenCalledOnce();
     const [id, addr] = (lean.updateAgent as ReturnType<typeof vi.fn>).mock.calls[0] as [string, AgentAddr];
@@ -272,7 +272,7 @@ describe('updateAgentAddr', () => {
     const m = new AgentIdentityManager(makeOpts({ privateFactsServerUrl: PRIVATE_FACTS_URL }), lean, facts);
     await m.updateAgentAddr({ privateFactsServerUrl: null });
     expect(m.privateFactsServerUrl).toBeUndefined();
-    await m.syncRegistration();
+    await m.syncIndexRegistration();
     const addr = (lean.updateAgent as ReturnType<typeof vi.fn>).mock.calls[1][1] as AgentAddr;
     expect(addr.privateFactsUrl).toBeUndefined();
   });
