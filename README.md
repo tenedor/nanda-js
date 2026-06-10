@@ -8,6 +8,8 @@
 
 ## Setup (once per machine)
 
+> **Note:** `gen-certs.sh` installs a local CA into your system trust store and Firefox. This modifies host-level certificate configuration and requires sudo access.
+
 ```bash
 ./scripts/gen-certs.sh
 ```
