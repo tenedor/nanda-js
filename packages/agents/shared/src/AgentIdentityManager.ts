@@ -218,7 +218,7 @@ export class AgentIdentityManager {
       privateKey: this.privateKey,
     });
 
-    // Register with new servers; fall back to update if a prior record already exists.
+    // Step 1: register on new servers; fall back to update if a prior record already exists.
     for (const serverUrl of toRegister) {
       const client = new HttpAgentFactsClient(serverUrl);
       try {
@@ -243,10 +243,10 @@ export class AgentIdentityManager {
     }
     this.isFactsRegistered = true;
 
-    // Sync lean-index with the updated AgentAddr.
+    // Step 2: sync lean-index with the updated AgentAddr.
     await this.updateIndexRegistration();
 
-    // Invalidate on removed servers (best effort — server may already be in desired state).
+    // Step 3: invalidate on removed servers.
     for (const serverUrl of toInvalidate) {
       const base = {
         agentId: this.did,
@@ -255,11 +255,7 @@ export class AgentIdentityManager {
       };
       const signature: Signature = sign(this.privateKey, canonicalize(base as Record<string, unknown>));
       const client = new HttpAgentFactsClient(serverUrl);
-      try {
-        await client.invalidateFacts(this.did, { ...base, signature });
-      } catch {
-        // best effort
-      }
+      await client.invalidateFacts(this.did, { ...base, signature });
     }
   }
 
