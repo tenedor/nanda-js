@@ -37,6 +37,23 @@ Omit `-v` only if you intentionally want to resume persisted state.
 docker compose down -v && docker compose up --build
 ```
 
+## Smoke test
+
+With services running, from the repo root:
+
+```bash
+pip install -r scripts/requirements.txt
+python scripts/smoke_test.py
+```
+
+The test covers:
+- Health checks on all four services
+- DID document validity on both agents
+- Lean-index resolution (AgentAddr with signature)
+- Agent-facts retrieval (full VerifiableCredential with DataIntegrityProof)
+- Invalidation lifecycle: invalidate facts → verify 410 → restore → verify 200
+- Deregistration lifecycle: deregister from index → verify 404 → re-register → verify 200
+
 ## Observing
 
 ```bash
