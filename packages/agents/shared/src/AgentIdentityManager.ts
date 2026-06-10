@@ -5,6 +5,7 @@ import {
   canonicalize,
   issueCredential,
   ValidationError,
+  HttpClientError,
   type AgentID,
   type AgentName,
   type Endpoint,
@@ -187,6 +188,79 @@ export class AgentIdentityManager {
 
   async updateIndexRegistration(): Promise<void> {
     await this._leanIndexClient.updateAgent(this.did, this.buildAgentAddr());
+  }
+
+  // Transitions the agent to a new facts-server configuration.
+  // Registers on servers that are new to the config (with PUT fallback if a prior record
+  // exists), invalidates servers that are being removed, then updates lean-index.
+  // Pass undefined for newPrivateServerUrl to leave the private server unchanged.
+  // Pass null to explicitly remove it.
+  async migrateFactsServers(
+    newPrimaryServerUrl: Endpoint,
+    newPrivateServerUrl: Endpoint | null | undefined,
+    facts: AgentFacts,
+  ): Promise<void> {
+    const oldPrimaryUrl = this.primaryFactsServerUrl;
+    const oldPrivateUrl = this.privateFactsServerUrl;
+    const effectiveNewPrivate: Endpoint | undefined = newPrivateServerUrl === undefined
+      ? oldPrivateUrl
+      : (newPrivateServerUrl ?? undefined);
+
+    const oldUrls = new Set([oldPrimaryUrl, ...(oldPrivateUrl ? [oldPrivateUrl] : [])]);
+    const newUrls = new Set([newPrimaryServerUrl, ...(effectiveNewPrivate ? [effectiveNewPrivate] : [])]);
+
+    const toRegister = [...newUrls].filter(url => !oldUrls.has(url));
+    const toInvalidate = [...oldUrls].filter(url => !newUrls.has(url));
+
+    const vc = issueCredential(facts, {
+      issuerDid: this.did,
+      verificationMethodId: `${this.did}#key-1`,
+      privateKey: this.privateKey,
+    });
+
+    // Register with new servers; fall back to update if a prior record already exists.
+    for (const serverUrl of toRegister) {
+      const client = new HttpAgentFactsClient(serverUrl);
+      try {
+        await client.registerFacts(vc);
+      } catch (e) {
+        if (e instanceof HttpClientError && e.status === 409) {
+          await client.updateFacts(vc);
+        } else {
+          throw e;
+        }
+      }
+    }
+
+    // Update manager state before syncing lean-index.
+    this.primaryFactsServerUrl = newPrimaryServerUrl;
+    this._primaryFactsClient = new HttpAgentFactsClient(newPrimaryServerUrl);
+    if (newPrivateServerUrl !== undefined) {
+      this.privateFactsServerUrl = effectiveNewPrivate;
+      this._privateFactsClient = effectiveNewPrivate
+        ? new HttpAgentFactsClient(effectiveNewPrivate)
+        : undefined;
+    }
+    this.isFactsRegistered = true;
+
+    // Sync lean-index with the updated AgentAddr.
+    await this.updateIndexRegistration();
+
+    // Invalidate on removed servers (best effort — server may already be in desired state).
+    for (const serverUrl of toInvalidate) {
+      const base = {
+        agentId: this.did,
+        action: 'invalidate-facts' as const,
+        issuedAt: new Date().toISOString(),
+      };
+      const signature: Signature = sign(this.privateKey, canonicalize(base as Record<string, unknown>));
+      const client = new HttpAgentFactsClient(serverUrl);
+      try {
+        await client.invalidateFacts(this.did, { ...base, signature });
+      } catch {
+        // best effort
+      }
+    }
   }
 
   async updateAgentAddr(

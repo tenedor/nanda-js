@@ -7,6 +7,23 @@ interface SelfManagementOptions {
   facts: AgentFacts;
 }
 
+interface MigrateFactsBody {
+  primaryFactsServerUrl: string;
+  privateFactsServerUrl?: string | null;
+}
+
+const migrateFactsSchema = {
+  body: {
+    type: 'object',
+    required: ['primaryFactsServerUrl'],
+    properties: {
+      primaryFactsServerUrl: { type: 'string' },
+      privateFactsServerUrl: { type: ['string', 'null'] },
+    },
+    additionalProperties: false,
+  },
+};
+
 // Lifecycle management routes — useful for testing and clean shutdown.
 // Production deployments should gate these behind authentication.
 export const selfManagementRoutes: FastifyPluginAsync<SelfManagementOptions> = async (
@@ -46,4 +63,16 @@ export const selfManagementRoutes: FastifyPluginAsync<SelfManagementOptions> = a
     await manager.registerIndexOnly();
     return reply.code(204).send();
   });
+
+  // Transitions the agent to a new facts-server configuration.
+  // Registers on new servers, invalidates removed servers, and updates lean-index.
+  app.post<{ Body: MigrateFactsBody }>(
+    '/self/migrate-facts',
+    { schema: migrateFactsSchema },
+    async (req, reply) => {
+      const { primaryFactsServerUrl, privateFactsServerUrl } = req.body;
+      await manager.migrateFactsServers(primaryFactsServerUrl, privateFactsServerUrl, facts);
+      return reply.code(204).send();
+    },
+  );
 };
