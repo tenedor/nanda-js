@@ -14,7 +14,10 @@
     "test:watch": "vitest"
   },
   "dependencies": {
-    "@nanda/shared": "*"
+    "@nanda/shared": "*",
+    "@nanda/lean-index": "*",
+    "@nanda/agent-facts": "*",
+    "fastify": "^5.8.5"
   },
   "devDependencies": {
     "typescript": "^5.4.0",
