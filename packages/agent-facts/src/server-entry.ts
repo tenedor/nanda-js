@@ -17,6 +17,7 @@ const app = Fastify<Http2SecureServer>({
   https: {
     cert: readFileSync(TLS_CERT),
     key: readFileSync(TLS_KEY),
+    allowHTTP1: true,
   },
   logger: { level: process.env.LOG_LEVEL ?? 'info' },
 });
