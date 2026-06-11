@@ -91,3 +91,7 @@ packages/
 **TypeScript is not the right language for production.** The lean index and agent-facts registry are on the critical path for every agent interaction. At scale these need to be rewritten in a systems language (Rust or Go) to meet latency and throughput requirements.
 
 **Uncharacterized performance.** There is no caching at any layer and no load testing has been done. Worthwhile next steps: stress-test the system, measure latency and throughput under realistic agent-swarm sizes and request rates, and identify where the prototype degrades first. The REST-over-HTTP/2 transport is a starting point; hot paths would eventually migrate to gRPC or a binary protocol, and performance-critical components would be rewritten in Rust or Go.
+
+## Development approach
+
+Developed with Claude Code.
