@@ -1,7 +1,20 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+SHORT=false
+for arg in "$@"; do
+  [[ "$arg" == "--short" || "$arg" == "-s" ]] && SHORT=true
+done
+
 CF="./scripts/curl-formatted.sh"
+
+facts() {
+  if $SHORT; then
+    $CF "$1" | head -n 15
+  else
+    $CF "$1"
+  fi
+}
 
 # ── Health & version ──────────────────────────────────────────────────────────
 
@@ -54,19 +67,19 @@ $CF "https://localhost:8443/agents/did%3Aweb%3Atrivial-agent-2%253A8446"
 # ── Agent facts ───────────────────────────────────────────────────────────────
 
 echo "=== agent-facts-1 facts: trivial-agent-1 ==="
-$CF "https://localhost:8444/facts/did%3Aweb%3Atrivial-agent-1%253A8445"
+facts "https://localhost:8444/facts/did%3Aweb%3Atrivial-agent-1%253A8445"
 
 echo "=== agent-facts-1 facts: trivial-agent-2 ==="
-$CF "https://localhost:8444/facts/did%3Aweb%3Atrivial-agent-2%253A8446"
+facts "https://localhost:8444/facts/did%3Aweb%3Atrivial-agent-2%253A8446"
 
 echo "=== agent-facts-2 facts: trivial-agent-1 ==="
-$CF "https://localhost:8447/facts/did%3Aweb%3Atrivial-agent-1%253A8445"
+facts "https://localhost:8447/facts/did%3Aweb%3Atrivial-agent-1%253A8445"
 
 echo "=== agent-facts-2 facts: trivial-agent-2 ==="
-$CF "https://localhost:8447/facts/did%3Aweb%3Atrivial-agent-2%253A8446"
+facts "https://localhost:8447/facts/did%3Aweb%3Atrivial-agent-2%253A8446"
 
 echo "=== agent-facts-private-1 facts: trivial-agent-1 ==="
-$CF "https://localhost:8448/facts/did%3Aweb%3Atrivial-agent-1%253A8445"
+facts "https://localhost:8448/facts/did%3Aweb%3Atrivial-agent-1%253A8445"
 
 echo "=== agent-facts-private-1 facts: trivial-agent-2 ==="
-$CF "https://localhost:8448/facts/did%3Aweb%3Atrivial-agent-2%253A8446"
+facts "https://localhost:8448/facts/did%3Aweb%3Atrivial-agent-2%253A8446"
