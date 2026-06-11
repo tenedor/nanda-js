@@ -31,6 +31,7 @@ ARG AGENT_PKG
 ENV AGENT_PKG=${AGENT_PKG}
 
 COPY --from=agent-build /app/package.json ./
+COPY --from=agent-build /app/node_modules ./node_modules
 COPY --from=agent-build /app/packages/shared/dist ./packages/shared/dist
 COPY --from=agent-build /app/packages/shared/package.json ./packages/shared/
 COPY --from=agent-build /app/packages/lean-index/dist ./packages/lean-index/dist
@@ -41,8 +42,6 @@ COPY --from=agent-build /app/packages/agents/shared/dist ./packages/agents/share
 COPY --from=agent-build /app/packages/agents/shared/package.json ./packages/agents/shared/
 COPY --from=agent-build /app/packages/agents/${AGENT_PKG}/dist ./packages/agents/${AGENT_PKG}/dist
 COPY --from=agent-build /app/packages/agents/${AGENT_PKG}/package.json ./packages/agents/${AGENT_PKG}/
-
-RUN npm install --workspaces --if-present --omit=dev
 
 # exec replaces the shell so node is PID 1 and receives signals correctly.
 CMD ["sh", "-c", "exec node packages/agents/$AGENT_PKG/dist/server-entry.js"]
