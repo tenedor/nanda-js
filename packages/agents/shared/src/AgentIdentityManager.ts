@@ -12,6 +12,7 @@ import {
   type Signature,
   type DIDDocument,
   type KeyPair,
+  type VerifiableCredential,
 } from '@nanda/shared';
 import type { LeanIndexClient, AgentAddr } from '@nanda/lean-index';
 import type { AgentFactsClient, AgentFacts } from '@nanda/agent-facts';
@@ -257,6 +258,15 @@ export class AgentIdentityManager {
       const client = new HttpAgentFactsClient(serverUrl);
       await client.invalidateFacts(this.did, { ...base, signature });
     }
+  }
+
+  issueVC<T extends object>(subject: T, additionalTypes: string[] = []): VerifiableCredential<T> {
+    return issueCredential(subject, {
+      issuerDid: this.did,
+      verificationMethodId: `${this.did}#key-1`,
+      privateKey: this.privateKey,
+      additionalTypes,
+    });
   }
 
   async updateAgentAddr(
