@@ -109,7 +109,7 @@ POST /objective
   body:     { objective: string, contextDIDs: Array<{ role: string, did: DID }> }
   response: { acknowledgement: string }
 
-GET /status
+GET /task-status
   response: { statusUpdate: string, completedGoals: string[], pendingGoals: string[],
               isComplete: boolean, isFailed: boolean }
 ```

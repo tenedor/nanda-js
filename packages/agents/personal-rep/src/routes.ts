@@ -63,5 +63,5 @@ export function registerRoutes(
     },
   );
 
-  app.get('/status', async () => ({ ...state }));
+  app.get('/task-status', async () => ({ ...state }));
 }

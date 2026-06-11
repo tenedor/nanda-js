@@ -66,7 +66,7 @@ def main() -> None:
     while True:
         time.sleep(POLL_INTERVAL)
         try:
-            r = client.get(f"{PERSONAL_REP}/status")
+            r = client.get(f"{PERSONAL_REP}/task-status")
             r.raise_for_status()
             data = r.json()
         except Exception as e:
