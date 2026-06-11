@@ -9,6 +9,11 @@ Two runnable scenarios are included, each with its own Docker Compose file:
 | [Smoke test](scenarios/test/README.md) | `docker-compose.smoke-test.yml` | Infrastructure validation with two minimal agents |
 | [Food truck](scenarios/food-truck/README.md) | `docker-compose.food-truck.yml` | Multi-agent coordination: a personal rep navigates government and vendor agents to set up a food truck business |
 
+## Approach
+
+- [NANDA paper](https://arxiv.org/abs/2507.14263) — the architecture this prototype implements
+- [design.md](design.md) — prototype-specific design decisions and simplifications
+
 ## Prerequisites
 
 - Docker (with Compose)
@@ -47,33 +52,6 @@ docker compose -f docker-compose.<scenario>.yml logs -f \
   | python3 scripts/pretty-logs.py --color
 ```
 
-## Limitations and natural next steps
-
-**Single-node only.** The lean index is a single SQLite-backed server with no replication, sharding, or federation. A production system would distribute index shards and support cross-shard resolution.
-
-**No authentication on management routes.** The `/self/*` lifecycle routes on agents and the write endpoints on the lean index and agent-facts registries accept any caller. Production deployments need mutual TLS or signed request authentication.
-
-**Hardcoded scenario logic.** The food truck agents auto-approve every application. A realistic implementation would encode actual business rules, validate form content, and integrate with external systems.
-
-**No adaptive resolution.** The paper's third layer — the AdaptiveResolver for ephemeral, geo-aware, or load-balanced endpoints — is not implemented. AgentFacts currently only carries static endpoints.
-
-**No VC revocation list.** Credentials include a `statusListUrl` field but the agent-facts server does not enforce it. A full implementation would check credential status on every read.
-
-**In-memory agent state.** Agent identity and workflow state (e.g. the personal rep's task progress) is not persisted. A restart loses all state.
-
-**No name-based lookup.** The lean index only supports resolution by agent ID (DID). The paper describes resolution by human-readable agent name (URN); that lookup path is not yet implemented.
-
-**No TTL enforcement or failure-driven re-resolution.** AgentAddr records carry a `ttl` field but clients never expire cached entries. A correct client implementation would treat TTLs as validity windows and trigger fresh lean-index lookups on endpoint failure, rather than failing hard.
-
-**Each agent runs on its own server.** The prototype gives every agent a dedicated process and port. A more efficient deployment would co-host agents on their matching AgentFacts servers, reducing the number of independent services.
-
-**Uncharacterized performance.** There is no caching at any layer and no load testing has been done. Worthwhile next steps: stress-test the system, measure latency and throughput under realistic agent-swarm sizes and request rates, and identify where the prototype degrades first. The REST-over-HTTP/2 transport is a starting point; hot paths would eventually migrate to gRPC or a binary protocol, and performance-critical components would be rewritten in Rust or Go.
-
-## Background
-
-- [NANDA paper](https://arxiv.org/abs/2507.14263) — the architecture this prototype implements
-- [design.md](design.md) — prototype-specific design decisions and simplifications
-
 ## Source code
 
 Source code (ignoring scripts) is organized into packages in the ./packages/ folder.
@@ -95,3 +73,21 @@ packages/
     food-truck-vendor/ # |
     personal-rep/      # /
 ```
+
+## Limitations and natural next steps
+
+**Single-node only.** The lean index is a single SQLite-backed server with no replication, sharding, or federation. A production system would distribute index shards and support cross-shard resolution.
+
+**Hardcoded scenario logic.** The food truck agents auto-approve every application. A realistic implementation would encode actual business rules, validate form content, and integrate with external systems.
+
+**No adaptive resolution.** The paper's third layer — the AdaptiveResolver for ephemeral, geo-aware, or load-balanced endpoints — is not implemented. AgentFacts currently only carries static endpoints.
+
+**No name-based lookup.** The lean index only supports resolution by agent ID (DID). The paper describes resolution by human-readable agent name (URN); that lookup path is not yet implemented.
+
+**No TTL enforcement or failure-driven re-resolution.** AgentAddr records carry a `ttl` field but clients never expire cached entries. A correct client implementation would treat TTLs as validity windows and trigger fresh lean-index lookups on endpoint failure, rather than failing hard.
+
+**Each agent runs on its own server.** The prototype gives every agent a dedicated process and port. A more efficient deployment would co-host agents on their matching AgentFacts servers, reducing the number of independent services.
+
+**TypeScript is not the right language for production.** The lean index and agent-facts registry are on the critical path for every agent interaction. At scale these need to be rewritten in a systems language (Rust or Go) to meet latency and throughput requirements.
+
+**Uncharacterized performance.** There is no caching at any layer and no load testing has been done. Worthwhile next steps: stress-test the system, measure latency and throughput under realistic agent-swarm sizes and request rates, and identify where the prototype degrades first. The REST-over-HTTP/2 transport is a starting point; hot paths would eventually migrate to gRPC or a binary protocol, and performance-critical components would be rewritten in Rust or Go.
