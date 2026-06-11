@@ -17,17 +17,24 @@ A citizen wants to start a food truck business and asks their personal represent
 | food-truck-vendor | 8468 | Private food truck vendor agent |
 | personal-rep | 8469 | Citizen's personal representative agent |
 
-## Running
-
-```bash
-docker compose -f docker-compose.food-truck.yml up --build
-```
-
 ## Citizen script
+
+The script `scripts/food_truck_citizen.py` sends the citizen's objective to the personal rep, kicking off this scenario. The script then polls for status every 3 seconds until the personal rep agent achieves the objective or gets blocked.
+
+## Setup
 
 ```bash
 pip install -r scripts/requirements.txt
-python3 scripts/food_truck_citizen.py
 ```
 
-The script sends the citizen's objective to the personal rep and polls for status every 3 seconds until complete.
+## Running
+
+For the best visibility, run this scenario with 3 terminals:
+
+1. **Terminal 1:** `docker compose -f docker-compose.food-truck.yml up --build`
+  - Note: If you're worried about overwhelming the machine resources with parallel build, run this command instead: `COMPOSE_PARALLEL_LIMIT=1 docker compose -f docker-compose.food-truck.yml up --build`
+2. **Terminal 2:** `docker compose -f docker-compose.food-truck.yml logs -f personal-rep`
+3. Wait for `personal-rep registered` in the logs before continuing. This is the signal that all services have built and come online.
+4. **Terminal 3:** `python3 scripts/food_truck_citizen.py`
+5. The food truck scenario will now play out. Logs from all services and from just the personal-rep agent will stream in terminals 1 and 2, respectively.
+6. When done, ctrl-C the active sessions and run `docker compose -f docker-compose.food-truck.yml down -v`
