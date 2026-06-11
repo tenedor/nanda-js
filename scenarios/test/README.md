@@ -16,7 +16,7 @@ The test scenario validates the core NANDA infrastructure — lean index, agent 
 ## Running
 
 ```bash
-docker compose up --build
+docker compose -f docker-compose.smoke-test.yml up --build
 ```
 
 ## Smoke test
