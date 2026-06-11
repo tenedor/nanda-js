@@ -1,0 +1,296 @@
+services:
+  lean-index:
+    build:
+      context: .
+      dockerfile: packages/lean-index/Dockerfile
+    ports:
+      - "8460:8460"
+    volumes:
+      - lean-index-ft-data:/data
+      - ./certs:/certs:ro
+    environment:
+      PORT: "8460"
+      DB_PATH: /data/lean-index.db
+      TLS_CERT_PATH: /certs/cert.pem
+      TLS_KEY_PATH: /certs/key.pem
+      LOG_LEVEL: info
+      NODE_EXTRA_CA_CERTS: /certs/rootCA.pem
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('net').connect({port:8460,host:'localhost'}).on('connect',function(){this.end();process.exit(0)}).on('error',()=>process.exit(1))"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+
+  government-facts:
+    build:
+      context: .
+      dockerfile: packages/agent-facts/Dockerfile
+    ports:
+      - "8461:8461"
+    volumes:
+      - government-facts-data:/data
+      - ./certs:/certs:ro
+    environment:
+      PORT: "8461"
+      DB_PATH: /data/agent-facts.db
+      TLS_CERT_PATH: /certs/cert.pem
+      TLS_KEY_PATH: /certs/key.pem
+      LOG_LEVEL: info
+      NODE_EXTRA_CA_CERTS: /certs/rootCA.pem
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('net').connect({port:8461,host:'localhost'}).on('connect',function(){this.end();process.exit(0)}).on('error',()=>process.exit(1))"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+
+  personal-agents-facts:
+    build:
+      context: .
+      dockerfile: packages/agent-facts/Dockerfile
+    ports:
+      - "8462:8462"
+    volumes:
+      - personal-agents-facts-data:/data
+      - ./certs:/certs:ro
+    environment:
+      PORT: "8462"
+      DB_PATH: /data/agent-facts.db
+      TLS_CERT_PATH: /certs/cert.pem
+      TLS_KEY_PATH: /certs/key.pem
+      LOG_LEVEL: info
+      NODE_EXTRA_CA_CERTS: /certs/rootCA.pem
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('net').connect({port:8462,host:'localhost'}).on('connect',function(){this.end();process.exit(0)}).on('error',()=>process.exit(1))"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+
+  vendor-facts:
+    build:
+      context: .
+      dockerfile: packages/agent-facts/Dockerfile
+    ports:
+      - "8463:8463"
+    volumes:
+      - vendor-facts-data:/data
+      - ./certs:/certs:ro
+    environment:
+      PORT: "8463"
+      DB_PATH: /data/agent-facts.db
+      TLS_CERT_PATH: /certs/cert.pem
+      TLS_KEY_PATH: /certs/key.pem
+      LOG_LEVEL: info
+      NODE_EXTRA_CA_CERTS: /certs/rootCA.pem
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('net').connect({port:8463,host:'localhost'}).on('connect',function(){this.end();process.exit(0)}).on('error',()=>process.exit(1))"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+
+  gov-local-support:
+    build:
+      context: .
+      dockerfile: packages/agents/gov-local-support/Dockerfile
+    ports:
+      - "8464:8464"
+    volumes:
+      - ./certs:/certs:ro
+    environment:
+      PORT: "8464"
+      TLS_CERT_PATH: /certs/cert.pem
+      TLS_KEY_PATH: /certs/key.pem
+      LOG_LEVEL: info
+      NODE_EXTRA_CA_CERTS: /certs/rootCA.pem
+      AGENT_DID: "did:web:gov-local-support%3A8464"
+      AGENT_NAME: "urn:agent:nanda-prototype:gov-local-support"
+      AGENT_ENDPOINT: "https://gov-local-support:8464"
+      LEAN_INDEX_URL: "https://lean-index:8460"
+      PRIMARY_FACTS_SERVER_URL: "https://government-facts:8461"
+      BUSINESS_LICENSING_DID: "did:web:gov-business-licensing%3A8465"
+      PARKING_DEPT_DID: "did:web:gov-parking-dept%3A8467"
+      FOOD_TRUCK_VENDOR_DID: "did:web:food-truck-vendor%3A8468"
+    depends_on:
+      lean-index:
+        condition: service_healthy
+      government-facts:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('net').connect({port:8464,host:'localhost'}).on('connect',function(){this.end();process.exit(0)}).on('error',()=>process.exit(1))"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 15s
+
+  gov-business-licensing:
+    build:
+      context: .
+      dockerfile: packages/agents/gov-business-licensing/Dockerfile
+    ports:
+      - "8465:8465"
+    volumes:
+      - ./certs:/certs:ro
+    environment:
+      PORT: "8465"
+      TLS_CERT_PATH: /certs/cert.pem
+      TLS_KEY_PATH: /certs/key.pem
+      LOG_LEVEL: info
+      NODE_EXTRA_CA_CERTS: /certs/rootCA.pem
+      AGENT_DID: "did:web:gov-business-licensing%3A8465"
+      AGENT_NAME: "urn:agent:nanda-prototype:gov-business-licensing"
+      AGENT_ENDPOINT: "https://gov-business-licensing:8465"
+      LEAN_INDEX_URL: "https://lean-index:8460"
+      PRIMARY_FACTS_SERVER_URL: "https://government-facts:8461"
+      HEALTH_DEPT_DID: "did:web:gov-health-dept%3A8466"
+    depends_on:
+      lean-index:
+        condition: service_healthy
+      government-facts:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('net').connect({port:8465,host:'localhost'}).on('connect',function(){this.end();process.exit(0)}).on('error',()=>process.exit(1))"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 15s
+
+  gov-health-dept:
+    build:
+      context: .
+      dockerfile: packages/agents/gov-health-dept/Dockerfile
+    ports:
+      - "8466:8466"
+    volumes:
+      - ./certs:/certs:ro
+    environment:
+      PORT: "8466"
+      TLS_CERT_PATH: /certs/cert.pem
+      TLS_KEY_PATH: /certs/key.pem
+      LOG_LEVEL: info
+      NODE_EXTRA_CA_CERTS: /certs/rootCA.pem
+      AGENT_DID: "did:web:gov-health-dept%3A8466"
+      AGENT_NAME: "urn:agent:nanda-prototype:gov-health-dept"
+      AGENT_ENDPOINT: "https://gov-health-dept:8466"
+      LEAN_INDEX_URL: "https://lean-index:8460"
+      PRIMARY_FACTS_SERVER_URL: "https://government-facts:8461"
+      FOOD_TRUCK_VENDOR_DID: "did:web:food-truck-vendor%3A8468"
+    depends_on:
+      lean-index:
+        condition: service_healthy
+      government-facts:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('net').connect({port:8466,host:'localhost'}).on('connect',function(){this.end();process.exit(0)}).on('error',()=>process.exit(1))"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 15s
+
+  gov-parking-dept:
+    build:
+      context: .
+      dockerfile: packages/agents/gov-parking-dept/Dockerfile
+    ports:
+      - "8467:8467"
+    volumes:
+      - ./certs:/certs:ro
+    environment:
+      PORT: "8467"
+      TLS_CERT_PATH: /certs/cert.pem
+      TLS_KEY_PATH: /certs/key.pem
+      LOG_LEVEL: info
+      NODE_EXTRA_CA_CERTS: /certs/rootCA.pem
+      AGENT_DID: "did:web:gov-parking-dept%3A8467"
+      AGENT_NAME: "urn:agent:nanda-prototype:gov-parking-dept"
+      AGENT_ENDPOINT: "https://gov-parking-dept:8467"
+      LEAN_INDEX_URL: "https://lean-index:8460"
+      PRIMARY_FACTS_SERVER_URL: "https://government-facts:8461"
+      BUSINESS_LICENSING_DID: "did:web:gov-business-licensing%3A8465"
+      FOOD_TRUCK_VENDOR_DID: "did:web:food-truck-vendor%3A8468"
+    depends_on:
+      lean-index:
+        condition: service_healthy
+      government-facts:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('net').connect({port:8467,host:'localhost'}).on('connect',function(){this.end();process.exit(0)}).on('error',()=>process.exit(1))"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 15s
+
+  food-truck-vendor:
+    build:
+      context: .
+      dockerfile: packages/agents/food-truck-vendor/Dockerfile
+    ports:
+      - "8468:8468"
+    volumes:
+      - ./certs:/certs:ro
+    environment:
+      PORT: "8468"
+      TLS_CERT_PATH: /certs/cert.pem
+      TLS_KEY_PATH: /certs/key.pem
+      LOG_LEVEL: info
+      NODE_EXTRA_CA_CERTS: /certs/rootCA.pem
+      AGENT_DID: "did:web:food-truck-vendor%3A8468"
+      AGENT_NAME: "urn:agent:nanda-prototype:food-truck-vendor"
+      AGENT_ENDPOINT: "https://food-truck-vendor:8468"
+      LEAN_INDEX_URL: "https://lean-index:8460"
+      PRIMARY_FACTS_SERVER_URL: "https://vendor-facts:8463"
+      BUSINESS_LICENSING_DID: "did:web:gov-business-licensing%3A8465"
+    depends_on:
+      lean-index:
+        condition: service_healthy
+      vendor-facts:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('net').connect({port:8468,host:'localhost'}).on('connect',function(){this.end();process.exit(0)}).on('error',()=>process.exit(1))"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 15s
+
+  personal-rep:
+    build:
+      context: .
+      dockerfile: packages/agents/personal-rep/Dockerfile
+    ports:
+      - "8469:8469"
+    volumes:
+      - ./certs:/certs:ro
+    environment:
+      PORT: "8469"
+      TLS_CERT_PATH: /certs/cert.pem
+      TLS_KEY_PATH: /certs/key.pem
+      LOG_LEVEL: info
+      NODE_EXTRA_CA_CERTS: /certs/rootCA.pem
+      AGENT_DID: "did:web:personal-rep%3A8469"
+      AGENT_NAME: "urn:agent:nanda-prototype:personal-rep"
+      AGENT_ENDPOINT: "https://personal-rep:8469"
+      LEAN_INDEX_URL: "https://lean-index:8460"
+      PRIMARY_FACTS_SERVER_URL: "https://personal-agents-facts:8462"
+    depends_on:
+      lean-index:
+        condition: service_healthy
+      personal-agents-facts:
+        condition: service_healthy
+      gov-local-support:
+        condition: service_healthy
+      gov-business-licensing:
+        condition: service_healthy
+      gov-health-dept:
+        condition: service_healthy
+      gov-parking-dept:
+        condition: service_healthy
+      food-truck-vendor:
+        condition: service_healthy
+
+volumes:
+  lean-index-ft-data:
+  government-facts-data:
+  personal-agents-facts-data:
+  vendor-facts-data:

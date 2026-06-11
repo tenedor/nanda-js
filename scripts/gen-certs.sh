@@ -20,6 +20,15 @@ JAVA_HOME="" mkcert \
   agent-facts-private-1 \
   trivial-agent-1 \
   trivial-agent-2 \
+  government-facts \
+  personal-agents-facts \
+  vendor-facts \
+  gov-local-support \
+  gov-business-licensing \
+  gov-health-dept \
+  gov-parking-dept \
+  food-truck-vendor \
+  personal-rep \
   localhost \
   127.0.0.1
 
