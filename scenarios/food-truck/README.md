@@ -35,6 +35,8 @@ The citizen script posts the objective and polls for status every 3 seconds. The
 
 ## Observing
 
+**Warning:** The most reliable way to ensure logs remain in order is to run these commands before running the python script, not after-the-fact.
+
 Stream pretty-printed logs from all services:
 
 ```bash
