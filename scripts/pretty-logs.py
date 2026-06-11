@@ -17,6 +17,7 @@ Usage:
   python3 scripts/pretty-logs.py -i raw.log -o pretty.log
 """
 
+import re
 import sys
 import json
 import argparse
@@ -66,19 +67,20 @@ def status_color(code: int, use_color: bool) -> str:
     return c(str(code), BRIGHT_RED, use_color=True)
 
 
-def format_entry(obj: dict, use_color: bool = False) -> str:
+def format_entry(obj: dict, service: str = '', use_color: bool = False) -> str:
     ts_ms = obj.get('time', 0)
     ts = datetime.fromtimestamp(ts_ms / 1000, tz=timezone.utc).strftime('%H:%M:%S.%f')[:-3]
     level_name = LEVELS.get(obj.get('level', 30), str(obj.get('level', '?')))
     msg = obj.get('msg', '')
     req_id = obj.get('reqId', '')
 
-    ts_str    = c(f"[{ts}]", DIM, use_color=use_color)
-    level_str = c(f"{level_name:<5}", LEVEL_COLOR.get(level_name, ''), use_color=use_color)
-    msg_str   = c(msg, BOLD, use_color=use_color)
-    id_str    = c(f"  [{req_id}]", DIM, use_color=use_color) if req_id else ''
+    ts_str      = c(f"[{ts}]", DIM, use_color=use_color)
+    service_str = c(f"[{service}]", BOLD, use_color=use_color) + ' ' if service else ''
+    level_str   = c(f"{level_name:<5}", LEVEL_COLOR.get(level_name, ''), use_color=use_color)
+    msg_str     = c(msg, BOLD, use_color=use_color)
+    id_str      = c(f"  [{req_id}]", DIM, use_color=use_color) if req_id else ''
 
-    lines = [f"{ts_str} {level_str} {msg_str}{id_str}"]
+    lines = [f"{ts_str} {service_str}{level_str} {msg_str}{id_str}"]
 
     req = obj.get('req')
     if req:
@@ -114,8 +116,11 @@ def format_entry(obj: dict, use_color: bool = False) -> str:
 def process(lines, out, use_color: bool = False):
     for raw in lines:
         raw = raw.rstrip('\n')
+        service = ''
         if '  | ' in raw:
-            raw = raw.split('  | ', 1)[1]
+            prefix, raw = raw.split('  | ', 1)
+            # Strip trailing replica number (e.g. "personal-rep-1" → "personal-rep").
+            service = re.sub(r'-\d+$', '', prefix.strip())
         raw = raw.strip()
         if not raw:
             continue
@@ -124,7 +129,7 @@ def process(lines, out, use_color: bool = False):
         except json.JSONDecodeError:
             out.write(raw + '\n\n')
             continue
-        out.write(format_entry(obj, use_color=use_color) + '\n\n')
+        out.write(format_entry(obj, service=service, use_color=use_color) + '\n\n')
 
 
 def main():
