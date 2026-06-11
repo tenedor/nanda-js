@@ -61,7 +61,11 @@ docker compose -f docker-compose.<scenario>.yml logs -f \
 
 **In-memory agent state.** Agent identity and workflow state (e.g. the personal rep's task progress) is not persisted. A restart loses all state.
 
-**Performance baseline only.** There is no caching at any layer, no TTL enforcement on the client side, and no load testing. The REST-over-HTTP/2 transport is a starting point; high-throughput paths would migrate to gRPC or a binary protocol.
+**No name-based lookup.** The lean index only supports resolution by agent ID (DID). The paper describes resolution by human-readable agent name (URN); that lookup path is not yet implemented.
+
+**No TTL enforcement or failure-driven re-resolution.** AgentAddr records carry a `ttl` field but clients never expire cached entries. A correct client implementation would treat TTLs as validity windows and trigger fresh lean-index lookups on endpoint failure, rather than failing hard.
+
+**Uncharacterized performance.** There is no caching at any layer and no load testing has been done. Worthwhile next steps: stress-test the system, measure latency and throughput under realistic agent-swarm sizes and request rates, and identify where the prototype degrades first. The REST-over-HTTP/2 transport is a starting point; hot paths would eventually migrate to gRPC or a binary protocol.
 
 ## Background
 
