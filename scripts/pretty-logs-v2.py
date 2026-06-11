@@ -132,7 +132,7 @@ def fmt_json(obj, service, use_color):
         msg_s = c(msg, BOLD, use_color=use_color)
         lines.append(f"{ts_s} {svc_s}{level_s} {msg_s}")
         update = obj['statusUpdate']
-        lines.append('  ' + c(update, BRIGHT_CYAN, use_color=use_color))
+        lines.append('  ' + c(update, BOLD, '\033[34m', use_color=use_color))
         return '\n'.join(lines)
 
     # ── Incoming request ──────────────────────────────────────────────────────
