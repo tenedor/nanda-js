@@ -65,7 +65,9 @@ docker compose -f docker-compose.<scenario>.yml logs -f \
 
 **No TTL enforcement or failure-driven re-resolution.** AgentAddr records carry a `ttl` field but clients never expire cached entries. A correct client implementation would treat TTLs as validity windows and trigger fresh lean-index lookups on endpoint failure, rather than failing hard.
 
-**Uncharacterized performance.** There is no caching at any layer and no load testing has been done. Worthwhile next steps: stress-test the system, measure latency and throughput under realistic agent-swarm sizes and request rates, and identify where the prototype degrades first. The REST-over-HTTP/2 transport is a starting point; hot paths would eventually migrate to gRPC or a binary protocol.
+**Each agent runs on its own server.** The prototype gives every agent a dedicated process and port. A more efficient deployment would co-host agents on their matching AgentFacts servers, reducing the number of independent services.
+
+**Uncharacterized performance.** There is no caching at any layer and no load testing has been done. Worthwhile next steps: stress-test the system, measure latency and throughput under realistic agent-swarm sizes and request rates, and identify where the prototype degrades first. The REST-over-HTTP/2 transport is a starting point; hot paths would eventually migrate to gRPC or a binary protocol, and performance-critical components would be rewritten in Rust or Go.
 
 ## Background
 
