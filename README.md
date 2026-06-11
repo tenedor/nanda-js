@@ -47,6 +47,11 @@ docker compose -f docker-compose.<scenario>.yml logs -f \
   | python3 scripts/pretty-logs.py --color
 ```
 
+## Background
+
+- [NANDA paper](https://arxiv.org/abs/2507.14263) — the architecture this prototype implements
+- [design.md](design.md) — prototype-specific design decisions and simplifications
+
 ## Package layout
 
 ```
