@@ -48,38 +48,36 @@ $CF https://localhost:8446/status
 echo "=== trivial-agent-2 version ==="
 $CF https://localhost:8446/version
 
-# ── DID documents ─────────────────────────────────────────────────────────────
+# ── Trivial agent 1 ───────────────────────────────────────────────────────────
 
 echo "=== trivial-agent-1 DID document ==="
 $CF https://localhost:8445/.well-known/did.json
 
-echo "=== trivial-agent-2 DID document ==="
-$CF https://localhost:8446/.well-known/did.json
-
-# ── Lean-index AgentAddr ──────────────────────────────────────────────────────
-
 echo "=== lean-index AgentAddr: trivial-agent-1 ==="
 $CF "https://localhost:8443/agents/did%3Aweb%3Atrivial-agent-1%253A8445"
-
-echo "=== lean-index AgentAddr: trivial-agent-2 ==="
-$CF "https://localhost:8443/agents/did%3Aweb%3Atrivial-agent-2%253A8446"
-
-# ── Agent facts ───────────────────────────────────────────────────────────────
 
 echo "=== agent-facts-1 facts: trivial-agent-1 ==="
 facts "https://localhost:8444/facts/did%3Aweb%3Atrivial-agent-1%253A8445"
 
-echo "=== agent-facts-1 facts: trivial-agent-2 ==="
-facts "https://localhost:8444/facts/did%3Aweb%3Atrivial-agent-2%253A8446"
-
 echo "=== agent-facts-2 facts: trivial-agent-1 ==="
 facts "https://localhost:8447/facts/did%3Aweb%3Atrivial-agent-1%253A8445"
 
-echo "=== agent-facts-2 facts: trivial-agent-2 ==="
-facts "https://localhost:8447/facts/did%3Aweb%3Atrivial-agent-2%253A8446"
-
 echo "=== agent-facts-private-1 facts: trivial-agent-1 ==="
 facts "https://localhost:8448/facts/did%3Aweb%3Atrivial-agent-1%253A8445"
+
+# ── Trivial agent 2 ───────────────────────────────────────────────────────────
+
+echo "=== trivial-agent-2 DID document ==="
+$CF https://localhost:8446/.well-known/did.json
+
+echo "=== lean-index AgentAddr: trivial-agent-2 ==="
+$CF "https://localhost:8443/agents/did%3Aweb%3Atrivial-agent-2%253A8446"
+
+echo "=== agent-facts-1 facts: trivial-agent-2 ==="
+facts "https://localhost:8444/facts/did%3Aweb%3Atrivial-agent-2%253A8446"
+
+echo "=== agent-facts-2 facts: trivial-agent-2 ==="
+facts "https://localhost:8447/facts/did%3Aweb%3Atrivial-agent-2%253A8446"
 
 echo "=== agent-facts-private-1 facts: trivial-agent-2 ==="
 facts "https://localhost:8448/facts/did%3Aweb%3Atrivial-agent-2%253A8446"
