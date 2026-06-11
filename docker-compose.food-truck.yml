@@ -94,7 +94,9 @@ services:
   gov-local-support:
     build:
       context: .
-      dockerfile: packages/agents/gov-local-support/Dockerfile
+      dockerfile: packages/agents/Dockerfile.scenario
+      args:
+        AGENT_PKG: gov-local-support
     ports:
       - "8464:8464"
     volumes:
@@ -128,7 +130,9 @@ services:
   gov-business-licensing:
     build:
       context: .
-      dockerfile: packages/agents/gov-business-licensing/Dockerfile
+      dockerfile: packages/agents/Dockerfile.scenario
+      args:
+        AGENT_PKG: gov-business-licensing
     ports:
       - "8465:8465"
     volumes:
@@ -160,7 +164,9 @@ services:
   gov-health-dept:
     build:
       context: .
-      dockerfile: packages/agents/gov-health-dept/Dockerfile
+      dockerfile: packages/agents/Dockerfile.scenario
+      args:
+        AGENT_PKG: gov-health-dept
     ports:
       - "8466:8466"
     volumes:
@@ -192,7 +198,9 @@ services:
   gov-parking-dept:
     build:
       context: .
-      dockerfile: packages/agents/gov-parking-dept/Dockerfile
+      dockerfile: packages/agents/Dockerfile.scenario
+      args:
+        AGENT_PKG: gov-parking-dept
     ports:
       - "8467:8467"
     volumes:
@@ -225,7 +233,9 @@ services:
   food-truck-vendor:
     build:
       context: .
-      dockerfile: packages/agents/food-truck-vendor/Dockerfile
+      dockerfile: packages/agents/Dockerfile.scenario
+      args:
+        AGENT_PKG: food-truck-vendor
     ports:
       - "8468:8468"
     volumes:
@@ -257,7 +267,9 @@ services:
   personal-rep:
     build:
       context: .
-      dockerfile: packages/agents/personal-rep/Dockerfile
+      dockerfile: packages/agents/Dockerfile.scenario
+      args:
+        AGENT_PKG: personal-rep
     ports:
       - "8469:8469"
     volumes:
