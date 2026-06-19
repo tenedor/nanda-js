@@ -11,6 +11,7 @@ export const FASTIFY_BASE_OPTIONS = {
     const message = errors.map((e) => `${e.instancePath || 'body'}: ${e.message}`).join('; ');
     return new Error(message);
   },
+  disableRequestLogging: true,
 } as const;
 
 export async function configureApp(
@@ -21,6 +22,30 @@ export async function configureApp(
   app.setErrorHandler((error: Error & { statusCode?: number }, _req, reply) => {
     app.log.error(error);
     void reply.code(error.statusCode ?? 500).send({ message: error.message });
+  });
+
+  app.addHook('preValidation', (request, _reply, done) => {
+    request.log.info({
+      direction: 'received', kind: 'request',
+      method: request.method, url: request.url,
+      remoteIp: request.ip, localIp: request.socket.localAddress,
+      body: request.body,
+    }, 'inbound request');
+    done();
+  });
+
+  app.addHook('onSend', async (request, reply, payload) => {
+    let body: unknown = payload;
+    if (typeof payload === 'string') {
+      try { body = JSON.parse(payload); } catch { /* leave as string */ }
+    }
+    request.log.info({
+      direction: 'sent', kind: 'response',
+      method: request.method, url: request.url,
+      remoteIp: request.ip, localIp: request.socket.localAddress,
+      statusCode: reply.statusCode, body,
+    }, 'inbound response');
+    return payload;
   });
 
   await app.register(metadataRoutes, { db });
