@@ -1,5 +1,6 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi, beforeAll, beforeEach } from 'vitest';
 import { didWebToUrl, extractPublicKey, resolveDid } from '../src/identity/resolution.js';
+import { setLogger } from '../src/logging.js';
 import { generateKeyPair, publicKeyToBase64url } from '../src/crypto/index.js';
 import type { DIDDocument } from '../src/identity/DIDDocument.js';
 
@@ -75,6 +76,7 @@ describe('extractPublicKey', () => {
 });
 
 describe('resolveDid', () => {
+  beforeAll(() => { setLogger({ info: () => {}, error: () => {} }); });
   beforeEach(() => { vi.restoreAllMocks(); });
 
   it('fetches the DID document from the correct URL', async () => {
@@ -92,6 +94,7 @@ describe('resolveDid', () => {
 
     vi.stubGlobal('fetch', vi.fn().mockResolvedValue({
       ok: true,
+      status: 200,
       text: async () => JSON.stringify(doc),
     }));
 

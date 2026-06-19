@@ -1,8 +1,8 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { describe, it, expect, vi, beforeAll, beforeEach, afterEach } from 'vitest';
 import { HttpLeanIndexClient } from '../src/clients/HttpLeanIndexClient.js';
 import { HttpAgentFactsClient } from '../src/clients/HttpAgentFactsClient.js';
 import { HttpAgentClientBase } from '../src/clients/HttpAgentClientBase.js';
-import { HttpClientError } from '@nanda/shared';
+import { HttpClientError, setLogger } from '@nanda/shared';
 import type { AgentAddr } from '@nanda/lean-index';
 import type { AgentFacts } from '@nanda/agent-facts';
 import type { VerifiableCredential } from '@nanda/shared';
@@ -22,6 +22,8 @@ function okResponse(body?: unknown) {
 function errorResponse(status: number, message: string) {
   return { ok: false, status, text: async () => JSON.stringify({ message }) };
 }
+
+beforeAll(() => { setLogger({ info: () => {}, error: () => {} }); });
 
 beforeEach(() => {
   vi.stubGlobal('fetch', mockFetch);
