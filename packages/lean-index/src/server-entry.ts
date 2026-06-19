@@ -2,6 +2,7 @@ import { readFileSync } from 'node:fs';
 import Fastify from 'fastify';
 import type { Http2SecureServer } from 'node:http2';
 import { setGlobalDispatcher, Agent } from 'undici';
+import { setLogger } from '@nanda/shared';
 import { createDb } from './server/db.js';
 import { configureApp, FASTIFY_BASE_OPTIONS, PROTOCOL_VERSION } from './server/app.js';
 
@@ -28,6 +29,7 @@ const app = Fastify<Http2SecureServer>({
   },
   logger: { level: process.env.LOG_LEVEL ?? 'info' },
 });
+setLogger(app.log);
 
 await configureApp(app, db);
 await app.listen({ port: PORT, host: '0.0.0.0' });
