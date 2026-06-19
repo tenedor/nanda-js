@@ -103,10 +103,6 @@ export const registerRoutes: FastifyPluginAsync<ParkingDeptOptions> = async (
       }
 
       const { truckId, licensePlate, vehicleRegistration } = foodTruckRental.credentialSubject;
-      req.log.info(
-        { truckId, licensePlate, vehicleRegistration, recipientDID: requesterDID },
-        'Street vending permit issued — vehicle details recorded',
-      );
 
       return manager.issueVC<StreetVendingPermitSubject>({
         type: 'StreetVendingPermit',
