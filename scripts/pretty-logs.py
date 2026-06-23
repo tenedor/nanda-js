@@ -136,7 +136,7 @@ def fmt_plain(service, text, use_color):
     return f"{prefix}{text_s}"
 
 
-def fmt_network(obj, ts_s, svc_s, use_color):
+def fmt_network(obj, ts_s, svc_s, use_color, address_map=None):
     """Format an inbound or outbound network request/response log entry."""
     direction = obj['direction']   # 'sent' | 'received'
     kind      = obj['kind']        # 'request' | 'response'
@@ -166,7 +166,8 @@ def fmt_network(obj, ts_s, svc_s, use_color):
         # This service received an inbound request.
         label_s  = c('IN/REQ', BRIGHT_MAGENTA, use_color=use_color)
         arrow_s  = c('←', BRIGHT_MAGENTA, use_color=use_color)
-        peer_s   = c(obj.get('remoteIp', '?'), DIM, use_color=use_color)
+        raw_ip   = obj.get('remoteIp', '?')
+        peer_s   = c((address_map or {}).get(raw_ip, raw_ip), DIM, use_color=use_color)
         path     = obj.get('url', '?')
         status_s = ''
 
@@ -175,7 +176,8 @@ def fmt_network(obj, ts_s, svc_s, use_color):
         # This service is sending a reply to an inbound request.
         label_s  = c('IN/REPLY', GREEN, use_color=use_color)
         arrow_s  = c('→', GREEN, use_color=use_color)
-        peer_s   = c(obj.get('remoteIp', '?'), DIM, use_color=use_color)
+        raw_ip   = obj.get('remoteIp', '?')
+        peer_s   = c((address_map or {}).get(raw_ip, raw_ip), DIM, use_color=use_color)
         path     = obj.get('url', '?')
         status   = obj.get('statusCode')
         status_s = ('  ' + status_code_color(status, use_color)) if status is not None else ''
@@ -193,7 +195,7 @@ def fmt_network(obj, ts_s, svc_s, use_color):
     return '\n'.join(lines)
 
 
-def fmt_json(obj, service, use_color):
+def fmt_json(obj, service, use_color, address_map=None):
     ts_ms      = obj.get('time', 0)
     ts         = fmt_ts(ts_ms) if ts_ms else '??:??:??.???'
     level_name = LEVELS.get(obj.get('level', 30), str(obj.get('level', '?')))
@@ -204,7 +206,7 @@ def fmt_json(obj, service, use_color):
 
     # ── Network request/response logs ─────────────────────────────────────────
     if obj.get('direction') and obj.get('kind'):
-        return fmt_network(obj, ts_s, svc_s, use_color)
+        return fmt_network(obj, ts_s, svc_s, use_color, address_map=address_map)
 
     # ── Status update (personal-rep workflow progress) ────────────────────────
     if 'statusUpdate' in obj:
@@ -238,7 +240,7 @@ def fmt_json(obj, service, use_color):
 
 # ── Main processing ───────────────────────────────────────────────────────────
 
-def process(lines, out, use_color=False):
+def process(lines, out, use_color=False, address_map=None):
     for raw in lines:
         raw = raw.rstrip('\n')
         if not raw.strip():
@@ -252,7 +254,7 @@ def process(lines, out, use_color=False):
         elif line_type == 'service':
             try:
                 obj = json.loads(payload)
-                out.write(fmt_json(obj, name, use_color) + '\n\n')
+                out.write(fmt_json(obj, name, use_color, address_map=address_map) + '\n\n')
             except json.JSONDecodeError:
                 out.write(fmt_plain(name, payload, use_color) + '\n')
 
@@ -265,13 +267,20 @@ def main():
     parser.add_argument('-i', '--input',  help='Input file (default: stdin)')
     parser.add_argument('-o', '--output', help='Output file (default: stdout)')
     parser.add_argument('--color', action='store_true', help='Colorize output with ANSI codes')
+    parser.add_argument('--address-map', metavar='PATH',
+                        help='JSON file mapping IP addresses to service names')
     args = parser.parse_args()
+
+    address_map: dict = {}
+    if args.address_map:
+        with open(args.address_map) as f:
+            address_map = json.load(f)
 
     in_s  = open(args.input,  'r') if args.input  else sys.stdin
     out_s = open(args.output, 'w') if args.output else sys.stdout
 
     try:
-        process(in_s, out_s, use_color=args.color)
+        process(in_s, out_s, use_color=args.color, address_map=address_map)
     finally:
         if args.input:
             in_s.close()

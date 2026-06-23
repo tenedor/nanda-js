@@ -40,9 +40,12 @@ The citizen script posts the objective and polls for status every 3 seconds. The
 Stream pretty-printed logs from all services:
 
 ```bash
+python3 scripts/docker-address-map.py -f docker-compose.food-truck.yml -o /tmp/addr.json
 docker compose -f docker-compose.food-truck.yml logs -f \
-  | python3 scripts/pretty-logs.py --color
+  | python3 scripts/pretty-logs.py --color --address-map /tmp/addr.json
 ```
+
+The address map step resolves internal container IPs to service names in the log output. Run it once after the containers are up; re-run it after a `down -v` restart.
 
 Watch just the personal rep (status updates + incoming requests):
 

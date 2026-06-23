@@ -8,6 +8,7 @@
 | `smoke_test.py` | End-to-end smoke test for the test scenario (28 checks covering resolution, VCs, and lifecycle) |
 | `food_truck_citizen.py` | Citizen entry point for the food truck scenario — posts objective, polls for status |
 | `observe-smoke-test.sh` | Query health, DIDs, lean-index entries, and agent facts for all smoke-test services; pass `--short` to truncate facts output |
-| `pretty-logs.py` | Pretty-print Docker Compose JSON log output; pass `--color` for terminal coloring |
+| `docker-address-map.py` | Build an IP→service-name JSON map from a running Docker Compose project; pass `-f <compose-file>` and optionally `-o <path>` |
+| `pretty-logs.py` | Pretty-print Docker Compose JSON log output; pass `--color` for terminal coloring, `--address-map <path>` to substitute IPs with service names |
 | `curl-formatted.sh` | Curl a URL and pretty-print the JSON response |
 | `requirements.txt` | Python dependencies for the scripts (`httpx[http2]`) |
