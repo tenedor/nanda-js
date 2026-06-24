@@ -1,0 +1,711 @@
+[2m[23:46:58.375][0m [1m[personal-agents-facts][0m [32mINFO [0m [1mServer listening at https://127.0.0.1:8462[0m
+
+[2m[23:46:58.392][0m [1m[personal-agents-facts][0m [32mINFO [0m [1mServer listening at https://172.18.0.2:8462[0m
+
+[2m[23:46:58.393][0m [1m[personal-agents-facts][0m [32mINFO [0m [1mAgent facts server started[0m [2m(nanda-0.0.0-facts)[0m
+
+[2m[23:46:58.498][0m [1m[government-facts][0m [32mINFO [0m [1mServer listening at https://127.0.0.1:8461[0m
+
+[2m[23:46:58.510][0m [1m[government-facts][0m [32mINFO [0m [1mServer listening at https://172.18.0.3:8461[0m
+
+[2m[23:46:58.511][0m [1m[government-facts][0m [32mINFO [0m [1mAgent facts server started[0m [2m(nanda-0.0.0-facts)[0m
+
+[2m[23:46:58.559][0m [1m[lean-index][0m [32mINFO [0m [1mServer listening at https://127.0.0.1:8460[0m
+
+[2m[23:46:58.562][0m [1m[lean-index][0m [32mINFO [0m [1mServer listening at https://172.18.0.4:8460[0m
+
+[2m[23:46:58.563][0m [1m[lean-index][0m [32mINFO [0m [1mLean index server started[0m [2m(nanda-0.0.0-index)[0m
+
+[2m[23:46:58.646][0m [1m[vendor-facts][0m [32mINFO [0m [1mServer listening at https://127.0.0.1:8463[0m
+
+[2m[23:46:58.651][0m [1m[vendor-facts][0m [32mINFO [0m [1mServer listening at https://172.18.0.5:8463[0m
+
+[2m[23:46:58.652][0m [1m[vendor-facts][0m [32mINFO [0m [1mAgent facts server started[0m [2m(nanda-0.0.0-facts)[0m
+
+[2m[23:47:08.407][0m [1m[gov-business-licensing][0m [32mINFO [0m [1mServer listening at https://127.0.0.1:8465[0m
+
+[2m[23:47:08.815][0m [1m[gov-local-support][0m [32mINFO [0m [1mServer listening at https://127.0.0.1:8464[0m
+
+[2m[23:47:08.421][0m [1m[gov-business-licensing][0m [32mINFO [0m [1mServer listening at https://172.18.0.6:8465[0m
+
+[2m[23:47:08.422][0m [1m[gov-business-licensing][0m [32mINFO [0m [1mgov-business-licensing started[0m
+[2m  did:[0m did:web:gov-business-licensing%3A8465
+[2m  publicKey:[0m pkH7qYD0PbN7dJt332m400SA4DTHgFaTjhqBu0k1N5c
+
+[2m[23:47:08.648][0m [1m[gov-business-licensing][0m [36mOUT/REQ[0m [36m→[0m [2mgovernment-facts:8461[0m  [36mPOST[0m [96m/facts[0m
+[2m  body:[0m {"@context":["https://www.w3.org/ns/credentials/v2"],"type":["VerifiableCredential"],"issuer":"did:web:gov-business-licensing%3A8465","validFrom":"2026-06-23T23:47:08.422Z","credentialSubject":{"@context":["https://www.w3.org/ns/did/v1"],"id":"did:web:gov-business-licensing%3A8465","agentName":"urn:agent:nanda-prototype:gov-business-licensing","label":"Government Business Licensing Office","description":"Issues business registrations, provisional and final restaurant licenses.","version":"nanda-0.0.0-agent","provider":{"name":"City Government","url":"https://gov-business-licensing:8465"},"endpoints":{"static":["https://gov-business-licensing:8465"]},"capabilities":{"modalities":["text"]},"certification":{"level":"self-attested","issuer":"did:web:gov-business-licensing%3A8465","issuanceDate":"2026-06-23T23:47:04.099Z","expirationDate":"2027-06-23T23:47:04.099Z","statusListUrl":"https://gov-business-licensing:8465/status"}},"proof":{"type":"DataIntegrityProof","cryptosuite":"eddsa-jcs-2022","created":"2026-06-23T23:47:08.648Z","verificationMethod":"did:web:gov-business-licensing%3A8465#key-1","proofPurpose":"assertionMethod","proofValue":"4kvLHvZ60NKQs4QhmpgEAJEIoKuB3j0V5-V1VPMczLsk7H2ALHO9jpdysEM2QigXVupAYR53ZAi9jkihc-UOAg"}}
+
+[2m[gov-business-licensing][0m [2m(node:1) [UNDICI-H2] Warning: H2 support is experimental, expect them to change at any time.[0m
+[2m[gov-business-licensing][0m [2m(Use `node --trace-warnings ...` to show where the warning was created)[0m
+[2m[23:47:09.371][0m [1m[government-facts][0m [95mIN/REQ[0m [95m←[0m [2mgov-business-licensing[0m [2m[req-1][0m  [36mPOST[0m [96m/facts[0m
+[2m  body:[0m {"@context":["https://www.w3.org/ns/credentials/v2"],"type":["VerifiableCredential"],"issuer":"did:web:gov-business-licensing%3A8465","validFrom":"2026-06-23T23:47:08.422Z","credentialSubject":{"@context":["https://www.w3.org/ns/did/v1"],"id":"did:web:gov-business-licensing%3A8465","agentName":"urn:agent:nanda-prototype:gov-business-licensing","label":"Government Business Licensing Office","description":"Issues business registrations, provisional and final restaurant licenses.","version":"nanda-0.0.0-agent","provider":{"name":"City Government","url":"https://gov-business-licensing:8465"},"endpoints":{"static":["https://gov-business-licensing:8465"]},"capabilities":{"modalities":["text"]},"certification":{"level":"self-attested","issuer":"did:web:gov-business-licensing%3A8465","issuanceDate":"2026-06-23T23:47:04.099Z","expirationDate":"2027-06-23T23:47:04.099Z","statusListUrl":"https://gov-business-licensing:8465/status"}},"proof":{"type":"DataIntegrityProof","cryptosuite":"eddsa-jcs-2022","created":"2026-06-23T23:47:08.648Z","verificationMethod":"did:web:gov-business-licensing%3A8465#key-1","proofPurpose":"assertionMethod","proofValue":"4kvLHvZ60NKQs4QhmpgEAJEIoKuB3j0V5-V1VPMczLsk7H2ALHO9jpdysEM2QigXVupAYR53ZAi9jkihc-UOAg"}}
+
+[2m[23:47:08.952][0m [1m[gov-local-support][0m [32mINFO [0m [1mServer listening at https://172.18.0.7:8464[0m
+
+[2m[23:47:08.953][0m [1m[gov-local-support][0m [32mINFO [0m [1mgov-local-support started[0m
+[2m  did:[0m did:web:gov-local-support%3A8464
+[2m  publicKey:[0m mmHDdZEzN62BhitwMDDos8ynE_uf9Tfwtoy2X30GNlU
+
+[2m[23:47:09.228][0m [1m[gov-local-support][0m [36mOUT/REQ[0m [36m→[0m [2mgovernment-facts:8461[0m  [36mPOST[0m [96m/facts[0m
+[2m  body:[0m {"@context":["https://www.w3.org/ns/credentials/v2"],"type":["VerifiableCredential"],"issuer":"did:web:gov-local-support%3A8464","validFrom":"2026-06-23T23:47:08.953Z","credentialSubject":{"@context":["https://www.w3.org/ns/did/v1"],"id":"did:web:gov-local-support%3A8464","agentName":"urn:agent:nanda-prototype:gov-local-support","label":"Government Local Business Support","description":"Advises citizens on starting a food truck business and provides contacts for required agencies.","version":"nanda-0.0.0-agent","provider":{"name":"City Government","url":"https://gov-local-support:8464"},"endpoints":{"static":["https://gov-local-support:8464"]},"capabilities":{"modalities":["text"]},"certification":{"level":"self-attested","issuer":"did:web:gov-local-support%3A8464","issuanceDate":"2026-06-23T23:47:04.726Z","expirationDate":"2027-06-23T23:47:04.726Z","statusListUrl":"https://gov-local-support:8464/status"}},"proof":{"type":"DataIntegrityProof","cryptosuite":"eddsa-jcs-2022","created":"2026-06-23T23:47:09.227Z","verificationMethod":"did:web:gov-local-support%3A8464#key-1","proofPurpose":"assertionMethod","proofValue":"TUbAZWU6_aSdyZv3N7PYq2SHnsqxdhvxRq_3kDak1rZTrm6veJV4hNPD2SW2H5zQSc95hLkEegt4CdT8989BDg"}}
+
+[2m[23:47:09.569][0m [1m[gov-health-dept][0m [32mINFO [0m [1mServer listening at https://127.0.0.1:8466[0m
+
+[2m[23:47:09.407][0m [1m[government-facts][0m [36mOUT/REQ[0m [36m→[0m [2mgov-business-licensing:8465[0m  [36mGET[0m [96m/.well-known/did.json[0m
+
+[2m[government-facts][0m [2m(node:1) [UNDICI-H2] Warning: H2 support is experimental, expect them to change at any time.[0m
+[2m[government-facts][0m [2m(Use `node --trace-warnings ...` to show where the warning was created)[0m
+[2m[gov-local-support][0m [2m(node:1) [UNDICI-H2] Warning: H2 support is experimental, expect them to change at any time.[0m
+[2m[gov-local-support][0m [2m(Use `node --trace-warnings ...` to show where the warning was created)[0m
+[2m[23:47:09.825][0m [1m[government-facts][0m [95mIN/REQ[0m [95m←[0m [2mgov-local-support[0m [2m[req-2][0m  [36mPOST[0m [96m/facts[0m
+[2m  body:[0m {"@context":["https://www.w3.org/ns/credentials/v2"],"type":["VerifiableCredential"],"issuer":"did:web:gov-local-support%3A8464","validFrom":"2026-06-23T23:47:08.953Z","credentialSubject":{"@context":["https://www.w3.org/ns/did/v1"],"id":"did:web:gov-local-support%3A8464","agentName":"urn:agent:nanda-prototype:gov-local-support","label":"Government Local Business Support","description":"Advises citizens on starting a food truck business and provides contacts for required agencies.","version":"nanda-0.0.0-agent","provider":{"name":"City Government","url":"https://gov-local-support:8464"},"endpoints":{"static":["https://gov-local-support:8464"]},"capabilities":{"modalities":["text"]},"certification":{"level":"self-attested","issuer":"did:web:gov-local-support%3A8464","issuanceDate":"2026-06-23T23:47:04.726Z","expirationDate":"2027-06-23T23:47:04.726Z","statusListUrl":"https://gov-local-support:8464/status"}},"proof":{"type":"DataIntegrityProof","cryptosuite":"eddsa-jcs-2022","created":"2026-06-23T23:47:09.227Z","verificationMethod":"did:web:gov-local-support%3A8464#key-1","proofPurpose":"assertionMethod","proofValue":"TUbAZWU6_aSdyZv3N7PYq2SHnsqxdhvxRq_3kDak1rZTrm6veJV4hNPD2SW2H5zQSc95hLkEegt4CdT8989BDg"}}
+
+[2m[23:47:09.813][0m [1m[food-truck-vendor][0m [32mINFO [0m [1mServer listening at https://127.0.0.1:8468[0m
+
+[2m[23:47:09.833][0m [1m[gov-business-licensing][0m [95mIN/REQ[0m [95m←[0m [2mgovernment-facts[0m [2m[req-1][0m  [36mGET[0m [96m/.well-known/did.json[0m
+
+[2m[23:47:09.839][0m [1m[government-facts][0m [36mOUT/REQ[0m [36m→[0m [2mgov-local-support:8464[0m  [36mGET[0m [96m/.well-known/did.json[0m
+
+[2m[23:47:09.835][0m [1m[gov-parking-dept][0m [32mINFO [0m [1mServer listening at https://127.0.0.1:8467[0m
+
+[2m[23:47:09.861][0m [1m[gov-business-licensing][0m [32mIN/REPLY[0m [32m→[0m [2mgovernment-facts[0m [2m[req-1][0m  [92m200[0m  [36mGET[0m [96m/.well-known/did.json[0m
+[2m  body:[0m {"@context":["https://www.w3.org/ns/did/v1"],"id":"did:web:gov-business-licensing%3A8465","verificationMethod":[{"id":"did:web:gov-business-licensing%3A8465#key-1","type":"Ed25519VerificationKey2020","controller":"did:web:gov-business-licensing%3A8465","publicKeyMultibase":"upkH7qYD0PbN7dJt332m400SA4DTHgFaTjhqBu0k1N5c"}],"assertionMethod":["did:web:gov-business-licensing%3A8465#key-1"]}
+
+[2m[23:47:09.942][0m [1m[government-facts][0m [2mOUT/REPLY[0m [2m←[0m [2mgov-business-licensing:8465[0m  [92m200[0m  [36mGET[0m [96m/.well-known/did.json[0m
+[2m  body:[0m {"@context":["https://www.w3.org/ns/did/v1"],"id":"did:web:gov-business-licensing%3A8465","verificationMethod":[{"id":"did:web:gov-business-licensing%3A8465#key-1","type":"Ed25519VerificationKey2020","controller":"did:web:gov-business-licensing%3A8465","publicKeyMultibase":"upkH7qYD0PbN7dJt332m400SA4DTHgFaTjhqBu0k1N5c"}],"assertionMethod":["did:web:gov-business-licensing%3A8465#key-1"]}
+
+[2m[23:47:09.572][0m [1m[gov-health-dept][0m [32mINFO [0m [1mServer listening at https://172.18.0.8:8466[0m
+
+[2m[23:47:09.573][0m [1m[gov-health-dept][0m [32mINFO [0m [1mgov-health-dept started[0m
+[2m  did:[0m did:web:gov-health-dept%3A8466
+[2m  publicKey:[0m 73WjgOr-WUZ0U1rsDTmWUfsuHD_cHdr5bDZkeWJlYfU
+
+[2m[23:47:09.770][0m [1m[gov-health-dept][0m [36mOUT/REQ[0m [36m→[0m [2mgovernment-facts:8461[0m  [36mPOST[0m [96m/facts[0m
+[2m  body:[0m {"@context":["https://www.w3.org/ns/credentials/v2"],"type":["VerifiableCredential"],"issuer":"did:web:gov-health-dept%3A8466","validFrom":"2026-06-23T23:47:09.573Z","credentialSubject":{"@context":["https://www.w3.org/ns/did/v1"],"id":"did:web:gov-health-dept%3A8466","agentName":"urn:agent:nanda-prototype:gov-health-dept","label":"Government Health Department","description":"Conducts food truck health inspections and issues signed approval credentials.","version":"nanda-0.0.0-agent","provider":{"name":"City Government","url":"https://gov-health-dept:8466"},"endpoints":{"static":["https://gov-health-dept:8466"]},"capabilities":{"modalities":["text"]},"certification":{"level":"self-attested","issuer":"did:web:gov-health-dept%3A8466","issuanceDate":"2026-06-23T23:47:05.966Z","expirationDate":"2027-06-23T23:47:05.966Z","statusListUrl":"https://gov-health-dept:8466/status"}},"proof":{"type":"DataIntegrityProof","cryptosuite":"eddsa-jcs-2022","created":"2026-06-23T23:47:09.769Z","verificationMethod":"did:web:gov-health-dept%3A8466#key-1","proofPurpose":"assertionMethod","proofValue":"xBLCUwQ9DvuXTvQOU9nfA8wMrMqVyZwvqmrCWgLpG85Kskv_k7oAnNZR2F1vuFlIFTON9QqKBCTP2geOOqIWCQ"}}
+
+[2m[23:47:09.826][0m [1m[food-truck-vendor][0m [32mINFO [0m [1mServer listening at https://172.18.0.10:8468[0m
+
+[2m[23:47:09.826][0m [1m[food-truck-vendor][0m [32mINFO [0m [1mfood-truck-vendor started[0m
+[2m  did:[0m did:web:food-truck-vendor%3A8468
+[2m  publicKey:[0m g7Zd8i1eadha2Rq5ebuiK3ZBgscIt1NbkZK0-H9p1tw
+
+[2m[23:47:10.032][0m [1m[food-truck-vendor][0m [36mOUT/REQ[0m [36m→[0m [2mvendor-facts:8463[0m  [36mPOST[0m [96m/facts[0m
+[2m  body:[0m {"@context":["https://www.w3.org/ns/credentials/v2"],"type":["VerifiableCredential"],"issuer":"did:web:food-truck-vendor%3A8468","validFrom":"2026-06-23T23:47:09.827Z","credentialSubject":{"@context":["https://www.w3.org/ns/did/v1"],"id":"did:web:food-truck-vendor%3A8468","agentName":"urn:agent:nanda-prototype:food-truck-vendor","label":"Food Truck Vendor","description":"Rents food trucks to registered businesses.","version":"nanda-0.0.0-agent","provider":{"name":"NANDA Food Trucks LLC","url":"https://food-truck-vendor:8468"},"endpoints":{"static":["https://food-truck-vendor:8468"]},"capabilities":{"modalities":["text"]},"certification":{"level":"self-attested","issuer":"did:web:food-truck-vendor%3A8468","issuanceDate":"2026-06-23T23:47:06.534Z","expirationDate":"2027-06-23T23:47:06.534Z","statusListUrl":"https://food-truck-vendor:8468/status"}},"proof":{"type":"DataIntegrityProof","cryptosuite":"eddsa-jcs-2022","created":"2026-06-23T23:47:10.032Z","verificationMethod":"did:web:food-truck-vendor%3A8468#key-1","proofPurpose":"assertionMethod","proofValue":"W4QqNgJLDULbIOEHkzTRXHJWKT8IngK7WBTdqMtBu7eUmpKOvs3AX6vkR6PYGvLp9YSPq0phqvkqAgMKcEZ4Dw"}}
+
+[2m[23:47:09.852][0m [1m[gov-parking-dept][0m [32mINFO [0m [1mServer listening at https://172.18.0.9:8467[0m
+
+[2m[23:47:09.853][0m [1m[gov-parking-dept][0m [32mINFO [0m [1mgov-parking-dept started[0m
+[2m  did:[0m did:web:gov-parking-dept%3A8467
+[2m  publicKey:[0m NFl5k1bwjPM0oegGmknwEzwJ-2F2q72L-9yC_Hgg1pY
+
+[2m[23:47:10.024][0m [1m[gov-parking-dept][0m [36mOUT/REQ[0m [36m→[0m [2mgovernment-facts:8461[0m  [36mPOST[0m [96m/facts[0m
+[2m  body:[0m {"@context":["https://www.w3.org/ns/credentials/v2"],"type":["VerifiableCredential"],"issuer":"did:web:gov-parking-dept%3A8467","validFrom":"2026-06-23T23:47:09.854Z","credentialSubject":{"@context":["https://www.w3.org/ns/did/v1"],"id":"did:web:gov-parking-dept%3A8467","agentName":"urn:agent:nanda-prototype:gov-parking-dept","label":"Government Parking Department","description":"Issues street vending permits for licensed food truck operators.","version":"nanda-0.0.0-agent","provider":{"name":"City Government","url":"https://gov-parking-dept:8467"},"endpoints":{"static":["https://gov-parking-dept:8467"]},"capabilities":{"modalities":["text"]},"certification":{"level":"self-attested","issuer":"did:web:gov-parking-dept%3A8467","issuanceDate":"2026-06-23T23:47:06.386Z","expirationDate":"2027-06-23T23:47:06.386Z","statusListUrl":"https://gov-parking-dept:8467/status"}},"proof":{"type":"DataIntegrityProof","cryptosuite":"eddsa-jcs-2022","created":"2026-06-23T23:47:10.024Z","verificationMethod":"did:web:gov-parking-dept%3A8467#key-1","proofPurpose":"assertionMethod","proofValue":"cWR4oG0uUOAGaJv_HT7e-9xBp8VXhJHAOFX7Wriaw8j4438onxJP_da0ZzU9hGh4roIdFTzqKc18PrztLHgIBw"}}
+
+[2m[food-truck-vendor][0m [2m(node:1) [UNDICI-H2] Warning: H2 support is experimental, expect them to change at any time.[0m
+[2m[food-truck-vendor][0m [2m(Use `node --trace-warnings ...` to show where the warning was created)[0m
+[2m[23:47:10.519][0m [1m[government-facts][0m [32mIN/REPLY[0m [32m→[0m [2mgov-business-licensing[0m [2m[req-1][0m  [92m201[0m  [36mPOST[0m [96m/facts[0m
+
+[2m[23:47:10.518][0m [1m[gov-local-support][0m [95mIN/REQ[0m [95m←[0m [2mgovernment-facts[0m [2m[req-1][0m  [36mGET[0m [96m/.well-known/did.json[0m
+
+[2m[23:47:10.568][0m [1m[vendor-facts][0m [95mIN/REQ[0m [95m←[0m [2mfood-truck-vendor[0m [2m[req-1][0m  [36mPOST[0m [96m/facts[0m
+[2m  body:[0m {"@context":["https://www.w3.org/ns/credentials/v2"],"type":["VerifiableCredential"],"issuer":"did:web:food-truck-vendor%3A8468","validFrom":"2026-06-23T23:47:09.827Z","credentialSubject":{"@context":["https://www.w3.org/ns/did/v1"],"id":"did:web:food-truck-vendor%3A8468","agentName":"urn:agent:nanda-prototype:food-truck-vendor","label":"Food Truck Vendor","description":"Rents food trucks to registered businesses.","version":"nanda-0.0.0-agent","provider":{"name":"NANDA Food Trucks LLC","url":"https://food-truck-vendor:8468"},"endpoints":{"static":["https://food-truck-vendor:8468"]},"capabilities":{"modalities":["text"]},"certification":{"level":"self-attested","issuer":"did:web:food-truck-vendor%3A8468","issuanceDate":"2026-06-23T23:47:06.534Z","expirationDate":"2027-06-23T23:47:06.534Z","statusListUrl":"https://food-truck-vendor:8468/status"}},"proof":{"type":"DataIntegrityProof","cryptosuite":"eddsa-jcs-2022","created":"2026-06-23T23:47:10.032Z","verificationMethod":"did:web:food-truck-vendor%3A8468#key-1","proofPurpose":"assertionMethod","proofValue":"W4QqNgJLDULbIOEHkzTRXHJWKT8IngK7WBTdqMtBu7eUmpKOvs3AX6vkR6PYGvLp9YSPq0phqvkqAgMKcEZ4Dw"}}
+
+[2m[23:47:10.537][0m [1m[gov-local-support][0m [32mIN/REPLY[0m [32m→[0m [2mgovernment-facts[0m [2m[req-1][0m  [92m200[0m  [36mGET[0m [96m/.well-known/did.json[0m
+[2m  body:[0m {"@context":["https://www.w3.org/ns/did/v1"],"id":"did:web:gov-local-support%3A8464","verificationMethod":[{"id":"did:web:gov-local-support%3A8464#key-1","type":"Ed25519VerificationKey2020","controller":"did:web:gov-local-support%3A8464","publicKeyMultibase":"ummHDdZEzN62BhitwMDDos8ynE_uf9Tfwtoy2X30GNlU"}],"assertionMethod":["did:web:gov-local-support%3A8464#key-1"]}
+
+[2m[23:47:10.611][0m [1m[gov-business-licensing][0m [2mOUT/REPLY[0m [2m←[0m [2mgovernment-facts:8461[0m  [92m201[0m  [36mPOST[0m [96m/facts[0m
+[2m  body:[0m {"message":""}
+
+[2m[23:47:10.597][0m [1m[government-facts][0m [2mOUT/REPLY[0m [2m←[0m [2mgov-local-support:8464[0m  [92m200[0m  [36mGET[0m [96m/.well-known/did.json[0m
+[2m  body:[0m {"@context":["https://www.w3.org/ns/did/v1"],"id":"did:web:gov-local-support%3A8464","verificationMethod":[{"id":"did:web:gov-local-support%3A8464#key-1","type":"Ed25519VerificationKey2020","controller":"did:web:gov-local-support%3A8464","publicKeyMultibase":"ummHDdZEzN62BhitwMDDos8ynE_uf9Tfwtoy2X30GNlU"}],"assertionMethod":["did:web:gov-local-support%3A8464#key-1"]}
+
+[2m[gov-health-dept][0m [2m(node:1) [UNDICI-H2] Warning: H2 support is experimental, expect them to change at any time.[0m
+[2m[gov-health-dept][0m [2m(Use `node --trace-warnings ...` to show where the warning was created)[0m
+[2m[gov-parking-dept][0m [2m(node:1) [UNDICI-H2] Warning: H2 support is experimental, expect them to change at any time.[0m
+[2m[gov-parking-dept][0m [2m(Use `node --trace-warnings ...` to show where the warning was created)[0m
+[2m[23:47:10.679][0m [1m[gov-business-licensing][0m [36mOUT/REQ[0m [36m→[0m [2mlean-index:8460[0m  [36mPOST[0m [96m/agents[0m
+[2m  body:[0m {"agentId":"did:web:gov-business-licensing%3A8465","agentName":"urn:agent:nanda-prototype:gov-business-licensing","primaryFactsUrl":"https://government-facts:8461/facts/did%3Aweb%3Agov-business-licensing%253A8465","ttl":3600,"signature":"Z4WP_0q8BkssBf9uMqwANT_pMO8MIF_aN6JySVGQFaGTEXRxqOF9kh8JB2yeQYUX7QOuxHSny7xc4ssjpCgpCA"}
+
+[2m[23:47:10.797][0m [1m[government-facts][0m [95mIN/REQ[0m [95m←[0m [2mgov-health-dept[0m [2m[req-3][0m  [36mPOST[0m [96m/facts[0m
+[2m  body:[0m {"@context":["https://www.w3.org/ns/credentials/v2"],"type":["VerifiableCredential"],"issuer":"did:web:gov-health-dept%3A8466","validFrom":"2026-06-23T23:47:09.573Z","credentialSubject":{"@context":["https://www.w3.org/ns/did/v1"],"id":"did:web:gov-health-dept%3A8466","agentName":"urn:agent:nanda-prototype:gov-health-dept","label":"Government Health Department","description":"Conducts food truck health inspections and issues signed approval credentials.","version":"nanda-0.0.0-agent","provider":{"name":"City Government","url":"https://gov-health-dept:8466"},"endpoints":{"static":["https://gov-health-dept:8466"]},"capabilities":{"modalities":["text"]},"certification":{"level":"self-attested","issuer":"did:web:gov-health-dept%3A8466","issuanceDate":"2026-06-23T23:47:05.966Z","expirationDate":"2027-06-23T23:47:05.966Z","statusListUrl":"https://gov-health-dept:8466/status"}},"proof":{"type":"DataIntegrityProof","cryptosuite":"eddsa-jcs-2022","created":"2026-06-23T23:47:09.769Z","verificationMethod":"did:web:gov-health-dept%3A8466#key-1","proofPurpose":"assertionMethod","proofValue":"xBLCUwQ9DvuXTvQOU9nfA8wMrMqVyZwvqmrCWgLpG85Kskv_k7oAnNZR2F1vuFlIFTON9QqKBCTP2geOOqIWCQ"}}
+
+[2m[23:47:10.840][0m [1m[lean-index][0m [95mIN/REQ[0m [95m←[0m [2mgov-business-licensing[0m [2m[req-1][0m  [36mPOST[0m [96m/agents[0m
+[2m  body:[0m {"agentId":"did:web:gov-business-licensing%3A8465","agentName":"urn:agent:nanda-prototype:gov-business-licensing","primaryFactsUrl":"https://government-facts:8461/facts/did%3Aweb%3Agov-business-licensing%253A8465","ttl":3600,"signature":"Z4WP_0q8BkssBf9uMqwANT_pMO8MIF_aN6JySVGQFaGTEXRxqOF9kh8JB2yeQYUX7QOuxHSny7xc4ssjpCgpCA"}
+
+[2m[23:47:10.798][0m [1m[government-facts][0m [36mOUT/REQ[0m [36m→[0m [2mgov-health-dept:8466[0m  [36mGET[0m [96m/.well-known/did.json[0m
+
+[2m[23:47:10.822][0m [1m[government-facts][0m [95mIN/REQ[0m [95m←[0m [2mgov-parking-dept[0m [2m[req-4][0m  [36mPOST[0m [96m/facts[0m
+[2m  body:[0m {"@context":["https://www.w3.org/ns/credentials/v2"],"type":["VerifiableCredential"],"issuer":"did:web:gov-parking-dept%3A8467","validFrom":"2026-06-23T23:47:09.854Z","credentialSubject":{"@context":["https://www.w3.org/ns/did/v1"],"id":"did:web:gov-parking-dept%3A8467","agentName":"urn:agent:nanda-prototype:gov-parking-dept","label":"Government Parking Department","description":"Issues street vending permits for licensed food truck operators.","version":"nanda-0.0.0-agent","provider":{"name":"City Government","url":"https://gov-parking-dept:8467"},"endpoints":{"static":["https://gov-parking-dept:8467"]},"capabilities":{"modalities":["text"]},"certification":{"level":"self-attested","issuer":"did:web:gov-parking-dept%3A8467","issuanceDate":"2026-06-23T23:47:06.386Z","expirationDate":"2027-06-23T23:47:06.386Z","statusListUrl":"https://gov-parking-dept:8467/status"}},"proof":{"type":"DataIntegrityProof","cryptosuite":"eddsa-jcs-2022","created":"2026-06-23T23:47:10.024Z","verificationMethod":"did:web:gov-parking-dept%3A8467#key-1","proofPurpose":"assertionMethod","proofValue":"cWR4oG0uUOAGaJv_HT7e-9xBp8VXhJHAOFX7Wriaw8j4438onxJP_da0ZzU9hGh4roIdFTzqKc18PrztLHgIBw"}}
+
+[2m[23:47:10.822][0m [1m[government-facts][0m [36mOUT/REQ[0m [36m→[0m [2mgov-parking-dept:8467[0m  [36mGET[0m [96m/.well-known/did.json[0m
+
+[2m[23:47:10.862][0m [1m[government-facts][0m [32mIN/REPLY[0m [32m→[0m [2mgov-local-support[0m [2m[req-2][0m  [92m201[0m  [36mPOST[0m [96m/facts[0m
+
+[2m[23:47:10.932][0m [1m[gov-local-support][0m [2mOUT/REPLY[0m [2m←[0m [2mgovernment-facts:8461[0m  [92m201[0m  [36mPOST[0m [96m/facts[0m
+[2m  body:[0m {"message":""}
+
+[2m[23:47:10.982][0m [1m[gov-local-support][0m [36mOUT/REQ[0m [36m→[0m [2mlean-index:8460[0m  [36mPOST[0m [96m/agents[0m
+[2m  body:[0m {"agentId":"did:web:gov-local-support%3A8464","agentName":"urn:agent:nanda-prototype:gov-local-support","primaryFactsUrl":"https://government-facts:8461/facts/did%3Aweb%3Agov-local-support%253A8464","ttl":3600,"signature":"XMbOO2dXxglInho-X3anAgVIBX1O6X0hN0ucuMzGuplJTccSvez-gyN2nO7ggtt_91mFiEpWz_n1bNnydq9DDg"}
+
+[2m[23:47:10.620][0m [1m[vendor-facts][0m [36mOUT/REQ[0m [36m→[0m [2mfood-truck-vendor:8468[0m  [36mGET[0m [96m/.well-known/did.json[0m
+
+[2m[23:47:11.036][0m [1m[gov-parking-dept][0m [95mIN/REQ[0m [95m←[0m [2mgovernment-facts[0m [2m[req-1][0m  [36mGET[0m [96m/.well-known/did.json[0m
+
+[2m[23:47:11.040][0m [1m[gov-health-dept][0m [95mIN/REQ[0m [95m←[0m [2mgovernment-facts[0m [2m[req-1][0m  [36mGET[0m [96m/.well-known/did.json[0m
+
+[2m[23:47:11.047][0m [1m[gov-parking-dept][0m [32mIN/REPLY[0m [32m→[0m [2mgovernment-facts[0m [2m[req-1][0m  [92m200[0m  [36mGET[0m [96m/.well-known/did.json[0m
+[2m  body:[0m {"@context":["https://www.w3.org/ns/did/v1"],"id":"did:web:gov-parking-dept%3A8467","verificationMethod":[{"id":"did:web:gov-parking-dept%3A8467#key-1","type":"Ed25519VerificationKey2020","controller":"did:web:gov-parking-dept%3A8467","publicKeyMultibase":"uNFl5k1bwjPM0oegGmknwEzwJ-2F2q72L-9yC_Hgg1pY"}],"assertionMethod":["did:web:gov-parking-dept%3A8467#key-1"]}
+
+[2m[23:47:11.051][0m [1m[gov-health-dept][0m [32mIN/REPLY[0m [32m→[0m [2mgovernment-facts[0m [2m[req-1][0m  [92m200[0m  [36mGET[0m [96m/.well-known/did.json[0m
+[2m  body:[0m {"@context":["https://www.w3.org/ns/did/v1"],"id":"did:web:gov-health-dept%3A8466","verificationMethod":[{"id":"did:web:gov-health-dept%3A8466#key-1","type":"Ed25519VerificationKey2020","controller":"did:web:gov-health-dept%3A8466","publicKeyMultibase":"u73WjgOr-WUZ0U1rsDTmWUfsuHD_cHdr5bDZkeWJlYfU"}],"assertionMethod":["did:web:gov-health-dept%3A8466#key-1"]}
+
+[2m[23:47:11.099][0m [1m[government-facts][0m [2mOUT/REPLY[0m [2m←[0m [2mgov-parking-dept:8467[0m  [92m200[0m  [36mGET[0m [96m/.well-known/did.json[0m
+[2m  body:[0m {"@context":["https://www.w3.org/ns/did/v1"],"id":"did:web:gov-parking-dept%3A8467","verificationMethod":[{"id":"did:web:gov-parking-dept%3A8467#key-1","type":"Ed25519VerificationKey2020","controller":"did:web:gov-parking-dept%3A8467","publicKeyMultibase":"uNFl5k1bwjPM0oegGmknwEzwJ-2F2q72L-9yC_Hgg1pY"}],"assertionMethod":["did:web:gov-parking-dept%3A8467#key-1"]}
+
+[2m[vendor-facts][0m [2m(node:1) [UNDICI-H2] Warning: H2 support is experimental, expect them to change at any time.[0m
+[2m[vendor-facts][0m [2m(Use `node --trace-warnings ...` to show where the warning was created)[0m
+[2m[23:47:11.183][0m [1m[food-truck-vendor][0m [95mIN/REQ[0m [95m←[0m [2mvendor-facts[0m [2m[req-1][0m  [36mGET[0m [96m/.well-known/did.json[0m
+
+[2m[23:47:11.194][0m [1m[food-truck-vendor][0m [32mIN/REPLY[0m [32m→[0m [2mvendor-facts[0m [2m[req-1][0m  [92m200[0m  [36mGET[0m [96m/.well-known/did.json[0m
+[2m  body:[0m {"@context":["https://www.w3.org/ns/did/v1"],"id":"did:web:food-truck-vendor%3A8468","verificationMethod":[{"id":"did:web:food-truck-vendor%3A8468#key-1","type":"Ed25519VerificationKey2020","controller":"did:web:food-truck-vendor%3A8468","publicKeyMultibase":"ug7Zd8i1eadha2Rq5ebuiK3ZBgscIt1NbkZK0-H9p1tw"}],"assertionMethod":["did:web:food-truck-vendor%3A8468#key-1"]}
+
+[2m[23:47:10.875][0m [1m[lean-index][0m [36mOUT/REQ[0m [36m→[0m [2mgov-business-licensing:8465[0m  [36mGET[0m [96m/.well-known/did.json[0m
+
+[2m[23:47:11.279][0m [1m[vendor-facts][0m [2mOUT/REPLY[0m [2m←[0m [2mfood-truck-vendor:8468[0m  [92m200[0m  [36mGET[0m [96m/.well-known/did.json[0m
+[2m  body:[0m {"@context":["https://www.w3.org/ns/did/v1"],"id":"did:web:food-truck-vendor%3A8468","verificationMethod":[{"id":"did:web:food-truck-vendor%3A8468#key-1","type":"Ed25519VerificationKey2020","controller":"did:web:food-truck-vendor%3A8468","publicKeyMultibase":"ug7Zd8i1eadha2Rq5ebuiK3ZBgscIt1NbkZK0-H9p1tw"}],"assertionMethod":["did:web:food-truck-vendor%3A8468#key-1"]}
+
+[2m[23:47:11.246][0m [1m[government-facts][0m [2mOUT/REPLY[0m [2m←[0m [2mgov-health-dept:8466[0m  [92m200[0m  [36mGET[0m [96m/.well-known/did.json[0m
+[2m  body:[0m {"@context":["https://www.w3.org/ns/did/v1"],"id":"did:web:gov-health-dept%3A8466","verificationMethod":[{"id":"did:web:gov-health-dept%3A8466#key-1","type":"Ed25519VerificationKey2020","controller":"did:web:gov-health-dept%3A8466","publicKeyMultibase":"u73WjgOr-WUZ0U1rsDTmWUfsuHD_cHdr5bDZkeWJlYfU"}],"assertionMethod":["did:web:gov-health-dept%3A8466#key-1"]}
+
+[2m[lean-index][0m [2m(node:1) [UNDICI-H2] Warning: H2 support is experimental, expect them to change at any time.[0m
+[2m[lean-index][0m [2m(Use `node --trace-warnings ...` to show where the warning was created)[0m
+[2m[23:47:11.439][0m [1m[lean-index][0m [95mIN/REQ[0m [95m←[0m [2mgov-local-support[0m [2m[req-2][0m  [36mPOST[0m [96m/agents[0m
+[2m  body:[0m {"agentId":"did:web:gov-local-support%3A8464","agentName":"urn:agent:nanda-prototype:gov-local-support","primaryFactsUrl":"https://government-facts:8461/facts/did%3Aweb%3Agov-local-support%253A8464","ttl":3600,"signature":"XMbOO2dXxglInho-X3anAgVIBX1O6X0hN0ucuMzGuplJTccSvez-gyN2nO7ggtt_91mFiEpWz_n1bNnydq9DDg"}
+
+[2m[23:47:11.487][0m [1m[gov-business-licensing][0m [95mIN/REQ[0m [95m←[0m [2mlean-index[0m [2m[req-2][0m  [36mGET[0m [96m/.well-known/did.json[0m
+
+[2m[23:47:11.487][0m [1m[gov-business-licensing][0m [32mIN/REPLY[0m [32m→[0m [2mlean-index[0m [2m[req-2][0m  [92m200[0m  [36mGET[0m [96m/.well-known/did.json[0m
+[2m  body:[0m {"@context":["https://www.w3.org/ns/did/v1"],"id":"did:web:gov-business-licensing%3A8465","verificationMethod":[{"id":"did:web:gov-business-licensing%3A8465#key-1","type":"Ed25519VerificationKey2020","controller":"did:web:gov-business-licensing%3A8465","publicKeyMultibase":"upkH7qYD0PbN7dJt332m400SA4DTHgFaTjhqBu0k1N5c"}],"assertionMethod":["did:web:gov-business-licensing%3A8465#key-1"]}
+
+[2m[23:47:11.479][0m [1m[government-facts][0m [32mIN/REPLY[0m [32m→[0m [2mgov-parking-dept[0m [2m[req-4][0m  [92m201[0m  [36mPOST[0m [96m/facts[0m
+
+[2m[23:47:11.505][0m [1m[government-facts][0m [32mIN/REPLY[0m [32m→[0m [2mgov-health-dept[0m [2m[req-3][0m  [92m201[0m  [36mPOST[0m [96m/facts[0m
+
+[2m[23:47:11.565][0m [1m[gov-parking-dept][0m [2mOUT/REPLY[0m [2m←[0m [2mgovernment-facts:8461[0m  [92m201[0m  [36mPOST[0m [96m/facts[0m
+[2m  body:[0m {"message":""}
+
+[2m[23:47:11.548][0m [1m[gov-health-dept][0m [2mOUT/REPLY[0m [2m←[0m [2mgovernment-facts:8461[0m  [92m201[0m  [36mPOST[0m [96m/facts[0m
+[2m  body:[0m {"message":""}
+
+[2m[23:47:11.625][0m [1m[gov-parking-dept][0m [36mOUT/REQ[0m [36m→[0m [2mlean-index:8460[0m  [36mPOST[0m [96m/agents[0m
+[2m  body:[0m {"agentId":"did:web:gov-parking-dept%3A8467","agentName":"urn:agent:nanda-prototype:gov-parking-dept","primaryFactsUrl":"https://government-facts:8461/facts/did%3Aweb%3Agov-parking-dept%253A8467","ttl":3600,"signature":"mDVkqfJfv7c5ttqudpFTtgTXB8Vv3f65jrrHslJlRZc_6iuyPNjLM9SGjpAqiGtT2fcb4-9f7F637JKbdz6hBQ"}
+
+[2m[23:47:11.630][0m [1m[gov-health-dept][0m [36mOUT/REQ[0m [36m→[0m [2mlean-index:8460[0m  [36mPOST[0m [96m/agents[0m
+[2m  body:[0m {"agentId":"did:web:gov-health-dept%3A8466","agentName":"urn:agent:nanda-prototype:gov-health-dept","primaryFactsUrl":"https://government-facts:8461/facts/did%3Aweb%3Agov-health-dept%253A8466","ttl":3600,"signature":"BjRNOOvn7lkuwuhEO9IBHZNTqdJkfmdAUj16_0Sb9fX4clgFhCrc3MtMY2PefHF0kY6mgjMY_Sgry6zAPugQAw"}
+
+[2m[23:47:12.182][0m [1m[vendor-facts][0m [32mIN/REPLY[0m [32m→[0m [2mfood-truck-vendor[0m [2m[req-1][0m  [92m201[0m  [36mPOST[0m [96m/facts[0m
+
+[2m[23:47:12.208][0m [1m[food-truck-vendor][0m [2mOUT/REPLY[0m [2m←[0m [2mvendor-facts:8463[0m  [92m201[0m  [36mPOST[0m [96m/facts[0m
+[2m  body:[0m {"message":""}
+
+[2m[23:47:12.227][0m [1m[food-truck-vendor][0m [36mOUT/REQ[0m [36m→[0m [2mlean-index:8460[0m  [36mPOST[0m [96m/agents[0m
+[2m  body:[0m {"agentId":"did:web:food-truck-vendor%3A8468","agentName":"urn:agent:nanda-prototype:food-truck-vendor","primaryFactsUrl":"https://vendor-facts:8463/facts/did%3Aweb%3Afood-truck-vendor%253A8468","ttl":3600,"signature":"6YF3MGgQ4KMpUqMc8zP_E9oBTnvi64PY8RTTwFfiDx-MAQAsQUoi07T6LADWY2VhXhUSMArdoXLcOsvnwRDyDQ"}
+
+[2m[23:47:11.448][0m [1m[lean-index][0m [36mOUT/REQ[0m [36m→[0m [2mgov-local-support:8464[0m  [36mGET[0m [96m/.well-known/did.json[0m
+
+[2m[23:47:11.623][0m [1m[lean-index][0m [2mOUT/REPLY[0m [2m←[0m [2mgov-business-licensing:8465[0m  [92m200[0m  [36mGET[0m [96m/.well-known/did.json[0m
+[2m  body:[0m {"@context":["https://www.w3.org/ns/did/v1"],"id":"did:web:gov-business-licensing%3A8465","verificationMethod":[{"id":"did:web:gov-business-licensing%3A8465#key-1","type":"Ed25519VerificationKey2020","controller":"did:web:gov-business-licensing%3A8465","publicKeyMultibase":"upkH7qYD0PbN7dJt332m400SA4DTHgFaTjhqBu0k1N5c"}],"assertionMethod":["did:web:gov-business-licensing%3A8465#key-1"]}
+
+[2m[23:47:12.335][0m [1m[lean-index][0m [32mIN/REPLY[0m [32m→[0m [2mgov-business-licensing[0m [2m[req-1][0m  [92m201[0m  [36mPOST[0m [96m/agents[0m
+
+[2m[23:47:12.369][0m [1m[gov-local-support][0m [95mIN/REQ[0m [95m←[0m [2mlean-index[0m [2m[req-2][0m  [36mGET[0m [96m/.well-known/did.json[0m
+
+[2m[23:47:12.372][0m [1m[gov-local-support][0m [32mIN/REPLY[0m [32m→[0m [2mlean-index[0m [2m[req-2][0m  [92m200[0m  [36mGET[0m [96m/.well-known/did.json[0m
+[2m  body:[0m {"@context":["https://www.w3.org/ns/did/v1"],"id":"did:web:gov-local-support%3A8464","verificationMethod":[{"id":"did:web:gov-local-support%3A8464#key-1","type":"Ed25519VerificationKey2020","controller":"did:web:gov-local-support%3A8464","publicKeyMultibase":"ummHDdZEzN62BhitwMDDos8ynE_uf9Tfwtoy2X30GNlU"}],"assertionMethod":["did:web:gov-local-support%3A8464#key-1"]}
+
+[2m[23:47:12.382][0m [1m[lean-index][0m [2mOUT/REPLY[0m [2m←[0m [2mgov-local-support:8464[0m  [92m200[0m  [36mGET[0m [96m/.well-known/did.json[0m
+[2m  body:[0m {"@context":["https://www.w3.org/ns/did/v1"],"id":"did:web:gov-local-support%3A8464","verificationMethod":[{"id":"did:web:gov-local-support%3A8464#key-1","type":"Ed25519VerificationKey2020","controller":"did:web:gov-local-support%3A8464","publicKeyMultibase":"ummHDdZEzN62BhitwMDDos8ynE_uf9Tfwtoy2X30GNlU"}],"assertionMethod":["did:web:gov-local-support%3A8464#key-1"]}
+
+[2m[23:47:12.443][0m [1m[gov-business-licensing][0m [2mOUT/REPLY[0m [2m←[0m [2mlean-index:8460[0m  [92m201[0m  [36mPOST[0m [96m/agents[0m
+[2m  body:[0m {"message":""}
+
+[2m[23:47:12.443][0m [1m[gov-business-licensing][0m [32mINFO [0m [1mgov-business-licensing registered[0m
+[2m  did:[0m did:web:gov-business-licensing%3A8465
+
+[2m[23:47:12.419][0m [1m[lean-index][0m [95mIN/REQ[0m [95m←[0m [2mgov-parking-dept[0m [2m[req-3][0m  [36mPOST[0m [96m/agents[0m
+[2m  body:[0m {"agentId":"did:web:gov-parking-dept%3A8467","agentName":"urn:agent:nanda-prototype:gov-parking-dept","primaryFactsUrl":"https://government-facts:8461/facts/did%3Aweb%3Agov-parking-dept%253A8467","ttl":3600,"signature":"mDVkqfJfv7c5ttqudpFTtgTXB8Vv3f65jrrHslJlRZc_6iuyPNjLM9SGjpAqiGtT2fcb4-9f7F637JKbdz6hBQ"}
+
+[2m[23:47:12.419][0m [1m[lean-index][0m [36mOUT/REQ[0m [36m→[0m [2mgov-parking-dept:8467[0m  [36mGET[0m [96m/.well-known/did.json[0m
+
+[2m[23:47:12.479][0m [1m[lean-index][0m [32mIN/REPLY[0m [32m→[0m [2mgov-local-support[0m [2m[req-2][0m  [92m201[0m  [36mPOST[0m [96m/agents[0m
+
+[2m[23:47:12.487][0m [1m[lean-index][0m [95mIN/REQ[0m [95m←[0m [2mgov-health-dept[0m [2m[req-4][0m  [36mPOST[0m [96m/agents[0m
+[2m  body:[0m {"agentId":"did:web:gov-health-dept%3A8466","agentName":"urn:agent:nanda-prototype:gov-health-dept","primaryFactsUrl":"https://government-facts:8461/facts/did%3Aweb%3Agov-health-dept%253A8466","ttl":3600,"signature":"BjRNOOvn7lkuwuhEO9IBHZNTqdJkfmdAUj16_0Sb9fX4clgFhCrc3MtMY2PefHF0kY6mgjMY_Sgry6zAPugQAw"}
+
+[2m[23:47:12.487][0m [1m[lean-index][0m [36mOUT/REQ[0m [36m→[0m [2mgov-health-dept:8466[0m  [36mGET[0m [96m/.well-known/did.json[0m
+
+[2m[23:47:12.519][0m [1m[gov-local-support][0m [2mOUT/REPLY[0m [2m←[0m [2mlean-index:8460[0m  [92m201[0m  [36mPOST[0m [96m/agents[0m
+[2m  body:[0m {"message":""}
+
+[2m[23:47:12.520][0m [1m[gov-local-support][0m [32mINFO [0m [1mgov-local-support registered[0m
+[2m  did:[0m did:web:gov-local-support%3A8464
+
+[2m[23:47:12.527][0m [1m[gov-parking-dept][0m [95mIN/REQ[0m [95m←[0m [2mlean-index[0m [2m[req-2][0m  [36mGET[0m [96m/.well-known/did.json[0m
+
+[2m[23:47:12.531][0m [1m[gov-parking-dept][0m [32mIN/REPLY[0m [32m→[0m [2mlean-index[0m [2m[req-2][0m  [92m200[0m  [36mGET[0m [96m/.well-known/did.json[0m
+[2m  body:[0m {"@context":["https://www.w3.org/ns/did/v1"],"id":"did:web:gov-parking-dept%3A8467","verificationMethod":[{"id":"did:web:gov-parking-dept%3A8467#key-1","type":"Ed25519VerificationKey2020","controller":"did:web:gov-parking-dept%3A8467","publicKeyMultibase":"uNFl5k1bwjPM0oegGmknwEzwJ-2F2q72L-9yC_Hgg1pY"}],"assertionMethod":["did:web:gov-parking-dept%3A8467#key-1"]}
+
+[2m[23:47:12.512][0m [1m[lean-index][0m [95mIN/REQ[0m [95m←[0m [2mfood-truck-vendor[0m [2m[req-5][0m  [36mPOST[0m [96m/agents[0m
+[2m  body:[0m {"agentId":"did:web:food-truck-vendor%3A8468","agentName":"urn:agent:nanda-prototype:food-truck-vendor","primaryFactsUrl":"https://vendor-facts:8463/facts/did%3Aweb%3Afood-truck-vendor%253A8468","ttl":3600,"signature":"6YF3MGgQ4KMpUqMc8zP_E9oBTnvi64PY8RTTwFfiDx-MAQAsQUoi07T6LADWY2VhXhUSMArdoXLcOsvnwRDyDQ"}
+
+[2m[23:47:12.512][0m [1m[lean-index][0m [36mOUT/REQ[0m [36m→[0m [2mfood-truck-vendor:8468[0m  [36mGET[0m [96m/.well-known/did.json[0m
+
+[2m[23:47:12.546][0m [1m[lean-index][0m [2mOUT/REPLY[0m [2m←[0m [2mgov-parking-dept:8467[0m  [92m200[0m  [36mGET[0m [96m/.well-known/did.json[0m
+[2m  body:[0m {"@context":["https://www.w3.org/ns/did/v1"],"id":"did:web:gov-parking-dept%3A8467","verificationMethod":[{"id":"did:web:gov-parking-dept%3A8467#key-1","type":"Ed25519VerificationKey2020","controller":"did:web:gov-parking-dept%3A8467","publicKeyMultibase":"uNFl5k1bwjPM0oegGmknwEzwJ-2F2q72L-9yC_Hgg1pY"}],"assertionMethod":["did:web:gov-parking-dept%3A8467#key-1"]}
+
+[2m[23:47:12.586][0m [1m[gov-health-dept][0m [95mIN/REQ[0m [95m←[0m [2mlean-index[0m [2m[req-2][0m  [36mGET[0m [96m/.well-known/did.json[0m
+
+[2m[23:47:12.589][0m [1m[gov-health-dept][0m [32mIN/REPLY[0m [32m→[0m [2mlean-index[0m [2m[req-2][0m  [92m200[0m  [36mGET[0m [96m/.well-known/did.json[0m
+[2m  body:[0m {"@context":["https://www.w3.org/ns/did/v1"],"id":"did:web:gov-health-dept%3A8466","verificationMethod":[{"id":"did:web:gov-health-dept%3A8466#key-1","type":"Ed25519VerificationKey2020","controller":"did:web:gov-health-dept%3A8466","publicKeyMultibase":"u73WjgOr-WUZ0U1rsDTmWUfsuHD_cHdr5bDZkeWJlYfU"}],"assertionMethod":["did:web:gov-health-dept%3A8466#key-1"]}
+
+[2m[23:47:12.594][0m [1m[lean-index][0m [32mIN/REPLY[0m [32m→[0m [2mgov-parking-dept[0m [2m[req-3][0m  [92m201[0m  [36mPOST[0m [96m/agents[0m
+
+[2m[23:47:12.627][0m [1m[food-truck-vendor][0m [95mIN/REQ[0m [95m←[0m [2mlean-index[0m [2m[req-2][0m  [36mGET[0m [96m/.well-known/did.json[0m
+
+[2m[23:47:12.629][0m [1m[food-truck-vendor][0m [32mIN/REPLY[0m [32m→[0m [2mlean-index[0m [2m[req-2][0m  [92m200[0m  [36mGET[0m [96m/.well-known/did.json[0m
+[2m  body:[0m {"@context":["https://www.w3.org/ns/did/v1"],"id":"did:web:food-truck-vendor%3A8468","verificationMethod":[{"id":"did:web:food-truck-vendor%3A8468#key-1","type":"Ed25519VerificationKey2020","controller":"did:web:food-truck-vendor%3A8468","publicKeyMultibase":"ug7Zd8i1eadha2Rq5ebuiK3ZBgscIt1NbkZK0-H9p1tw"}],"assertionMethod":["did:web:food-truck-vendor%3A8468#key-1"]}
+
+[2m[23:47:12.604][0m [1m[lean-index][0m [2mOUT/REPLY[0m [2m←[0m [2mgov-health-dept:8466[0m  [92m200[0m  [36mGET[0m [96m/.well-known/did.json[0m
+[2m  body:[0m {"@context":["https://www.w3.org/ns/did/v1"],"id":"did:web:gov-health-dept%3A8466","verificationMethod":[{"id":"did:web:gov-health-dept%3A8466#key-1","type":"Ed25519VerificationKey2020","controller":"did:web:gov-health-dept%3A8466","publicKeyMultibase":"u73WjgOr-WUZ0U1rsDTmWUfsuHD_cHdr5bDZkeWJlYfU"}],"assertionMethod":["did:web:gov-health-dept%3A8466#key-1"]}
+
+[2m[23:47:12.663][0m [1m[gov-parking-dept][0m [2mOUT/REPLY[0m [2m←[0m [2mlean-index:8460[0m  [92m201[0m  [36mPOST[0m [96m/agents[0m
+[2m  body:[0m {"message":""}
+
+[2m[23:47:12.666][0m [1m[gov-parking-dept][0m [32mINFO [0m [1mgov-parking-dept registered[0m
+[2m  did:[0m did:web:gov-parking-dept%3A8467
+
+[2m[23:47:12.655][0m [1m[lean-index][0m [2mOUT/REPLY[0m [2m←[0m [2mfood-truck-vendor:8468[0m  [92m200[0m  [36mGET[0m [96m/.well-known/did.json[0m
+[2m  body:[0m {"@context":["https://www.w3.org/ns/did/v1"],"id":"did:web:food-truck-vendor%3A8468","verificationMethod":[{"id":"did:web:food-truck-vendor%3A8468#key-1","type":"Ed25519VerificationKey2020","controller":"did:web:food-truck-vendor%3A8468","publicKeyMultibase":"ug7Zd8i1eadha2Rq5ebuiK3ZBgscIt1NbkZK0-H9p1tw"}],"assertionMethod":["did:web:food-truck-vendor%3A8468#key-1"]}
+
+[2m[23:47:12.675][0m [1m[gov-health-dept][0m [2mOUT/REPLY[0m [2m←[0m [2mlean-index:8460[0m  [92m201[0m  [36mPOST[0m [96m/agents[0m
+[2m  body:[0m {"message":""}
+
+[2m[23:47:12.670][0m [1m[lean-index][0m [32mIN/REPLY[0m [32m→[0m [2mgov-health-dept[0m [2m[req-4][0m  [92m201[0m  [36mPOST[0m [96m/agents[0m
+
+[2m[23:47:12.677][0m [1m[gov-health-dept][0m [32mINFO [0m [1mgov-health-dept registered[0m
+[2m  did:[0m did:web:gov-health-dept%3A8466
+
+[2m[23:47:12.693][0m [1m[lean-index][0m [32mIN/REPLY[0m [32m→[0m [2mfood-truck-vendor[0m [2m[req-5][0m  [92m201[0m  [36mPOST[0m [96m/agents[0m
+
+[2m[23:47:12.700][0m [1m[food-truck-vendor][0m [2mOUT/REPLY[0m [2m←[0m [2mlean-index:8460[0m  [92m201[0m  [36mPOST[0m [96m/agents[0m
+[2m  body:[0m {"message":""}
+
+[2m[23:47:12.702][0m [1m[food-truck-vendor][0m [32mINFO [0m [1mfood-truck-vendor registered[0m
+[2m  did:[0m did:web:food-truck-vendor%3A8468
+
+[2m[23:47:15.836][0m [1m[personal-rep][0m [32mINFO [0m [1mServer listening at https://127.0.0.1:8469[0m
+
+[2m[23:47:15.840][0m [1m[personal-rep][0m [32mINFO [0m [1mServer listening at https://172.18.0.11:8469[0m
+
+[2m[23:47:15.841][0m [1m[personal-rep][0m [32mINFO [0m [1mpersonal-rep started[0m
+[2m  did:[0m did:web:personal-rep%3A8469
+[2m  publicKey:[0m 5tEicaSTBcyFTXvPUL4P3Hp1MtOaXiQItb_z9UeUA7M
+
+[2m[23:47:15.889][0m [1m[personal-rep][0m [36mOUT/REQ[0m [36m→[0m [2mpersonal-agents-facts:8462[0m  [36mPOST[0m [96m/facts[0m
+[2m  body:[0m {"@context":["https://www.w3.org/ns/credentials/v2"],"type":["VerifiableCredential"],"issuer":"did:web:personal-rep%3A8469","validFrom":"2026-06-23T23:47:15.841Z","credentialSubject":{"@context":["https://www.w3.org/ns/did/v1"],"id":"did:web:personal-rep%3A8469","agentName":"urn:agent:nanda-prototype:personal-rep","label":"Citizen's Personal Representative","description":"Autonomously navigates government and vendor agents to achieve citizen goals.","version":"nanda-0.0.0-agent","provider":{"name":"Personal","url":"https://personal-rep:8469"},"endpoints":{"static":["https://personal-rep:8469"]},"capabilities":{"modalities":["text"]},"certification":{"level":"self-attested","issuer":"did:web:personal-rep%3A8469","issuanceDate":"2026-06-23T23:47:15.394Z","expirationDate":"2027-06-23T23:47:15.394Z","statusListUrl":"https://personal-rep:8469/status"}},"proof":{"type":"DataIntegrityProof","cryptosuite":"eddsa-jcs-2022","created":"2026-06-23T23:47:15.889Z","verificationMethod":"did:web:personal-rep%3A8469#key-1","proofPurpose":"assertionMethod","proofValue":"uGuQxHfdtYV-p4-6MY0MNGZfFW6J-gewBVNPZScIQVPZQxZUjn8Yp4Rx-3PmDGOHmBibUOogzBqJxSWzlLn0DQ"}}
+
+[2m[personal-rep][0m [2m(node:1) [UNDICI-H2] Warning: H2 support is experimental, expect them to change at any time.[0m
+[2m[personal-rep][0m [2m(Use `node --trace-warnings ...` to show where the warning was created)[0m
+[2m[23:47:16.060][0m [1m[personal-agents-facts][0m [95mIN/REQ[0m [95m←[0m [2mpersonal-rep[0m [2m[req-1][0m  [36mPOST[0m [96m/facts[0m
+[2m  body:[0m {"@context":["https://www.w3.org/ns/credentials/v2"],"type":["VerifiableCredential"],"issuer":"did:web:personal-rep%3A8469","validFrom":"2026-06-23T23:47:15.841Z","credentialSubject":{"@context":["https://www.w3.org/ns/did/v1"],"id":"did:web:personal-rep%3A8469","agentName":"urn:agent:nanda-prototype:personal-rep","label":"Citizen's Personal Representative","description":"Autonomously navigates government and vendor agents to achieve citizen goals.","version":"nanda-0.0.0-agent","provider":{"name":"Personal","url":"https://personal-rep:8469"},"endpoints":{"static":["https://personal-rep:8469"]},"capabilities":{"modalities":["text"]},"certification":{"level":"self-attested","issuer":"did:web:personal-rep%3A8469","issuanceDate":"2026-06-23T23:47:15.394Z","expirationDate":"2027-06-23T23:47:15.394Z","statusListUrl":"https://personal-rep:8469/status"}},"proof":{"type":"DataIntegrityProof","cryptosuite":"eddsa-jcs-2022","created":"2026-06-23T23:47:15.889Z","verificationMethod":"did:web:personal-rep%3A8469#key-1","proofPurpose":"assertionMethod","proofValue":"uGuQxHfdtYV-p4-6MY0MNGZfFW6J-gewBVNPZScIQVPZQxZUjn8Yp4Rx-3PmDGOHmBibUOogzBqJxSWzlLn0DQ"}}
+
+[2m[23:47:16.069][0m [1m[personal-agents-facts][0m [36mOUT/REQ[0m [36m→[0m [2mpersonal-rep:8469[0m  [36mGET[0m [96m/.well-known/did.json[0m
+
+[2m[personal-agents-facts][0m [2m(node:1) [UNDICI-H2] Warning: H2 support is experimental, expect them to change at any time.[0m
+[2m[personal-agents-facts][0m [2m(Use `node --trace-warnings ...` to show where the warning was created)[0m
+[2m[23:47:16.171][0m [1m[personal-rep][0m [95mIN/REQ[0m [95m←[0m [2mpersonal-agents-facts[0m [2m[req-1][0m  [36mGET[0m [96m/.well-known/did.json[0m
+
+[2m[23:47:16.176][0m [1m[personal-rep][0m [32mIN/REPLY[0m [32m→[0m [2mpersonal-agents-facts[0m [2m[req-1][0m  [92m200[0m  [36mGET[0m [96m/.well-known/did.json[0m
+[2m  body:[0m {"@context":["https://www.w3.org/ns/did/v1"],"id":"did:web:personal-rep%3A8469","verificationMethod":[{"id":"did:web:personal-rep%3A8469#key-1","type":"Ed25519VerificationKey2020","controller":"did:web:personal-rep%3A8469","publicKeyMultibase":"u5tEicaSTBcyFTXvPUL4P3Hp1MtOaXiQItb_z9UeUA7M"}],"assertionMethod":["did:web:personal-rep%3A8469#key-1"]}
+
+[2m[23:47:16.201][0m [1m[personal-agents-facts][0m [2mOUT/REPLY[0m [2m←[0m [2mpersonal-rep:8469[0m  [92m200[0m  [36mGET[0m [96m/.well-known/did.json[0m
+[2m  body:[0m {"@context":["https://www.w3.org/ns/did/v1"],"id":"did:web:personal-rep%3A8469","verificationMethod":[{"id":"did:web:personal-rep%3A8469#key-1","type":"Ed25519VerificationKey2020","controller":"did:web:personal-rep%3A8469","publicKeyMultibase":"u5tEicaSTBcyFTXvPUL4P3Hp1MtOaXiQItb_z9UeUA7M"}],"assertionMethod":["did:web:personal-rep%3A8469#key-1"]}
+
+[2m[23:47:16.403][0m [1m[personal-agents-facts][0m [32mIN/REPLY[0m [32m→[0m [2mpersonal-rep[0m [2m[req-1][0m  [92m201[0m  [36mPOST[0m [96m/facts[0m
+
+[2m[23:47:16.429][0m [1m[personal-rep][0m [2mOUT/REPLY[0m [2m←[0m [2mpersonal-agents-facts:8462[0m  [92m201[0m  [36mPOST[0m [96m/facts[0m
+[2m  body:[0m {"message":""}
+
+[2m[23:47:16.439][0m [1m[personal-rep][0m [36mOUT/REQ[0m [36m→[0m [2mlean-index:8460[0m  [36mPOST[0m [96m/agents[0m
+[2m  body:[0m {"agentId":"did:web:personal-rep%3A8469","agentName":"urn:agent:nanda-prototype:personal-rep","primaryFactsUrl":"https://personal-agents-facts:8462/facts/did%3Aweb%3Apersonal-rep%253A8469","ttl":3600,"signature":"p8M0FWJBBhrSIU7dvWReHH7UYtwaVkUaD-7y6RRjIIu-szRDfHrFm2EA7yp-ORJ__8U57YdjrgTy5I7LbO4mBQ"}
+
+[2m[23:47:16.466][0m [1m[lean-index][0m [95mIN/REQ[0m [95m←[0m [2mpersonal-rep[0m [2m[req-6][0m  [36mPOST[0m [96m/agents[0m
+[2m  body:[0m {"agentId":"did:web:personal-rep%3A8469","agentName":"urn:agent:nanda-prototype:personal-rep","primaryFactsUrl":"https://personal-agents-facts:8462/facts/did%3Aweb%3Apersonal-rep%253A8469","ttl":3600,"signature":"p8M0FWJBBhrSIU7dvWReHH7UYtwaVkUaD-7y6RRjIIu-szRDfHrFm2EA7yp-ORJ__8U57YdjrgTy5I7LbO4mBQ"}
+
+[2m[23:47:16.473][0m [1m[lean-index][0m [36mOUT/REQ[0m [36m→[0m [2mpersonal-rep:8469[0m  [36mGET[0m [96m/.well-known/did.json[0m
+
+[2m[23:47:16.497][0m [1m[personal-rep][0m [95mIN/REQ[0m [95m←[0m [2mlean-index[0m [2m[req-2][0m  [36mGET[0m [96m/.well-known/did.json[0m
+
+[2m[23:47:16.500][0m [1m[personal-rep][0m [32mIN/REPLY[0m [32m→[0m [2mlean-index[0m [2m[req-2][0m  [92m200[0m  [36mGET[0m [96m/.well-known/did.json[0m
+[2m  body:[0m {"@context":["https://www.w3.org/ns/did/v1"],"id":"did:web:personal-rep%3A8469","verificationMethod":[{"id":"did:web:personal-rep%3A8469#key-1","type":"Ed25519VerificationKey2020","controller":"did:web:personal-rep%3A8469","publicKeyMultibase":"u5tEicaSTBcyFTXvPUL4P3Hp1MtOaXiQItb_z9UeUA7M"}],"assertionMethod":["did:web:personal-rep%3A8469#key-1"]}
+
+[2m[23:47:16.509][0m [1m[lean-index][0m [2mOUT/REPLY[0m [2m←[0m [2mpersonal-rep:8469[0m  [92m200[0m  [36mGET[0m [96m/.well-known/did.json[0m
+[2m  body:[0m {"@context":["https://www.w3.org/ns/did/v1"],"id":"did:web:personal-rep%3A8469","verificationMethod":[{"id":"did:web:personal-rep%3A8469#key-1","type":"Ed25519VerificationKey2020","controller":"did:web:personal-rep%3A8469","publicKeyMultibase":"u5tEicaSTBcyFTXvPUL4P3Hp1MtOaXiQItb_z9UeUA7M"}],"assertionMethod":["did:web:personal-rep%3A8469#key-1"]}
+
+[2m[23:47:16.542][0m [1m[lean-index][0m [32mIN/REPLY[0m [32m→[0m [2mpersonal-rep[0m [2m[req-6][0m  [92m201[0m  [36mPOST[0m [96m/agents[0m
+
+[2m[23:47:16.549][0m [1m[personal-rep][0m [2mOUT/REPLY[0m [2m←[0m [2mlean-index:8460[0m  [92m201[0m  [36mPOST[0m [96m/agents[0m
+[2m  body:[0m {"message":""}
+
+[2m[23:47:16.552][0m [1m[personal-rep][0m [32mINFO [0m [1mpersonal-rep registered[0m
+[2m  did:[0m did:web:personal-rep%3A8469
+
+[2m[23:48:01.597][0m [1m[personal-rep][0m [95mIN/REQ[0m [95m←[0m [2m172.18.0.1[0m [2m[req-3][0m  [36mPOST[0m [96m/objective[0m
+[2m  body:[0m {"objective":"I want to start a food truck business. Please figure out what I need and complete the process.","contextDIDs":[{"role":"local-government-support","did":"did:web:gov-local-support%3A8464"}]}
+
+[2m[23:48:01.643][0m [1m[lean-index][0m [95mIN/REQ[0m [95m←[0m [2mpersonal-rep[0m [2m[req-7][0m  [36mGET[0m [96m/agents/did:web:gov-local-support%3A8464[0m
+
+[2m[23:48:01.603][0m [1m[personal-rep][0m [32mINFO [0m [1mPersonal rep status update[0m
+  [1m[34mReceived objective. Resolving local government support agent via NANDA...[0m
+
+[2m[23:48:01.603][0m [1m[personal-rep][0m [36mOUT/REQ[0m [36m→[0m [2mlean-index:8460[0m  [36mGET[0m [96m/agents/did:web:gov-local-support%3A8464[0m
+
+[2m[23:48:01.616][0m [1m[personal-rep][0m [32mIN/REPLY[0m [32m→[0m [2m172.18.0.1[0m [2m[req-3][0m  [92m200[0m  [36mPOST[0m [96m/objective[0m
+[2m  body:[0m {"acknowledgement":"Understood. I have one contact to start with. I will research requirements and proceed on your behalf."}
+
+[2m[23:48:01.713][0m [1m[lean-index][0m [32mIN/REPLY[0m [32m→[0m [2mpersonal-rep[0m [2m[req-7][0m  [92m200[0m  [36mGET[0m [96m/agents/did:web:gov-local-support%3A8464[0m
+[2m  body:[0m {"agentId":"did:web:gov-local-support%3A8464","agentName":"urn:agent:nanda-prototype:gov-local-support","primaryFactsUrl":"https://government-facts:8461/facts/did%3Aweb%3Agov-local-support%253A8464","ttl":3600,"signature":"XMbOO2dXxglInho-X3anAgVIBX1O6X0hN0ucuMzGuplJTccSvez-gyN2nO7ggtt_91mFiEpWz_n1bNnydq9DDg"}
+
+[2m[23:48:01.730][0m [1m[personal-rep][0m [2mOUT/REPLY[0m [2m←[0m [2mlean-index:8460[0m  [92m200[0m  [36mGET[0m [96m/agents/did:web:gov-local-support%3A8464[0m
+[2m  body:[0m {"agentId":"did:web:gov-local-support%3A8464","agentName":"urn:agent:nanda-prototype:gov-local-support","primaryFactsUrl":"https://government-facts:8461/facts/did%3Aweb%3Agov-local-support%253A8464","ttl":3600,"signature":"XMbOO2dXxglInho-X3anAgVIBX1O6X0hN0ucuMzGuplJTccSvez-gyN2nO7ggtt_91mFiEpWz_n1bNnydq9DDg"}
+
+[2m[23:48:01.730][0m [1m[personal-rep][0m [36mOUT/REQ[0m [36m→[0m [2mgovernment-facts:8461[0m  [36mGET[0m [96m/facts/did:web:gov-local-support%3A8464[0m
+
+[2m[23:48:01.808][0m [1m[government-facts][0m [95mIN/REQ[0m [95m←[0m [2mpersonal-rep[0m [2m[req-5][0m  [36mGET[0m [96m/facts/did:web:gov-local-support%3A8464[0m
+
+[2m[23:48:01.854][0m [1m[government-facts][0m [32mIN/REPLY[0m [32m→[0m [2mpersonal-rep[0m [2m[req-5][0m  [92m200[0m  [36mGET[0m [96m/facts/did:web:gov-local-support%3A8464[0m
+[2m  body:[0m {"@context":["https://www.w3.org/ns/credentials/v2"],"type":["VerifiableCredential"],"issuer":"did:web:gov-local-support%3A8464","validFrom":"2026-06-23T23:47:08.953Z","credentialSubject":{"@context":["https://www.w3.org/ns/did/v1"],"id":"did:web:gov-local-support%3A8464","agentName":"urn:agent:nanda-prototype:gov-local-support","label":"Government Local Business Support","description":"Advises citizens on starting a food truck business and provides contacts for required agencies.","version":"nanda-0.0.0-agent","provider":{"name":"City Government","url":"https://gov-local-support:8464"},"endpoints":{"static":["https://gov-local-support:8464"]},"capabilities":{"modalities":["text"]},"certification":{"level":"self-attested","issuer":"did:web:gov-local-support%3A8464","issuanceDate":"2026-06-23T23:47:04.726Z","expirationDate":"2027-06-23T23:47:04.726Z","statusListUrl":"https://gov-local-support:8464/status"}},"proof":{"type":"DataIntegrityProof","cryptosuite":"eddsa-jcs-2022","created":"2026-06-23T23:47:09.227Z","verificationMethod":"did:web:gov-local-support%3A8464#key-1","proofPurpose":"assertionMethod","proofValue":"TUbAZWU6_aSdyZv3N7PYq2SHnsqxdhvxRq_3kDak1rZTrm6veJV4hNPD2SW2H5zQSc95hLkEegt4CdT8989BDg"}}
+
+[2m[23:48:01.867][0m [1m[personal-rep][0m [2mOUT/REPLY[0m [2m←[0m [2mgovernment-facts:8461[0m  [92m200[0m  [36mGET[0m [96m/facts/did:web:gov-local-support%3A8464[0m
+[2m  body:[0m {"@context":["https://www.w3.org/ns/credentials/v2"],"type":["VerifiableCredential"],"issuer":"did:web:gov-local-support%3A8464","validFrom":"2026-06-23T23:47:08.953Z","credentialSubject":{"@context":["https://www.w3.org/ns/did/v1"],"id":"did:web:gov-local-support%3A8464","agentName":"urn:agent:nanda-prototype:gov-local-support","label":"Government Local Business Support","description":"Advises citizens on starting a food truck business and provides contacts for required agencies.","version":"nanda-0.0.0-agent","provider":{"name":"City Government","url":"https://gov-local-support:8464"},"endpoints":{"static":["https://gov-local-support:8464"]},"capabilities":{"modalities":["text"]},"certification":{"level":"self-attested","issuer":"did:web:gov-local-support%3A8464","issuanceDate":"2026-06-23T23:47:04.726Z","expirationDate":"2027-06-23T23:47:04.726Z","statusListUrl":"https://gov-local-support:8464/status"}},"proof":{"type":"DataIntegrityProof","cryptosuite":"eddsa-jcs-2022","created":"2026-06-23T23:47:09.227Z","verificationMethod":"did:web:gov-local-support%3A8464#key-1","proofPurpose":"assertionMethod","proofValue":"TUbAZWU6_aSdyZv3N7PYq2SHnsqxdhvxRq_3kDak1rZTrm6veJV4hNPD2SW2H5zQSc95hLkEegt4CdT8989BDg"}}
+
+[2m[23:48:01.872][0m [1m[personal-rep][0m [36mOUT/REQ[0m [36m→[0m [2mgov-local-support:8464[0m  [36mPOST[0m [96m/inquire[0m
+[2m  body:[0m {"query":"My client wants to start a food truck business. Which agencies and services should they engage with?","requesterDID":"did:web:personal-rep%3A8469"}
+
+[2m[23:48:02.030][0m [1m[gov-local-support][0m [95mIN/REQ[0m [95m←[0m [2mpersonal-rep[0m [2m[req-3][0m  [36mPOST[0m [96m/inquire[0m
+[2m  body:[0m {"query":"My client wants to start a food truck business. Which agencies and services should they engage with?","requesterDID":"did:web:personal-rep%3A8469"}
+
+[2m[23:48:02.042][0m [1m[gov-local-support][0m [32mIN/REPLY[0m [32m→[0m [2mpersonal-rep[0m [2m[req-3][0m  [92m200[0m  [36mPOST[0m [96m/inquire[0m
+[2m  body:[0m {"reply":"To start a food truck business, you need a business license from the licensing office, a street vending permit from the parking department, and I recommend contacting a licensed food truck vendor to arrange your vehicle.","recommendedAgents":[{"role":"business-licensing","did":"did:web:gov-business-licensing%3A8465"},{"role":"parking-department","did":"did:web:gov-parking-dept%3A8467"},{"role":"food-truck-vendor","did":"did:web:food-truck-vendor%3A8468"}]}
+
+[2m[23:48:02.051][0m [1m[personal-rep][0m [2mOUT/REPLY[0m [2m←[0m [2mgov-local-support:8464[0m  [92m200[0m  [36mPOST[0m [96m/inquire[0m
+[2m  body:[0m {"reply":"To start a food truck business, you need a business license from the licensing office, a street vending permit from the parking department, and I recommend contacting a licensed food truck vendor to arrange your vehicle.","recommendedAgents":[{"role":"business-licensing","did":"did:web:gov-business-licensing%3A8465"},{"role":"parking-department","did":"did:web:gov-parking-dept%3A8467"},{"role":"food-truck-vendor","did":"did:web:food-truck-vendor%3A8468"}]}
+
+[2m[23:48:02.078][0m [1m[lean-index][0m [95mIN/REQ[0m [95m←[0m [2mpersonal-rep[0m [2m[req-8][0m  [36mGET[0m [96m/agents/did:web:gov-business-licensing%3A8465[0m
+
+[2m[23:48:02.083][0m [1m[lean-index][0m [32mIN/REPLY[0m [32m→[0m [2mpersonal-rep[0m [2m[req-8][0m  [92m200[0m  [36mGET[0m [96m/agents/did:web:gov-business-licensing%3A8465[0m
+[2m  body:[0m {"agentId":"did:web:gov-business-licensing%3A8465","agentName":"urn:agent:nanda-prototype:gov-business-licensing","primaryFactsUrl":"https://government-facts:8461/facts/did%3Aweb%3Agov-business-licensing%253A8465","ttl":3600,"signature":"Z4WP_0q8BkssBf9uMqwANT_pMO8MIF_aN6JySVGQFaGTEXRxqOF9kh8JB2yeQYUX7QOuxHSny7xc4ssjpCgpCA"}
+
+[2m[23:48:02.070][0m [1m[personal-rep][0m [32mINFO [0m [1mPersonal rep status update[0m
+  [1m[34mReceived agency contacts from local business support. Researching requirements with business licensing office...[0m
+
+[2m[23:48:02.070][0m [1m[personal-rep][0m [36mOUT/REQ[0m [36m→[0m [2mlean-index:8460[0m  [36mGET[0m [96m/agents/did:web:gov-business-licensing%3A8465[0m
+
+[2m[23:48:02.150][0m [1m[government-facts][0m [95mIN/REQ[0m [95m←[0m [2mpersonal-rep[0m [2m[req-6][0m  [36mGET[0m [96m/facts/did:web:gov-business-licensing%3A8465[0m
+
+[2m[23:48:02.154][0m [1m[government-facts][0m [32mIN/REPLY[0m [32m→[0m [2mpersonal-rep[0m [2m[req-6][0m  [92m200[0m  [36mGET[0m [96m/facts/did:web:gov-business-licensing%3A8465[0m
+[2m  body:[0m {"@context":["https://www.w3.org/ns/credentials/v2"],"type":["VerifiableCredential"],"issuer":"did:web:gov-business-licensing%3A8465","validFrom":"2026-06-23T23:47:08.422Z","credentialSubject":{"@context":["https://www.w3.org/ns/did/v1"],"id":"did:web:gov-business-licensing%3A8465","agentName":"urn:agent:nanda-prototype:gov-business-licensing","label":"Government Business Licensing Office","description":"Issues business registrations, provisional and final restaurant licenses.","version":"nanda-0.0.0-agent","provider":{"name":"City Government","url":"https://gov-business-licensing:8465"},"endpoints":{"static":["https://gov-business-licensing:8465"]},"capabilities":{"modalities":["text"]},"certification":{"level":"self-attested","issuer":"did:web:gov-business-licensing%3A8465","issuanceDate":"2026-06-23T23:47:04.099Z","expirationDate":"2027-06-23T23:47:04.099Z","statusListUrl":"https://gov-business-licensing:8465/status"}},"proof":{"type":"DataIntegrityProof","cryptosuite":"eddsa-jcs-2022","created":"2026-06-23T23:47:08.648Z","verificationMethod":"did:web:gov-business-licensing%3A8465#key-1","proofPurpose":"assertionMethod","proofValue":"4kvLHvZ60NKQs4QhmpgEAJEIoKuB3j0V5-V1VPMczLsk7H2ALHO9jpdysEM2QigXVupAYR53ZAi9jkihc-UOAg"}}
+
+[2m[23:48:02.135][0m [1m[personal-rep][0m [2mOUT/REPLY[0m [2m←[0m [2mlean-index:8460[0m  [92m200[0m  [36mGET[0m [96m/agents/did:web:gov-business-licensing%3A8465[0m
+[2m  body:[0m {"agentId":"did:web:gov-business-licensing%3A8465","agentName":"urn:agent:nanda-prototype:gov-business-licensing","primaryFactsUrl":"https://government-facts:8461/facts/did%3Aweb%3Agov-business-licensing%253A8465","ttl":3600,"signature":"Z4WP_0q8BkssBf9uMqwANT_pMO8MIF_aN6JySVGQFaGTEXRxqOF9kh8JB2yeQYUX7QOuxHSny7xc4ssjpCgpCA"}
+
+[2m[23:48:02.136][0m [1m[personal-rep][0m [36mOUT/REQ[0m [36m→[0m [2mgovernment-facts:8461[0m  [36mGET[0m [96m/facts/did:web:gov-business-licensing%3A8465[0m
+
+[2m[23:48:02.186][0m [1m[personal-rep][0m [2mOUT/REPLY[0m [2m←[0m [2mgovernment-facts:8461[0m  [92m200[0m  [36mGET[0m [96m/facts/did:web:gov-business-licensing%3A8465[0m
+[2m  body:[0m {"@context":["https://www.w3.org/ns/credentials/v2"],"type":["VerifiableCredential"],"issuer":"did:web:gov-business-licensing%3A8465","validFrom":"2026-06-23T23:47:08.422Z","credentialSubject":{"@context":["https://www.w3.org/ns/did/v1"],"id":"did:web:gov-business-licensing%3A8465","agentName":"urn:agent:nanda-prototype:gov-business-licensing","label":"Government Business Licensing Office","description":"Issues business registrations, provisional and final restaurant licenses.","version":"nanda-0.0.0-agent","provider":{"name":"City Government","url":"https://gov-business-licensing:8465"},"endpoints":{"static":["https://gov-business-licensing:8465"]},"capabilities":{"modalities":["text"]},"certification":{"level":"self-attested","issuer":"did:web:gov-business-licensing%3A8465","issuanceDate":"2026-06-23T23:47:04.099Z","expirationDate":"2027-06-23T23:47:04.099Z","statusListUrl":"https://gov-business-licensing:8465/status"}},"proof":{"type":"DataIntegrityProof","cryptosuite":"eddsa-jcs-2022","created":"2026-06-23T23:47:08.648Z","verificationMethod":"did:web:gov-business-licensing%3A8465#key-1","proofPurpose":"assertionMethod","proofValue":"4kvLHvZ60NKQs4QhmpgEAJEIoKuB3j0V5-V1VPMczLsk7H2ALHO9jpdysEM2QigXVupAYR53ZAi9jkihc-UOAg"}}
+
+[2m[23:48:02.190][0m [1m[personal-rep][0m [36mOUT/REQ[0m [36m→[0m [2mgov-business-licensing:8465[0m  [36mPOST[0m [96m/inquire[0m
+[2m  body:[0m {"query":"What is required to obtain a business license for a food truck restaurant operation?","requesterDID":"did:web:personal-rep%3A8469"}
+
+[2m[23:48:02.298][0m [1m[gov-business-licensing][0m [95mIN/REQ[0m [95m←[0m [2mpersonal-rep[0m [2m[req-3][0m  [36mPOST[0m [96m/inquire[0m
+[2m  body:[0m {"query":"What is required to obtain a business license for a food truck restaurant operation?","requesterDID":"did:web:personal-rep%3A8469"}
+
+[2m[23:48:02.322][0m [1m[personal-rep][0m [2mOUT/REPLY[0m [2m←[0m [2mgov-business-licensing:8465[0m  [92m200[0m  [36mPOST[0m [96m/inquire[0m
+[2m  body:[0m {"reply":"Licensing has three steps: (1) business registration \u2014 application only, (2) provisional restaurant license \u2014 application only, (3) final restaurant license \u2014 requires a health inspection from the health department.","steps":["business-registration","provisional-restaurant-license","final-restaurant-license"],"referencedAgent":{"role":"health-department","did":"did:web:gov-health-dept%3A8466"}}
+
+[2m[23:48:02.308][0m [1m[gov-business-licensing][0m [32mIN/REPLY[0m [32m→[0m [2mpersonal-rep[0m [2m[req-3][0m  [92m200[0m  [36mPOST[0m [96m/inquire[0m
+[2m  body:[0m {"reply":"Licensing has three steps: (1) business registration \u2014 application only, (2) provisional restaurant license \u2014 application only, (3) final restaurant license \u2014 requires a health inspection from the health department.","steps":["business-registration","provisional-restaurant-license","final-restaurant-license"],"referencedAgent":{"role":"health-department","did":"did:web:gov-health-dept%3A8466"}}
+
+[2m[23:48:02.342][0m [1m[lean-index][0m [95mIN/REQ[0m [95m←[0m [2mpersonal-rep[0m [2m[req-9][0m  [36mGET[0m [96m/agents/did:web:gov-parking-dept%3A8467[0m
+
+[2m[23:48:02.347][0m [1m[lean-index][0m [32mIN/REPLY[0m [32m→[0m [2mpersonal-rep[0m [2m[req-9][0m  [92m200[0m  [36mGET[0m [96m/agents/did:web:gov-parking-dept%3A8467[0m
+[2m  body:[0m {"agentId":"did:web:gov-parking-dept%3A8467","agentName":"urn:agent:nanda-prototype:gov-parking-dept","primaryFactsUrl":"https://government-facts:8461/facts/did%3Aweb%3Agov-parking-dept%253A8467","ttl":3600,"signature":"mDVkqfJfv7c5ttqudpFTtgTXB8Vv3f65jrrHslJlRZc_6iuyPNjLM9SGjpAqiGtT2fcb4-9f7F637JKbdz6hBQ"}
+
+[2m[23:48:02.322][0m [1m[personal-rep][0m [32mINFO [0m [1mPersonal rep status update[0m
+  [1m[34mLicensing requires 3 steps: registration, provisional license, and a final license requiring a health inspection. Contacting parking department...[0m
+
+[2m[23:48:02.322][0m [1m[personal-rep][0m [36mOUT/REQ[0m [36m→[0m [2mlean-index:8460[0m  [36mGET[0m [96m/agents/did:web:gov-parking-dept%3A8467[0m
+
+[2m[23:48:02.367][0m [1m[personal-rep][0m [2mOUT/REPLY[0m [2m←[0m [2mlean-index:8460[0m  [92m200[0m  [36mGET[0m [96m/agents/did:web:gov-parking-dept%3A8467[0m
+[2m  body:[0m {"agentId":"did:web:gov-parking-dept%3A8467","agentName":"urn:agent:nanda-prototype:gov-parking-dept","primaryFactsUrl":"https://government-facts:8461/facts/did%3Aweb%3Agov-parking-dept%253A8467","ttl":3600,"signature":"mDVkqfJfv7c5ttqudpFTtgTXB8Vv3f65jrrHslJlRZc_6iuyPNjLM9SGjpAqiGtT2fcb4-9f7F637JKbdz6hBQ"}
+
+[2m[23:48:02.388][0m [1m[personal-rep][0m [36mOUT/REQ[0m [36m→[0m [2mgovernment-facts:8461[0m  [36mGET[0m [96m/facts/did:web:gov-parking-dept%3A8467[0m
+
+[2m[23:48:02.441][0m [1m[government-facts][0m [95mIN/REQ[0m [95m←[0m [2mpersonal-rep[0m [2m[req-7][0m  [36mGET[0m [96m/facts/did:web:gov-parking-dept%3A8467[0m
+
+[2m[23:48:02.457][0m [1m[government-facts][0m [32mIN/REPLY[0m [32m→[0m [2mpersonal-rep[0m [2m[req-7][0m  [92m200[0m  [36mGET[0m [96m/facts/did:web:gov-parking-dept%3A8467[0m
+[2m  body:[0m {"@context":["https://www.w3.org/ns/credentials/v2"],"type":["VerifiableCredential"],"issuer":"did:web:gov-parking-dept%3A8467","validFrom":"2026-06-23T23:47:09.854Z","credentialSubject":{"@context":["https://www.w3.org/ns/did/v1"],"id":"did:web:gov-parking-dept%3A8467","agentName":"urn:agent:nanda-prototype:gov-parking-dept","label":"Government Parking Department","description":"Issues street vending permits for licensed food truck operators.","version":"nanda-0.0.0-agent","provider":{"name":"City Government","url":"https://gov-parking-dept:8467"},"endpoints":{"static":["https://gov-parking-dept:8467"]},"capabilities":{"modalities":["text"]},"certification":{"level":"self-attested","issuer":"did:web:gov-parking-dept%3A8467","issuanceDate":"2026-06-23T23:47:06.386Z","expirationDate":"2027-06-23T23:47:06.386Z","statusListUrl":"https://gov-parking-dept:8467/status"}},"proof":{"type":"DataIntegrityProof","cryptosuite":"eddsa-jcs-2022","created":"2026-06-23T23:47:10.024Z","verificationMethod":"did:web:gov-parking-dept%3A8467#key-1","proofPurpose":"assertionMethod","proofValue":"cWR4oG0uUOAGaJv_HT7e-9xBp8VXhJHAOFX7Wriaw8j4438onxJP_da0ZzU9hGh4roIdFTzqKc18PrztLHgIBw"}}
+
+[2m[23:48:02.549][0m [1m[personal-rep][0m [2mOUT/REPLY[0m [2m←[0m [2mgovernment-facts:8461[0m  [92m200[0m  [36mGET[0m [96m/facts/did:web:gov-parking-dept%3A8467[0m
+[2m  body:[0m {"@context":["https://www.w3.org/ns/credentials/v2"],"type":["VerifiableCredential"],"issuer":"did:web:gov-parking-dept%3A8467","validFrom":"2026-06-23T23:47:09.854Z","credentialSubject":{"@context":["https://www.w3.org/ns/did/v1"],"id":"did:web:gov-parking-dept%3A8467","agentName":"urn:agent:nanda-prototype:gov-parking-dept","label":"Government Parking Department","description":"Issues street vending permits for licensed food truck operators.","version":"nanda-0.0.0-agent","provider":{"name":"City Government","url":"https://gov-parking-dept:8467"},"endpoints":{"static":["https://gov-parking-dept:8467"]},"capabilities":{"modalities":["text"]},"certification":{"level":"self-attested","issuer":"did:web:gov-parking-dept%3A8467","issuanceDate":"2026-06-23T23:47:06.386Z","expirationDate":"2027-06-23T23:47:06.386Z","statusListUrl":"https://gov-parking-dept:8467/status"}},"proof":{"type":"DataIntegrityProof","cryptosuite":"eddsa-jcs-2022","created":"2026-06-23T23:47:10.024Z","verificationMethod":"did:web:gov-parking-dept%3A8467#key-1","proofPurpose":"assertionMethod","proofValue":"cWR4oG0uUOAGaJv_HT7e-9xBp8VXhJHAOFX7Wriaw8j4438onxJP_da0ZzU9hGh4roIdFTzqKc18PrztLHgIBw"}}
+
+[2m[23:48:02.549][0m [1m[personal-rep][0m [36mOUT/REQ[0m [36m→[0m [2mgov-parking-dept:8467[0m  [36mPOST[0m [96m/inquire[0m
+[2m  body:[0m {"query":"What is required to obtain a street vending permit for a food truck?","requesterDID":"did:web:personal-rep%3A8469"}
+
+[2m[23:48:02.589][0m [1m[gov-parking-dept][0m [95mIN/REQ[0m [95m←[0m [2mpersonal-rep[0m [2m[req-3][0m  [36mPOST[0m [96m/inquire[0m
+[2m  body:[0m {"query":"What is required to obtain a street vending permit for a food truck?","requesterDID":"did:web:personal-rep%3A8469"}
+
+[2m[23:48:02.598][0m [1m[personal-rep][0m [2mOUT/REPLY[0m [2m←[0m [2mgov-parking-dept:8467[0m  [92m200[0m  [36mPOST[0m [96m/inquire[0m
+[2m  body:[0m {"reply":"Submit an application with a valid final restaurant business license and your food truck rental credential. We record the vehicle details at time of permit issuance."}
+
+[2m[23:48:02.604][0m [1m[lean-index][0m [95mIN/REQ[0m [95m←[0m [2mpersonal-rep[0m [2m[req-a][0m  [36mGET[0m [96m/agents/did:web:food-truck-vendor%3A8468[0m
+
+[2m[23:48:02.607][0m [1m[lean-index][0m [32mIN/REPLY[0m [32m→[0m [2mpersonal-rep[0m [2m[req-a][0m  [92m200[0m  [36mGET[0m [96m/agents/did:web:food-truck-vendor%3A8468[0m
+[2m  body:[0m {"agentId":"did:web:food-truck-vendor%3A8468","agentName":"urn:agent:nanda-prototype:food-truck-vendor","primaryFactsUrl":"https://vendor-facts:8463/facts/did%3Aweb%3Afood-truck-vendor%253A8468","ttl":3600,"signature":"6YF3MGgQ4KMpUqMc8zP_E9oBTnvi64PY8RTTwFfiDx-MAQAsQUoi07T6LADWY2VhXhUSMArdoXLcOsvnwRDyDQ"}
+
+[2m[23:48:02.594][0m [1m[gov-parking-dept][0m [32mIN/REPLY[0m [32m→[0m [2mpersonal-rep[0m [2m[req-3][0m  [92m200[0m  [36mPOST[0m [96m/inquire[0m
+[2m  body:[0m {"reply":"Submit an application with a valid final restaurant business license and your food truck rental credential. We record the vehicle details at time of permit issuance."}
+
+[2m[23:48:02.601][0m [1m[personal-rep][0m [32mINFO [0m [1mPersonal rep status update[0m
+  [1m[34mStreet vending permit requires a final restaurant license and truck rental credential. Contacting food truck vendor...[0m
+
+[2m[23:48:02.601][0m [1m[personal-rep][0m [36mOUT/REQ[0m [36m→[0m [2mlean-index:8460[0m  [36mGET[0m [96m/agents/did:web:food-truck-vendor%3A8468[0m
+
+[2m[23:48:02.620][0m [1m[personal-rep][0m [2mOUT/REPLY[0m [2m←[0m [2mlean-index:8460[0m  [92m200[0m  [36mGET[0m [96m/agents/did:web:food-truck-vendor%3A8468[0m
+[2m  body:[0m {"agentId":"did:web:food-truck-vendor%3A8468","agentName":"urn:agent:nanda-prototype:food-truck-vendor","primaryFactsUrl":"https://vendor-facts:8463/facts/did%3Aweb%3Afood-truck-vendor%253A8468","ttl":3600,"signature":"6YF3MGgQ4KMpUqMc8zP_E9oBTnvi64PY8RTTwFfiDx-MAQAsQUoi07T6LADWY2VhXhUSMArdoXLcOsvnwRDyDQ"}
+
+[2m[23:48:02.620][0m [1m[personal-rep][0m [36mOUT/REQ[0m [36m→[0m [2mvendor-facts:8463[0m  [36mGET[0m [96m/facts/did:web:food-truck-vendor%3A8468[0m
+
+[2m[23:48:02.667][0m [1m[vendor-facts][0m [95mIN/REQ[0m [95m←[0m [2mpersonal-rep[0m [2m[req-2][0m  [36mGET[0m [96m/facts/did:web:food-truck-vendor%3A8468[0m
+
+[2m[23:48:02.675][0m [1m[vendor-facts][0m [32mIN/REPLY[0m [32m→[0m [2mpersonal-rep[0m [2m[req-2][0m  [92m200[0m  [36mGET[0m [96m/facts/did:web:food-truck-vendor%3A8468[0m
+[2m  body:[0m {"@context":["https://www.w3.org/ns/credentials/v2"],"type":["VerifiableCredential"],"issuer":"did:web:food-truck-vendor%3A8468","validFrom":"2026-06-23T23:47:09.827Z","credentialSubject":{"@context":["https://www.w3.org/ns/did/v1"],"id":"did:web:food-truck-vendor%3A8468","agentName":"urn:agent:nanda-prototype:food-truck-vendor","label":"Food Truck Vendor","description":"Rents food trucks to registered businesses.","version":"nanda-0.0.0-agent","provider":{"name":"NANDA Food Trucks LLC","url":"https://food-truck-vendor:8468"},"endpoints":{"static":["https://food-truck-vendor:8468"]},"capabilities":{"modalities":["text"]},"certification":{"level":"self-attested","issuer":"did:web:food-truck-vendor%3A8468","issuanceDate":"2026-06-23T23:47:06.534Z","expirationDate":"2027-06-23T23:47:06.534Z","statusListUrl":"https://food-truck-vendor:8468/status"}},"proof":{"type":"DataIntegrityProof","cryptosuite":"eddsa-jcs-2022","created":"2026-06-23T23:47:10.032Z","verificationMethod":"did:web:food-truck-vendor%3A8468#key-1","proofPurpose":"assertionMethod","proofValue":"W4QqNgJLDULbIOEHkzTRXHJWKT8IngK7WBTdqMtBu7eUmpKOvs3AX6vkR6PYGvLp9YSPq0phqvkqAgMKcEZ4Dw"}}
+
+[2m[23:48:02.686][0m [1m[personal-rep][0m [2mOUT/REPLY[0m [2m←[0m [2mvendor-facts:8463[0m  [92m200[0m  [36mGET[0m [96m/facts/did:web:food-truck-vendor%3A8468[0m
+[2m  body:[0m {"@context":["https://www.w3.org/ns/credentials/v2"],"type":["VerifiableCredential"],"issuer":"did:web:food-truck-vendor%3A8468","validFrom":"2026-06-23T23:47:09.827Z","credentialSubject":{"@context":["https://www.w3.org/ns/did/v1"],"id":"did:web:food-truck-vendor%3A8468","agentName":"urn:agent:nanda-prototype:food-truck-vendor","label":"Food Truck Vendor","description":"Rents food trucks to registered businesses.","version":"nanda-0.0.0-agent","provider":{"name":"NANDA Food Trucks LLC","url":"https://food-truck-vendor:8468"},"endpoints":{"static":["https://food-truck-vendor:8468"]},"capabilities":{"modalities":["text"]},"certification":{"level":"self-attested","issuer":"did:web:food-truck-vendor%3A8468","issuanceDate":"2026-06-23T23:47:06.534Z","expirationDate":"2027-06-23T23:47:06.534Z","statusListUrl":"https://food-truck-vendor:8468/status"}},"proof":{"type":"DataIntegrityProof","cryptosuite":"eddsa-jcs-2022","created":"2026-06-23T23:47:10.032Z","verificationMethod":"did:web:food-truck-vendor%3A8468#key-1","proofPurpose":"assertionMethod","proofValue":"W4QqNgJLDULbIOEHkzTRXHJWKT8IngK7WBTdqMtBu7eUmpKOvs3AX6vkR6PYGvLp9YSPq0phqvkqAgMKcEZ4Dw"}}
+
+[2m[23:48:02.687][0m [1m[personal-rep][0m [36mOUT/REQ[0m [36m→[0m [2mfood-truck-vendor:8468[0m  [36mPOST[0m [96m/inquire[0m
+[2m  body:[0m {"query":"What is required to rent a food truck?","requesterDID":"did:web:personal-rep%3A8469"}
+
+[2m[23:48:02.721][0m [1m[food-truck-vendor][0m [95mIN/REQ[0m [95m←[0m [2mpersonal-rep[0m [2m[req-3][0m  [36mPOST[0m [96m/inquire[0m
+[2m  body:[0m {"query":"What is required to rent a food truck?","requesterDID":"did:web:personal-rep%3A8469"}
+
+[2m[23:48:02.729][0m [1m[personal-rep][0m [2mOUT/REPLY[0m [2m←[0m [2mfood-truck-vendor:8468[0m  [92m200[0m  [36mPOST[0m [96m/inquire[0m
+[2m  body:[0m {"reply":"Rental requires a valid business registration credential. We will issue a FoodTruckRental credential including the truck ID, license plate, and vehicle registration."}
+
+[2m[23:48:02.735][0m [1m[lean-index][0m [95mIN/REQ[0m [95m←[0m [2mpersonal-rep[0m [2m[req-b][0m  [36mGET[0m [96m/agents/did:web:gov-health-dept%3A8466[0m
+
+[2m[23:48:02.738][0m [1m[lean-index][0m [32mIN/REPLY[0m [32m→[0m [2mpersonal-rep[0m [2m[req-b][0m  [92m200[0m  [36mGET[0m [96m/agents/did:web:gov-health-dept%3A8466[0m
+[2m  body:[0m {"agentId":"did:web:gov-health-dept%3A8466","agentName":"urn:agent:nanda-prototype:gov-health-dept","primaryFactsUrl":"https://government-facts:8461/facts/did%3Aweb%3Agov-health-dept%253A8466","ttl":3600,"signature":"BjRNOOvn7lkuwuhEO9IBHZNTqdJkfmdAUj16_0Sb9fX4clgFhCrc3MtMY2PefHF0kY6mgjMY_Sgry6zAPugQAw"}
+
+[2m[23:48:02.725][0m [1m[food-truck-vendor][0m [32mIN/REPLY[0m [32m→[0m [2mpersonal-rep[0m [2m[req-3][0m  [92m200[0m  [36mPOST[0m [96m/inquire[0m
+[2m  body:[0m {"reply":"Rental requires a valid business registration credential. We will issue a FoodTruckRental credential including the truck ID, license plate, and vehicle registration."}
+
+[2m[23:48:02.732][0m [1m[personal-rep][0m [32mINFO [0m [1mPersonal rep status update[0m
+  [1m[34mTruck rental requires business registration. Contacting health department...[0m
+
+[2m[23:48:02.732][0m [1m[personal-rep][0m [36mOUT/REQ[0m [36m→[0m [2mlean-index:8460[0m  [36mGET[0m [96m/agents/did:web:gov-health-dept%3A8466[0m
+
+[2m[23:48:02.758][0m [1m[government-facts][0m [95mIN/REQ[0m [95m←[0m [2mpersonal-rep[0m [2m[req-8][0m  [36mGET[0m [96m/facts/did:web:gov-health-dept%3A8466[0m
+
+[2m[23:48:02.763][0m [1m[government-facts][0m [32mIN/REPLY[0m [32m→[0m [2mpersonal-rep[0m [2m[req-8][0m  [92m200[0m  [36mGET[0m [96m/facts/did:web:gov-health-dept%3A8466[0m
+[2m  body:[0m {"@context":["https://www.w3.org/ns/credentials/v2"],"type":["VerifiableCredential"],"issuer":"did:web:gov-health-dept%3A8466","validFrom":"2026-06-23T23:47:09.573Z","credentialSubject":{"@context":["https://www.w3.org/ns/did/v1"],"id":"did:web:gov-health-dept%3A8466","agentName":"urn:agent:nanda-prototype:gov-health-dept","label":"Government Health Department","description":"Conducts food truck health inspections and issues signed approval credentials.","version":"nanda-0.0.0-agent","provider":{"name":"City Government","url":"https://gov-health-dept:8466"},"endpoints":{"static":["https://gov-health-dept:8466"]},"capabilities":{"modalities":["text"]},"certification":{"level":"self-attested","issuer":"did:web:gov-health-dept%3A8466","issuanceDate":"2026-06-23T23:47:05.966Z","expirationDate":"2027-06-23T23:47:05.966Z","statusListUrl":"https://gov-health-dept:8466/status"}},"proof":{"type":"DataIntegrityProof","cryptosuite":"eddsa-jcs-2022","created":"2026-06-23T23:47:09.769Z","verificationMethod":"did:web:gov-health-dept%3A8466#key-1","proofPurpose":"assertionMethod","proofValue":"xBLCUwQ9DvuXTvQOU9nfA8wMrMqVyZwvqmrCWgLpG85Kskv_k7oAnNZR2F1vuFlIFTON9QqKBCTP2geOOqIWCQ"}}
+
+[2m[23:48:02.750][0m [1m[personal-rep][0m [2mOUT/REPLY[0m [2m←[0m [2mlean-index:8460[0m  [92m200[0m  [36mGET[0m [96m/agents/did:web:gov-health-dept%3A8466[0m
+[2m  body:[0m {"agentId":"did:web:gov-health-dept%3A8466","agentName":"urn:agent:nanda-prototype:gov-health-dept","primaryFactsUrl":"https://government-facts:8461/facts/did%3Aweb%3Agov-health-dept%253A8466","ttl":3600,"signature":"BjRNOOvn7lkuwuhEO9IBHZNTqdJkfmdAUj16_0Sb9fX4clgFhCrc3MtMY2PefHF0kY6mgjMY_Sgry6zAPugQAw"}
+
+[2m[23:48:02.750][0m [1m[personal-rep][0m [36mOUT/REQ[0m [36m→[0m [2mgovernment-facts:8461[0m  [36mGET[0m [96m/facts/did:web:gov-health-dept%3A8466[0m
+
+[2m[23:48:02.777][0m [1m[personal-rep][0m [2mOUT/REPLY[0m [2m←[0m [2mgovernment-facts:8461[0m  [92m200[0m  [36mGET[0m [96m/facts/did:web:gov-health-dept%3A8466[0m
+[2m  body:[0m {"@context":["https://www.w3.org/ns/credentials/v2"],"type":["VerifiableCredential"],"issuer":"did:web:gov-health-dept%3A8466","validFrom":"2026-06-23T23:47:09.573Z","credentialSubject":{"@context":["https://www.w3.org/ns/did/v1"],"id":"did:web:gov-health-dept%3A8466","agentName":"urn:agent:nanda-prototype:gov-health-dept","label":"Government Health Department","description":"Conducts food truck health inspections and issues signed approval credentials.","version":"nanda-0.0.0-agent","provider":{"name":"City Government","url":"https://gov-health-dept:8466"},"endpoints":{"static":["https://gov-health-dept:8466"]},"capabilities":{"modalities":["text"]},"certification":{"level":"self-attested","issuer":"did:web:gov-health-dept%3A8466","issuanceDate":"2026-06-23T23:47:05.966Z","expirationDate":"2027-06-23T23:47:05.966Z","statusListUrl":"https://gov-health-dept:8466/status"}},"proof":{"type":"DataIntegrityProof","cryptosuite":"eddsa-jcs-2022","created":"2026-06-23T23:47:09.769Z","verificationMethod":"did:web:gov-health-dept%3A8466#key-1","proofPurpose":"assertionMethod","proofValue":"xBLCUwQ9DvuXTvQOU9nfA8wMrMqVyZwvqmrCWgLpG85Kskv_k7oAnNZR2F1vuFlIFTON9QqKBCTP2geOOqIWCQ"}}
+
+[2m[23:48:02.782][0m [1m[personal-rep][0m [36mOUT/REQ[0m [36m→[0m [2mgov-health-dept:8466[0m  [36mPOST[0m [96m/inquire[0m
+[2m  body:[0m {"query":"What is required to schedule a food truck health inspection?","requesterDID":"did:web:personal-rep%3A8469"}
+
+[2m[23:48:02.852][0m [1m[gov-health-dept][0m [95mIN/REQ[0m [95m←[0m [2mpersonal-rep[0m [2m[req-3][0m  [36mPOST[0m [96m/inquire[0m
+[2m  body:[0m {"query":"What is required to schedule a food truck health inspection?","requesterDID":"did:web:personal-rep%3A8469"}
+
+[2m[23:48:02.860][0m [1m[personal-rep][0m [2mOUT/REPLY[0m [2m←[0m [2mgov-health-dept:8466[0m  [92m200[0m  [36mPOST[0m [96m/inquire[0m
+[2m  body:[0m {"reply":"A health inspection requires an active food truck rental credential. Provide a FoodTruckRental credential and we will conduct and issue results same-day."}
+
+[2m[23:48:02.872][0m [1m[gov-business-licensing][0m [95mIN/REQ[0m [95m←[0m [2mpersonal-rep[0m [2m[req-4][0m  [36mPOST[0m [96m/apply/business-registration[0m
+[2m  body:[0m {"applicationStatement":"Citizen represented by agent did:web:personal-rep%3A8469 requests a business registration.","requesterDID":"did:web:personal-rep%3A8469"}
+
+[2m[23:48:02.856][0m [1m[gov-health-dept][0m [32mIN/REPLY[0m [32m→[0m [2mpersonal-rep[0m [2m[req-3][0m  [92m200[0m  [36mPOST[0m [96m/inquire[0m
+[2m  body:[0m {"reply":"A health inspection requires an active food truck rental credential. Provide a FoodTruckRental credential and we will conduct and issue results same-day."}
+
+[2m[23:48:02.864][0m [1m[personal-rep][0m [32mINFO [0m [1mPersonal rep status update[0m
+  [1m[34mResearch complete. Plan: (1) register business, (2) provisional license, (3) rent truck, (4) health inspection, (5) final license, (6) street vending permit. Executing...[0m
+
+[2m[23:48:02.865][0m [1m[personal-rep][0m [36mOUT/REQ[0m [36m→[0m [2mgov-business-licensing:8465[0m  [36mPOST[0m [96m/apply/business-registration[0m
+[2m  body:[0m {"applicationStatement":"Citizen represented by agent did:web:personal-rep%3A8469 requests a business registration.","requesterDID":"did:web:personal-rep%3A8469"}
+
+[2m[23:48:02.902][0m [1m[gov-business-licensing][0m [32mIN/REPLY[0m [32m→[0m [2mpersonal-rep[0m [2m[req-4][0m  [92m200[0m  [36mPOST[0m [96m/apply/business-registration[0m
+[2m  body:[0m {"@context":["https://www.w3.org/ns/credentials/v2"],"type":["VerifiableCredential"],"issuer":"did:web:gov-business-licensing%3A8465","validFrom":"2026-06-23T23:48:02.879Z","credentialSubject":{"type":"BusinessRegistration","status":"granted","recipientDID":"did:web:personal-rep%3A8469"},"proof":{"type":"DataIntegrityProof","cryptosuite":"eddsa-jcs-2022","created":"2026-06-23T23:48:02.901Z","verificationMethod":"did:web:gov-business-licensing%3A8465#key-1","proofPurpose":"assertionMethod","proofValue":"T8h-teiQvHjcz7LPpA7wIoMhfaXOBJDa4eHgktjk91UNPDJG6aEf8X8gCcKaK51kzlrdrK8dL1A7gKet1L4QAg"}}
+
+[2m[23:48:02.913][0m [1m[personal-rep][0m [2mOUT/REPLY[0m [2m←[0m [2mgov-business-licensing:8465[0m  [92m200[0m  [36mPOST[0m [96m/apply/business-registration[0m
+[2m  body:[0m {"@context":["https://www.w3.org/ns/credentials/v2"],"type":["VerifiableCredential"],"issuer":"did:web:gov-business-licensing%3A8465","validFrom":"2026-06-23T23:48:02.879Z","credentialSubject":{"type":"BusinessRegistration","status":"granted","recipientDID":"did:web:personal-rep%3A8469"},"proof":{"type":"DataIntegrityProof","cryptosuite":"eddsa-jcs-2022","created":"2026-06-23T23:48:02.901Z","verificationMethod":"did:web:gov-business-licensing%3A8465#key-1","proofPurpose":"assertionMethod","proofValue":"T8h-teiQvHjcz7LPpA7wIoMhfaXOBJDa4eHgktjk91UNPDJG6aEf8X8gCcKaK51kzlrdrK8dL1A7gKet1L4QAg"}}
+
+[2m[23:48:02.930][0m [1m[gov-business-licensing][0m [95mIN/REQ[0m [95m←[0m [2mpersonal-rep[0m [2m[req-5][0m  [36mPOST[0m [96m/apply/provisional-license[0m
+[2m  body:[0m {"applicationStatement":"Agent did:web:personal-rep%3A8469 applies for a provisional restaurant business license.","requesterDID":"did:web:personal-rep%3A8469","businessRegistration":{"@context":["https://www.w3.org/ns/credentials/v2"],"type":["VerifiableCredential"],"issuer":"did:web:gov-business-licensing%3A8465","validFrom":"2026-06-23T23:48:02.879Z","credentialSubject":{"type":"BusinessRegistration","status":"granted","recipientDID":"did:web:personal-rep%3A8469"},"proof":{"type":"DataIntegrityProof","cryptosuite":"eddsa-jcs-2022","created":"2026-06-23T23:48:02.901Z","verificationMethod":"did:web:gov-business-licensing%3A8465#key-1","proofPurpose":"assertionMethod","proofValue":"T8h-teiQvHjcz7LPpA7wIoMhfaXOBJDa4eHgktjk91UNPDJG6aEf8X8gCcKaK51kzlrdrK8dL1A7gKet1L4QAg"}}}
+
+[2m[23:48:02.917][0m [1m[personal-rep][0m [32mINFO [0m [1mPersonal rep status update[0m
+  [1m[34mBusiness registration approved. Applying for provisional license and arranging truck rental...[0m
+
+[2m[23:48:02.917][0m [1m[personal-rep][0m [36mOUT/REQ[0m [36m→[0m [2mgov-business-licensing:8465[0m  [36mPOST[0m [96m/apply/provisional-license[0m
+[2m  body:[0m {"applicationStatement":"Agent did:web:personal-rep%3A8469 applies for a provisional restaurant business license.","requesterDID":"did:web:personal-rep%3A8469","businessRegistration":{"@context":["https://www.w3.org/ns/credentials/v2"],"type":["VerifiableCredential"],"issuer":"did:web:gov-business-licensing%3A8465","validFrom":"2026-06-23T23:48:02.879Z","credentialSubject":{"type":"BusinessRegistration","status":"granted","recipientDID":"did:web:personal-rep%3A8469"},"proof":{"type":"DataIntegrityProof","cryptosuite":"eddsa-jcs-2022","created":"2026-06-23T23:48:02.901Z","verificationMethod":"did:web:gov-business-licensing%3A8465#key-1","proofPurpose":"assertionMethod","proofValue":"T8h-teiQvHjcz7LPpA7wIoMhfaXOBJDa4eHgktjk91UNPDJG6aEf8X8gCcKaK51kzlrdrK8dL1A7gKet1L4QAg"}}}
+
+[2m[23:48:02.933][0m [1m[gov-business-licensing][0m [36mOUT/REQ[0m [36m→[0m [2mgov-business-licensing:8465[0m  [36mGET[0m [96m/.well-known/did.json[0m
+
+[2m[23:48:02.957][0m [1m[gov-business-licensing][0m [95mIN/REQ[0m [95m←[0m [2mgov-business-licensing[0m [2m[req-6][0m  [36mGET[0m [96m/.well-known/did.json[0m
+
+[2m[23:48:02.961][0m [1m[gov-business-licensing][0m [32mIN/REPLY[0m [32m→[0m [2mgov-business-licensing[0m [2m[req-6][0m  [92m200[0m  [36mGET[0m [96m/.well-known/did.json[0m
+[2m  body:[0m {"@context":["https://www.w3.org/ns/did/v1"],"id":"did:web:gov-business-licensing%3A8465","verificationMethod":[{"id":"did:web:gov-business-licensing%3A8465#key-1","type":"Ed25519VerificationKey2020","controller":"did:web:gov-business-licensing%3A8465","publicKeyMultibase":"upkH7qYD0PbN7dJt332m400SA4DTHgFaTjhqBu0k1N5c"}],"assertionMethod":["did:web:gov-business-licensing%3A8465#key-1"]}
+
+[2m[23:48:02.972][0m [1m[gov-business-licensing][0m [2mOUT/REPLY[0m [2m←[0m [2mgov-business-licensing:8465[0m  [92m200[0m  [36mGET[0m [96m/.well-known/did.json[0m
+[2m  body:[0m {"@context":["https://www.w3.org/ns/did/v1"],"id":"did:web:gov-business-licensing%3A8465","verificationMethod":[{"id":"did:web:gov-business-licensing%3A8465#key-1","type":"Ed25519VerificationKey2020","controller":"did:web:gov-business-licensing%3A8465","publicKeyMultibase":"upkH7qYD0PbN7dJt332m400SA4DTHgFaTjhqBu0k1N5c"}],"assertionMethod":["did:web:gov-business-licensing%3A8465#key-1"]}
+
+[2m[23:48:03.002][0m [1m[gov-business-licensing][0m [32mIN/REPLY[0m [32m→[0m [2mpersonal-rep[0m [2m[req-5][0m  [92m200[0m  [36mPOST[0m [96m/apply/provisional-license[0m
+[2m  body:[0m {"@context":["https://www.w3.org/ns/credentials/v2"],"type":["VerifiableCredential"],"issuer":"did:web:gov-business-licensing%3A8465","validFrom":"2026-06-23T23:48:02.989Z","credentialSubject":{"type":"ProvisionalRestaurantLicense","status":"granted","recipientDID":"did:web:personal-rep%3A8469"},"proof":{"type":"DataIntegrityProof","cryptosuite":"eddsa-jcs-2022","created":"2026-06-23T23:48:03.002Z","verificationMethod":"did:web:gov-business-licensing%3A8465#key-1","proofPurpose":"assertionMethod","proofValue":"4WmiS5v4U7EsefNyf4XcaPIFNe0sBP-mxgaiI_qYvQY_xQ3V-wC3LtRipUMVCxP9TuvE-TFD5g88EtifZnyjCQ"}}
+
+[2m[23:48:03.014][0m [1m[personal-rep][0m [2mOUT/REPLY[0m [2m←[0m [2mgov-business-licensing:8465[0m  [92m200[0m  [36mPOST[0m [96m/apply/provisional-license[0m
+[2m  body:[0m {"@context":["https://www.w3.org/ns/credentials/v2"],"type":["VerifiableCredential"],"issuer":"did:web:gov-business-licensing%3A8465","validFrom":"2026-06-23T23:48:02.989Z","credentialSubject":{"type":"ProvisionalRestaurantLicense","status":"granted","recipientDID":"did:web:personal-rep%3A8469"},"proof":{"type":"DataIntegrityProof","cryptosuite":"eddsa-jcs-2022","created":"2026-06-23T23:48:03.002Z","verificationMethod":"did:web:gov-business-licensing%3A8465#key-1","proofPurpose":"assertionMethod","proofValue":"4WmiS5v4U7EsefNyf4XcaPIFNe0sBP-mxgaiI_qYvQY_xQ3V-wC3LtRipUMVCxP9TuvE-TFD5g88EtifZnyjCQ"}}
+
+[2m[23:48:03.029][0m [1m[food-truck-vendor][0m [95mIN/REQ[0m [95m←[0m [2mpersonal-rep[0m [2m[req-4][0m  [36mPOST[0m [96m/rent[0m
+[2m  body:[0m {"rentalRequest":"Agent did:web:personal-rep%3A8469 requests a food truck rental on behalf of their client.","requesterDID":"did:web:personal-rep%3A8469","businessRegistration":{"@context":["https://www.w3.org/ns/credentials/v2"],"type":["VerifiableCredential"],"issuer":"did:web:gov-business-licensing%3A8465","validFrom":"2026-06-23T23:48:02.879Z","credentialSubject":{"type":"BusinessRegistration","status":"granted","recipientDID":"did:web:personal-rep%3A8469"},"proof":{"type":"DataIntegrityProof","cryptosuite":"eddsa-jcs-2022","created":"2026-06-23T23:48:02.901Z","verificationMethod":"did:web:gov-business-licensing%3A8465#key-1","proofPurpose":"assertionMethod","proofValue":"T8h-teiQvHjcz7LPpA7wIoMhfaXOBJDa4eHgktjk91UNPDJG6aEf8X8gCcKaK51kzlrdrK8dL1A7gKet1L4QAg"}}}
+
+[2m[23:48:03.017][0m [1m[personal-rep][0m [32mINFO [0m [1mPersonal rep status update[0m
+  [1m[34mProvisional restaurant license granted. Renting food truck...[0m
+
+[2m[23:48:03.024][0m [1m[personal-rep][0m [36mOUT/REQ[0m [36m→[0m [2mfood-truck-vendor:8468[0m  [36mPOST[0m [96m/rent[0m
+[2m  body:[0m {"rentalRequest":"Agent did:web:personal-rep%3A8469 requests a food truck rental on behalf of their client.","requesterDID":"did:web:personal-rep%3A8469","businessRegistration":{"@context":["https://www.w3.org/ns/credentials/v2"],"type":["VerifiableCredential"],"issuer":"did:web:gov-business-licensing%3A8465","validFrom":"2026-06-23T23:48:02.879Z","credentialSubject":{"type":"BusinessRegistration","status":"granted","recipientDID":"did:web:personal-rep%3A8469"},"proof":{"type":"DataIntegrityProof","cryptosuite":"eddsa-jcs-2022","created":"2026-06-23T23:48:02.901Z","verificationMethod":"did:web:gov-business-licensing%3A8465#key-1","proofPurpose":"assertionMethod","proofValue":"T8h-teiQvHjcz7LPpA7wIoMhfaXOBJDa4eHgktjk91UNPDJG6aEf8X8gCcKaK51kzlrdrK8dL1A7gKet1L4QAg"}}}
+
+[2m[23:48:03.034][0m [1m[food-truck-vendor][0m [36mOUT/REQ[0m [36m→[0m [2mgov-business-licensing:8465[0m  [36mGET[0m [96m/.well-known/did.json[0m
+
+[2m[23:48:03.066][0m [1m[gov-business-licensing][0m [95mIN/REQ[0m [95m←[0m [2mfood-truck-vendor[0m [2m[req-7][0m  [36mGET[0m [96m/.well-known/did.json[0m
+
+[2m[23:48:03.069][0m [1m[gov-business-licensing][0m [32mIN/REPLY[0m [32m→[0m [2mfood-truck-vendor[0m [2m[req-7][0m  [92m200[0m  [36mGET[0m [96m/.well-known/did.json[0m
+[2m  body:[0m {"@context":["https://www.w3.org/ns/did/v1"],"id":"did:web:gov-business-licensing%3A8465","verificationMethod":[{"id":"did:web:gov-business-licensing%3A8465#key-1","type":"Ed25519VerificationKey2020","controller":"did:web:gov-business-licensing%3A8465","publicKeyMultibase":"upkH7qYD0PbN7dJt332m400SA4DTHgFaTjhqBu0k1N5c"}],"assertionMethod":["did:web:gov-business-licensing%3A8465#key-1"]}
+
+[2m[23:48:03.080][0m [1m[food-truck-vendor][0m [2mOUT/REPLY[0m [2m←[0m [2mgov-business-licensing:8465[0m  [92m200[0m  [36mGET[0m [96m/.well-known/did.json[0m
+[2m  body:[0m {"@context":["https://www.w3.org/ns/did/v1"],"id":"did:web:gov-business-licensing%3A8465","verificationMethod":[{"id":"did:web:gov-business-licensing%3A8465#key-1","type":"Ed25519VerificationKey2020","controller":"did:web:gov-business-licensing%3A8465","publicKeyMultibase":"upkH7qYD0PbN7dJt332m400SA4DTHgFaTjhqBu0k1N5c"}],"assertionMethod":["did:web:gov-business-licensing%3A8465#key-1"]}
+
+[2m[23:48:03.102][0m [1m[food-truck-vendor][0m [32mIN/REPLY[0m [32m→[0m [2mpersonal-rep[0m [2m[req-4][0m  [92m200[0m  [36mPOST[0m [96m/rent[0m
+[2m  body:[0m {"@context":["https://www.w3.org/ns/credentials/v2"],"type":["VerifiableCredential"],"issuer":"did:web:food-truck-vendor%3A8468","validFrom":"2026-06-23T23:48:03.094Z","credentialSubject":{"type":"FoodTruckRental","status":"active","recipientDID":"did:web:personal-rep%3A8469","truckId":"TRUCK-001","licensePlate":"NANDA-001","vehicleRegistration":"CA-REG-2024-NANDA001"},"proof":{"type":"DataIntegrityProof","cryptosuite":"eddsa-jcs-2022","created":"2026-06-23T23:48:03.102Z","verificationMethod":"did:web:food-truck-vendor%3A8468#key-1","proofPurpose":"assertionMethod","proofValue":"E8ld8tkAWhgXRhzlDOYgXLFC_xvELbRcKw2tjCfnyGgrNlpPF11W00HTPxWp-mNAycQTKq8NV6Ywkesdsl_DCw"}}
+
+[2m[23:48:03.109][0m [1m[personal-rep][0m [2mOUT/REPLY[0m [2m←[0m [2mfood-truck-vendor:8468[0m  [92m200[0m  [36mPOST[0m [96m/rent[0m
+[2m  body:[0m {"@context":["https://www.w3.org/ns/credentials/v2"],"type":["VerifiableCredential"],"issuer":"did:web:food-truck-vendor%3A8468","validFrom":"2026-06-23T23:48:03.094Z","credentialSubject":{"type":"FoodTruckRental","status":"active","recipientDID":"did:web:personal-rep%3A8469","truckId":"TRUCK-001","licensePlate":"NANDA-001","vehicleRegistration":"CA-REG-2024-NANDA001"},"proof":{"type":"DataIntegrityProof","cryptosuite":"eddsa-jcs-2022","created":"2026-06-23T23:48:03.102Z","verificationMethod":"did:web:food-truck-vendor%3A8468#key-1","proofPurpose":"assertionMethod","proofValue":"E8ld8tkAWhgXRhzlDOYgXLFC_xvELbRcKw2tjCfnyGgrNlpPF11W00HTPxWp-mNAycQTKq8NV6Ywkesdsl_DCw"}}
+
+[2m[23:48:03.122][0m [1m[gov-health-dept][0m [95mIN/REQ[0m [95m←[0m [2mpersonal-rep[0m [2m[req-4][0m  [36mPOST[0m [96m/schedule-inspection[0m
+[2m  body:[0m {"inspectionRequest":"Agent did:web:personal-rep%3A8469 requests a health inspection for truck TRUCK-001.","requesterDID":"did:web:personal-rep%3A8469","foodTruckRental":{"@context":["https://www.w3.org/ns/credentials/v2"],"type":["VerifiableCredential"],"issuer":"did:web:food-truck-vendor%3A8468","validFrom":"2026-06-23T23:48:03.094Z","credentialSubject":{"type":"FoodTruckRental","status":"active","recipientDID":"did:web:personal-rep%3A8469","truckId":"TRUCK-001","licensePlate":"NANDA-001","vehicleRegistration":"CA-REG-2024-NANDA001"},"proof":{"type":"DataIntegrityProof","cryptosuite":"eddsa-jcs-2022","created":"2026-06-23T23:48:03.102Z","verificationMethod":"did:web:food-truck-vendor%3A8468#key-1","proofPurpose":"assertionMethod","proofValue":"E8ld8tkAWhgXRhzlDOYgXLFC_xvELbRcKw2tjCfnyGgrNlpPF11W00HTPxWp-mNAycQTKq8NV6Ywkesdsl_DCw"}}}
+
+[2m[23:48:03.113][0m [1m[personal-rep][0m [32mINFO [0m [1mPersonal rep status update[0m
+  [1m[34mFood truck TRUCK-001 (plate: NANDA-001) rented. Scheduling health inspection...[0m
+
+[2m[23:48:03.113][0m [1m[personal-rep][0m [36mOUT/REQ[0m [36m→[0m [2mgov-health-dept:8466[0m  [36mPOST[0m [96m/schedule-inspection[0m
+[2m  body:[0m {"inspectionRequest":"Agent did:web:personal-rep%3A8469 requests a health inspection for truck TRUCK-001.","requesterDID":"did:web:personal-rep%3A8469","foodTruckRental":{"@context":["https://www.w3.org/ns/credentials/v2"],"type":["VerifiableCredential"],"issuer":"did:web:food-truck-vendor%3A8468","validFrom":"2026-06-23T23:48:03.094Z","credentialSubject":{"type":"FoodTruckRental","status":"active","recipientDID":"did:web:personal-rep%3A8469","truckId":"TRUCK-001","licensePlate":"NANDA-001","vehicleRegistration":"CA-REG-2024-NANDA001"},"proof":{"type":"DataIntegrityProof","cryptosuite":"eddsa-jcs-2022","created":"2026-06-23T23:48:03.102Z","verificationMethod":"did:web:food-truck-vendor%3A8468#key-1","proofPurpose":"assertionMethod","proofValue":"E8ld8tkAWhgXRhzlDOYgXLFC_xvELbRcKw2tjCfnyGgrNlpPF11W00HTPxWp-mNAycQTKq8NV6Ywkesdsl_DCw"}}}
+
+[2m[23:48:03.126][0m [1m[gov-health-dept][0m [36mOUT/REQ[0m [36m→[0m [2mfood-truck-vendor:8468[0m  [36mGET[0m [96m/.well-known/did.json[0m
+
+[2m[23:48:03.163][0m [1m[food-truck-vendor][0m [95mIN/REQ[0m [95m←[0m [2mgov-health-dept[0m [2m[req-5][0m  [36mGET[0m [96m/.well-known/did.json[0m
+
+[2m[23:48:03.166][0m [1m[food-truck-vendor][0m [32mIN/REPLY[0m [32m→[0m [2mgov-health-dept[0m [2m[req-5][0m  [92m200[0m  [36mGET[0m [96m/.well-known/did.json[0m
+[2m  body:[0m {"@context":["https://www.w3.org/ns/did/v1"],"id":"did:web:food-truck-vendor%3A8468","verificationMethod":[{"id":"did:web:food-truck-vendor%3A8468#key-1","type":"Ed25519VerificationKey2020","controller":"did:web:food-truck-vendor%3A8468","publicKeyMultibase":"ug7Zd8i1eadha2Rq5ebuiK3ZBgscIt1NbkZK0-H9p1tw"}],"assertionMethod":["did:web:food-truck-vendor%3A8468#key-1"]}
+
+[2m[23:48:03.175][0m [1m[gov-health-dept][0m [2mOUT/REPLY[0m [2m←[0m [2mfood-truck-vendor:8468[0m  [92m200[0m  [36mGET[0m [96m/.well-known/did.json[0m
+[2m  body:[0m {"@context":["https://www.w3.org/ns/did/v1"],"id":"did:web:food-truck-vendor%3A8468","verificationMethod":[{"id":"did:web:food-truck-vendor%3A8468#key-1","type":"Ed25519VerificationKey2020","controller":"did:web:food-truck-vendor%3A8468","publicKeyMultibase":"ug7Zd8i1eadha2Rq5ebuiK3ZBgscIt1NbkZK0-H9p1tw"}],"assertionMethod":["did:web:food-truck-vendor%3A8468#key-1"]}
+
+[2m[23:48:03.196][0m [1m[gov-health-dept][0m [32mIN/REPLY[0m [32m→[0m [2mpersonal-rep[0m [2m[req-4][0m  [92m200[0m  [36mPOST[0m [96m/schedule-inspection[0m
+[2m  body:[0m {"@context":["https://www.w3.org/ns/credentials/v2"],"type":["VerifiableCredential"],"issuer":"did:web:gov-health-dept%3A8466","validFrom":"2026-06-23T23:48:03.189Z","credentialSubject":{"type":"HealthInspectionApproval","status":"passed","recipientDID":"did:web:personal-rep%3A8469","truckId":"TRUCK-001"},"proof":{"type":"DataIntegrityProof","cryptosuite":"eddsa-jcs-2022","created":"2026-06-23T23:48:03.196Z","verificationMethod":"did:web:gov-health-dept%3A8466#key-1","proofPurpose":"assertionMethod","proofValue":"rQzLosu8y9OEXl2zrFZr20ZTzwc2A_oVTcDyjFGmPjhBJBCfELJqLEMA2-IpiX5EF0TPHJ4226mEYR1z_WSPAQ"}}
+
+[2m[23:48:03.204][0m [1m[personal-rep][0m [2mOUT/REPLY[0m [2m←[0m [2mgov-health-dept:8466[0m  [92m200[0m  [36mPOST[0m [96m/schedule-inspection[0m
+[2m  body:[0m {"@context":["https://www.w3.org/ns/credentials/v2"],"type":["VerifiableCredential"],"issuer":"did:web:gov-health-dept%3A8466","validFrom":"2026-06-23T23:48:03.189Z","credentialSubject":{"type":"HealthInspectionApproval","status":"passed","recipientDID":"did:web:personal-rep%3A8469","truckId":"TRUCK-001"},"proof":{"type":"DataIntegrityProof","cryptosuite":"eddsa-jcs-2022","created":"2026-06-23T23:48:03.196Z","verificationMethod":"did:web:gov-health-dept%3A8466#key-1","proofPurpose":"assertionMethod","proofValue":"rQzLosu8y9OEXl2zrFZr20ZTzwc2A_oVTcDyjFGmPjhBJBCfELJqLEMA2-IpiX5EF0TPHJ4226mEYR1z_WSPAQ"}}
+
+[2m[23:48:03.212][0m [1m[gov-business-licensing][0m [95mIN/REQ[0m [95m←[0m [2mpersonal-rep[0m [2m[req-8][0m  [36mPOST[0m [96m/apply/final-license[0m
+[2m  body:[0m {"applicationStatement":"Agent did:web:personal-rep%3A8469 applies for a final restaurant business license.","requesterDID":"did:web:personal-rep%3A8469","provisionalLicense":{"@context":["https://www.w3.org/ns/credentials/v2"],"type":["VerifiableCredential"],"issuer":"did:web:gov-business-licensing%3A8465","validFrom":"2026-06-23T23:48:02.989Z","credentialSubject":{"type":"ProvisionalRestaurantLicense","status":"granted","recipientDID":"did:web:personal-rep%3A8469"},"proof":{"type":"DataIntegrityProof","cryptosuite":"eddsa-jcs-2022","created":"2026-06-23T23:48:03.002Z","verificationMethod":"did:web:gov-business-licensing%3A8465#key-1","proofPurpose":"assertionMethod","proofValue":"4WmiS5v4U7EsefNyf4XcaPIFNe0sBP-mxgaiI_qYvQY_xQ3V-wC3LtRipUMVCxP9TuvE-TFD5g88EtifZnyjCQ"}},"healthInspection":{"@context":["https://www.w3.org/ns/credentials/v2"],"type":["VerifiableCredential"],"issuer":"did:web:gov-health-dept%3A8466","validFrom":"2026-06-23T23:48:03.189Z","credentialSubject":{"type":"HealthInspectionApproval","status":"passed","recipientDID":"did:web:personal-rep%3A8469","truckId":"TRUCK-001"},"proof":{"type":"DataIntegrityProof","cryptosuite":"eddsa-jcs-2022","created":"2026-06-23T23:48:03.196Z","verificationMethod":"did:web:gov-health-dept%3A8466#key-1","proofPurpose":"assertionMethod","proofValue":"rQzLosu8y9OEXl2zrFZr20ZTzwc2A_oVTcDyjFGmPjhBJBCfELJqLEMA2-IpiX5EF0TPHJ4226mEYR1z_WSPAQ"}}}
+
+[2m[23:48:03.208][0m [1m[personal-rep][0m [32mINFO [0m [1mPersonal rep status update[0m
+  [1m[34mHealth inspection passed for TRUCK-001. Applying for final restaurant business license...[0m
+
+[2m[23:48:03.208][0m [1m[personal-rep][0m [36mOUT/REQ[0m [36m→[0m [2mgov-business-licensing:8465[0m  [36mPOST[0m [96m/apply/final-license[0m
+[2m  body:[0m {"applicationStatement":"Agent did:web:personal-rep%3A8469 applies for a final restaurant business license.","requesterDID":"did:web:personal-rep%3A8469","provisionalLicense":{"@context":["https://www.w3.org/ns/credentials/v2"],"type":["VerifiableCredential"],"issuer":"did:web:gov-business-licensing%3A8465","validFrom":"2026-06-23T23:48:02.989Z","credentialSubject":{"type":"ProvisionalRestaurantLicense","status":"granted","recipientDID":"did:web:personal-rep%3A8469"},"proof":{"type":"DataIntegrityProof","cryptosuite":"eddsa-jcs-2022","created":"2026-06-23T23:48:03.002Z","verificationMethod":"did:web:gov-business-licensing%3A8465#key-1","proofPurpose":"assertionMethod","proofValue":"4WmiS5v4U7EsefNyf4XcaPIFNe0sBP-mxgaiI_qYvQY_xQ3V-wC3LtRipUMVCxP9TuvE-TFD5g88EtifZnyjCQ"}},"healthInspection":{"@context":["https://www.w3.org/ns/credentials/v2"],"type":["VerifiableCredential"],"issuer":"did:web:gov-health-dept%3A8466","validFrom":"2026-06-23T23:48:03.189Z","credentialSubject":{"type":"HealthInspectionApproval","status":"passed","recipientDID":"did:web:personal-rep%3A8469","truckId":"TRUCK-001"},"proof":{"type":"DataIntegrityProof","cryptosuite":"eddsa-jcs-2022","created":"2026-06-23T23:48:03.196Z","verificationMethod":"did:web:gov-health-dept%3A8466#key-1","proofPurpose":"assertionMethod","proofValue":"rQzLosu8y9OEXl2zrFZr20ZTzwc2A_oVTcDyjFGmPjhBJBCfELJqLEMA2-IpiX5EF0TPHJ4226mEYR1z_WSPAQ"}}}
+
+[2m[23:48:03.217][0m [1m[gov-business-licensing][0m [36mOUT/REQ[0m [36m→[0m [2mgov-business-licensing:8465[0m  [36mGET[0m [96m/.well-known/did.json[0m
+
+[2m[23:48:03.228][0m [1m[gov-business-licensing][0m [95mIN/REQ[0m [95m←[0m [2mgov-business-licensing[0m [2m[req-9][0m  [36mGET[0m [96m/.well-known/did.json[0m
+
+[2m[23:48:03.228][0m [1m[gov-business-licensing][0m [32mIN/REPLY[0m [32m→[0m [2mgov-business-licensing[0m [2m[req-9][0m  [92m200[0m  [36mGET[0m [96m/.well-known/did.json[0m
+[2m  body:[0m {"@context":["https://www.w3.org/ns/did/v1"],"id":"did:web:gov-business-licensing%3A8465","verificationMethod":[{"id":"did:web:gov-business-licensing%3A8465#key-1","type":"Ed25519VerificationKey2020","controller":"did:web:gov-business-licensing%3A8465","publicKeyMultibase":"upkH7qYD0PbN7dJt332m400SA4DTHgFaTjhqBu0k1N5c"}],"assertionMethod":["did:web:gov-business-licensing%3A8465#key-1"]}
+
+[2m[23:48:03.237][0m [1m[gov-business-licensing][0m [2mOUT/REPLY[0m [2m←[0m [2mgov-business-licensing:8465[0m  [92m200[0m  [36mGET[0m [96m/.well-known/did.json[0m
+[2m  body:[0m {"@context":["https://www.w3.org/ns/did/v1"],"id":"did:web:gov-business-licensing%3A8465","verificationMethod":[{"id":"did:web:gov-business-licensing%3A8465#key-1","type":"Ed25519VerificationKey2020","controller":"did:web:gov-business-licensing%3A8465","publicKeyMultibase":"upkH7qYD0PbN7dJt332m400SA4DTHgFaTjhqBu0k1N5c"}],"assertionMethod":["did:web:gov-business-licensing%3A8465#key-1"]}
+
+[2m[23:48:03.256][0m [1m[gov-business-licensing][0m [36mOUT/REQ[0m [36m→[0m [2mgov-health-dept:8466[0m  [36mGET[0m [96m/.well-known/did.json[0m
+
+[2m[23:48:03.279][0m [1m[gov-health-dept][0m [95mIN/REQ[0m [95m←[0m [2mgov-business-licensing[0m [2m[req-5][0m  [36mGET[0m [96m/.well-known/did.json[0m
+
+[2m[23:48:03.281][0m [1m[gov-health-dept][0m [32mIN/REPLY[0m [32m→[0m [2mgov-business-licensing[0m [2m[req-5][0m  [92m200[0m  [36mGET[0m [96m/.well-known/did.json[0m
+[2m  body:[0m {"@context":["https://www.w3.org/ns/did/v1"],"id":"did:web:gov-health-dept%3A8466","verificationMethod":[{"id":"did:web:gov-health-dept%3A8466#key-1","type":"Ed25519VerificationKey2020","controller":"did:web:gov-health-dept%3A8466","publicKeyMultibase":"u73WjgOr-WUZ0U1rsDTmWUfsuHD_cHdr5bDZkeWJlYfU"}],"assertionMethod":["did:web:gov-health-dept%3A8466#key-1"]}
+
+[2m[23:48:03.290][0m [1m[gov-business-licensing][0m [2mOUT/REPLY[0m [2m←[0m [2mgov-health-dept:8466[0m  [92m200[0m  [36mGET[0m [96m/.well-known/did.json[0m
+[2m  body:[0m {"@context":["https://www.w3.org/ns/did/v1"],"id":"did:web:gov-health-dept%3A8466","verificationMethod":[{"id":"did:web:gov-health-dept%3A8466#key-1","type":"Ed25519VerificationKey2020","controller":"did:web:gov-health-dept%3A8466","publicKeyMultibase":"u73WjgOr-WUZ0U1rsDTmWUfsuHD_cHdr5bDZkeWJlYfU"}],"assertionMethod":["did:web:gov-health-dept%3A8466#key-1"]}
+
+[2m[23:48:03.308][0m [1m[gov-business-licensing][0m [32mIN/REPLY[0m [32m→[0m [2mpersonal-rep[0m [2m[req-8][0m  [92m200[0m  [36mPOST[0m [96m/apply/final-license[0m
+[2m  body:[0m {"@context":["https://www.w3.org/ns/credentials/v2"],"type":["VerifiableCredential"],"issuer":"did:web:gov-business-licensing%3A8465","validFrom":"2026-06-23T23:48:03.304Z","credentialSubject":{"type":"FinalRestaurantLicense","status":"granted","recipientDID":"did:web:personal-rep%3A8469"},"proof":{"type":"DataIntegrityProof","cryptosuite":"eddsa-jcs-2022","created":"2026-06-23T23:48:03.308Z","verificationMethod":"did:web:gov-business-licensing%3A8465#key-1","proofPurpose":"assertionMethod","proofValue":"ZfviJuEfceG6UVPDrshIndLh70Q3_tsmiMdgR-672QTzxB8k2FmiUCeAL1EaOYE975VVi4pJDgFVLYGGk-VXBA"}}
+
+[2m[23:48:03.317][0m [1m[personal-rep][0m [2mOUT/REPLY[0m [2m←[0m [2mgov-business-licensing:8465[0m  [92m200[0m  [36mPOST[0m [96m/apply/final-license[0m
+[2m  body:[0m {"@context":["https://www.w3.org/ns/credentials/v2"],"type":["VerifiableCredential"],"issuer":"did:web:gov-business-licensing%3A8465","validFrom":"2026-06-23T23:48:03.304Z","credentialSubject":{"type":"FinalRestaurantLicense","status":"granted","recipientDID":"did:web:personal-rep%3A8469"},"proof":{"type":"DataIntegrityProof","cryptosuite":"eddsa-jcs-2022","created":"2026-06-23T23:48:03.308Z","verificationMethod":"did:web:gov-business-licensing%3A8465#key-1","proofPurpose":"assertionMethod","proofValue":"ZfviJuEfceG6UVPDrshIndLh70Q3_tsmiMdgR-672QTzxB8k2FmiUCeAL1EaOYE975VVi4pJDgFVLYGGk-VXBA"}}
+
+[2m[23:48:03.327][0m [1m[gov-parking-dept][0m [95mIN/REQ[0m [95m←[0m [2mpersonal-rep[0m [2m[req-4][0m  [36mPOST[0m [96m/apply/street-vending-permit[0m
+[2m  body:[0m {"applicationStatement":"Agent did:web:personal-rep%3A8469 applies for a street vending permit for truck TRUCK-001.","requesterDID":"did:web:personal-rep%3A8469","finalLicense":{"@context":["https://www.w3.org/ns/credentials/v2"],"type":["VerifiableCredential"],"issuer":"did:web:gov-business-licensing%3A8465","validFrom":"2026-06-23T23:48:03.304Z","credentialSubject":{"type":"FinalRestaurantLicense","status":"granted","recipientDID":"did:web:personal-rep%3A8469"},"proof":{"type":"DataIntegrityProof","cryptosuite":"eddsa-jcs-2022","created":"2026-06-23T23:48:03.308Z","verificationMethod":"did:web:gov-business-licensing%3A8465#key-1","proofPurpose":"assertionMethod","proofValue":"ZfviJuEfceG6UVPDrshIndLh70Q3_tsmiMdgR-672QTzxB8k2FmiUCeAL1EaOYE975VVi4pJDgFVLYGGk-VXBA"}},"foodTruckRental":{"@context":["https://www.w3.org/ns/credentials/v2"],"type":["VerifiableCredential"],"issuer":"did:web:food-truck-vendor%3A8468","validFrom":"2026-06-23T23:48:03.094Z","credentialSubject":{"type":"FoodTruckRental","status":"active","recipientDID":"did:web:personal-rep%3A8469","truckId":"TRUCK-001","licensePlate":"NANDA-001","vehicleRegistration":"CA-REG-2024-NANDA001"},"proof":{"type":"DataIntegrityProof","cryptosuite":"eddsa-jcs-2022","created":"2026-06-23T23:48:03.102Z","verificationMethod":"did:web:food-truck-vendor%3A8468#key-1","proofPurpose":"assertionMethod","proofValue":"E8ld8tkAWhgXRhzlDOYgXLFC_xvELbRcKw2tjCfnyGgrNlpPF11W00HTPxWp-mNAycQTKq8NV6Ywkesdsl_DCw"}}}
+
+[2m[23:48:03.320][0m [1m[personal-rep][0m [32mINFO [0m [1mPersonal rep status update[0m
+  [1m[34mFinal restaurant business license granted. Applying for street vending permit...[0m
+
+[2m[23:48:03.321][0m [1m[personal-rep][0m [36mOUT/REQ[0m [36m→[0m [2mgov-parking-dept:8467[0m  [36mPOST[0m [96m/apply/street-vending-permit[0m
+[2m  body:[0m {"applicationStatement":"Agent did:web:personal-rep%3A8469 applies for a street vending permit for truck TRUCK-001.","requesterDID":"did:web:personal-rep%3A8469","finalLicense":{"@context":["https://www.w3.org/ns/credentials/v2"],"type":["VerifiableCredential"],"issuer":"did:web:gov-business-licensing%3A8465","validFrom":"2026-06-23T23:48:03.304Z","credentialSubject":{"type":"FinalRestaurantLicense","status":"granted","recipientDID":"did:web:personal-rep%3A8469"},"proof":{"type":"DataIntegrityProof","cryptosuite":"eddsa-jcs-2022","created":"2026-06-23T23:48:03.308Z","verificationMethod":"did:web:gov-business-licensing%3A8465#key-1","proofPurpose":"assertionMethod","proofValue":"ZfviJuEfceG6UVPDrshIndLh70Q3_tsmiMdgR-672QTzxB8k2FmiUCeAL1EaOYE975VVi4pJDgFVLYGGk-VXBA"}},"foodTruckRental":{"@context":["https://www.w3.org/ns/credentials/v2"],"type":["VerifiableCredential"],"issuer":"did:web:food-truck-vendor%3A8468","validFrom":"2026-06-23T23:48:03.094Z","credentialSubject":{"type":"FoodTruckRental","status":"active","recipientDID":"did:web:personal-rep%3A8469","truckId":"TRUCK-001","licensePlate":"NANDA-001","vehicleRegistration":"CA-REG-2024-NANDA001"},"proof":{"type":"DataIntegrityProof","cryptosuite":"eddsa-jcs-2022","created":"2026-06-23T23:48:03.102Z","verificationMethod":"did:web:food-truck-vendor%3A8468#key-1","proofPurpose":"assertionMethod","proofValue":"E8ld8tkAWhgXRhzlDOYgXLFC_xvELbRcKw2tjCfnyGgrNlpPF11W00HTPxWp-mNAycQTKq8NV6Ywkesdsl_DCw"}}}
+
+[2m[23:48:03.334][0m [1m[gov-parking-dept][0m [36mOUT/REQ[0m [36m→[0m [2mgov-business-licensing:8465[0m  [36mGET[0m [96m/.well-known/did.json[0m
+
+[2m[23:48:03.374][0m [1m[gov-business-licensing][0m [95mIN/REQ[0m [95m←[0m [2mgov-parking-dept[0m [2m[req-a][0m  [36mGET[0m [96m/.well-known/did.json[0m
+
+[2m[23:48:03.376][0m [1m[gov-business-licensing][0m [32mIN/REPLY[0m [32m→[0m [2mgov-parking-dept[0m [2m[req-a][0m  [92m200[0m  [36mGET[0m [96m/.well-known/did.json[0m
+[2m  body:[0m {"@context":["https://www.w3.org/ns/did/v1"],"id":"did:web:gov-business-licensing%3A8465","verificationMethod":[{"id":"did:web:gov-business-licensing%3A8465#key-1","type":"Ed25519VerificationKey2020","controller":"did:web:gov-business-licensing%3A8465","publicKeyMultibase":"upkH7qYD0PbN7dJt332m400SA4DTHgFaTjhqBu0k1N5c"}],"assertionMethod":["did:web:gov-business-licensing%3A8465#key-1"]}
+
+[2m[23:48:03.387][0m [1m[gov-parking-dept][0m [2mOUT/REPLY[0m [2m←[0m [2mgov-business-licensing:8465[0m  [92m200[0m  [36mGET[0m [96m/.well-known/did.json[0m
+[2m  body:[0m {"@context":["https://www.w3.org/ns/did/v1"],"id":"did:web:gov-business-licensing%3A8465","verificationMethod":[{"id":"did:web:gov-business-licensing%3A8465#key-1","type":"Ed25519VerificationKey2020","controller":"did:web:gov-business-licensing%3A8465","publicKeyMultibase":"upkH7qYD0PbN7dJt332m400SA4DTHgFaTjhqBu0k1N5c"}],"assertionMethod":["did:web:gov-business-licensing%3A8465#key-1"]}
+
+[2m[23:48:03.401][0m [1m[gov-parking-dept][0m [36mOUT/REQ[0m [36m→[0m [2mfood-truck-vendor:8468[0m  [36mGET[0m [96m/.well-known/did.json[0m
+
+[2m[23:48:03.426][0m [1m[food-truck-vendor][0m [95mIN/REQ[0m [95m←[0m [2mgov-parking-dept[0m [2m[req-6][0m  [36mGET[0m [96m/.well-known/did.json[0m
+
+[2m[23:48:03.431][0m [1m[food-truck-vendor][0m [32mIN/REPLY[0m [32m→[0m [2mgov-parking-dept[0m [2m[req-6][0m  [92m200[0m  [36mGET[0m [96m/.well-known/did.json[0m
+[2m  body:[0m {"@context":["https://www.w3.org/ns/did/v1"],"id":"did:web:food-truck-vendor%3A8468","verificationMethod":[{"id":"did:web:food-truck-vendor%3A8468#key-1","type":"Ed25519VerificationKey2020","controller":"did:web:food-truck-vendor%3A8468","publicKeyMultibase":"ug7Zd8i1eadha2Rq5ebuiK3ZBgscIt1NbkZK0-H9p1tw"}],"assertionMethod":["did:web:food-truck-vendor%3A8468#key-1"]}
+
+[2m[23:48:03.440][0m [1m[gov-parking-dept][0m [2mOUT/REPLY[0m [2m←[0m [2mfood-truck-vendor:8468[0m  [92m200[0m  [36mGET[0m [96m/.well-known/did.json[0m
+[2m  body:[0m {"@context":["https://www.w3.org/ns/did/v1"],"id":"did:web:food-truck-vendor%3A8468","verificationMethod":[{"id":"did:web:food-truck-vendor%3A8468#key-1","type":"Ed25519VerificationKey2020","controller":"did:web:food-truck-vendor%3A8468","publicKeyMultibase":"ug7Zd8i1eadha2Rq5ebuiK3ZBgscIt1NbkZK0-H9p1tw"}],"assertionMethod":["did:web:food-truck-vendor%3A8468#key-1"]}
+
+[2m[23:48:03.465][0m [1m[gov-parking-dept][0m [32mIN/REPLY[0m [32m→[0m [2mpersonal-rep[0m [2m[req-4][0m  [92m200[0m  [36mPOST[0m [96m/apply/street-vending-permit[0m
+[2m  body:[0m {"@context":["https://www.w3.org/ns/credentials/v2"],"type":["VerifiableCredential"],"issuer":"did:web:gov-parking-dept%3A8467","validFrom":"2026-06-23T23:48:03.452Z","credentialSubject":{"type":"StreetVendingPermit","status":"granted","recipientDID":"did:web:personal-rep%3A8469","truckId":"TRUCK-001","licensePlate":"NANDA-001"},"proof":{"type":"DataIntegrityProof","cryptosuite":"eddsa-jcs-2022","created":"2026-06-23T23:48:03.465Z","verificationMethod":"did:web:gov-parking-dept%3A8467#key-1","proofPurpose":"assertionMethod","proofValue":"N5wFmcztLIVcPe-XlsgEqyAKzIZHmdUIs2piRB-ZrTPEvZmlAQnAeLbT6-b9irkEHEP7rDAL1PVMp8I5ulQpBA"}}
+
+[2m[23:48:03.472][0m [1m[personal-rep][0m [2mOUT/REPLY[0m [2m←[0m [2mgov-parking-dept:8467[0m  [92m200[0m  [36mPOST[0m [96m/apply/street-vending-permit[0m
+[2m  body:[0m {"@context":["https://www.w3.org/ns/credentials/v2"],"type":["VerifiableCredential"],"issuer":"did:web:gov-parking-dept%3A8467","validFrom":"2026-06-23T23:48:03.452Z","credentialSubject":{"type":"StreetVendingPermit","status":"granted","recipientDID":"did:web:personal-rep%3A8469","truckId":"TRUCK-001","licensePlate":"NANDA-001"},"proof":{"type":"DataIntegrityProof","cryptosuite":"eddsa-jcs-2022","created":"2026-06-23T23:48:03.465Z","verificationMethod":"did:web:gov-parking-dept%3A8467#key-1","proofPurpose":"assertionMethod","proofValue":"N5wFmcztLIVcPe-XlsgEqyAKzIZHmdUIs2piRB-ZrTPEvZmlAQnAeLbT6-b9irkEHEP7rDAL1PVMp8I5ulQpBA"}}
+
+[2m[23:48:03.472][0m [1m[personal-rep][0m [32mINFO [0m [1mPersonal rep status update[0m
+  [1m[34mAll tasks complete! Food truck business is fully authorized. Credentials: business registration, provisional and final restaurant licenses, food truck rental (TRUCK-001, plate: NANDA-001), health inspection approval, and street vending permit. Ready to operate.[0m
+
+[2m[23:48:04.651][0m [1m[personal-rep][0m [95mIN/REQ[0m [95m←[0m [2m172.18.0.1[0m [2m[req-4][0m  [36mGET[0m [96m/task-status[0m
+
+[2m[23:48:04.652][0m [1m[personal-rep][0m [32mIN/REPLY[0m [32m→[0m [2m172.18.0.1[0m [2m[req-4][0m  [92m200[0m  [36mGET[0m [96m/task-status[0m
+[2m  body:[0m {"statusUpdate":"All tasks complete! Food truck business is fully authorized. Credentials: business registration, provisional and final restaurant licenses, food truck rental (TRUCK-001, plate: NANDA-001), health inspection approval, and street vending permit. Ready to operate.","completedGoals":["research-requirements","business-registration","provisional-license","food-truck-rental","health-inspection","final-license","street-vending-permit"],"pendingGoals":[],"isComplete":true,"isFailed":false}
+
