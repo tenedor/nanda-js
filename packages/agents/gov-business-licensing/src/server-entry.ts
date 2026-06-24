@@ -4,7 +4,7 @@ import type { Http2SecureServer } from 'node:http2';
 import { setGlobalDispatcher, Agent } from 'undici';
 import { AgentIdentityManager, FASTIFY_BASE_OPTIONS, configureApp, PROTOCOL_VERSION } from '@nanda/agent';
 import { buildAgentFacts } from '@nanda/agent-facts';
-import { publicKeyToBase64url } from '@nanda/shared';
+import { publicKeyToBase64url, setLogger } from '@nanda/shared';
 import { registerRoutes } from './routes.js';
 
 const PORT = parseInt(process.env.PORT ?? '8465', 10);
@@ -50,6 +50,7 @@ const app = Fastify<Http2SecureServer>({
   https: { cert: readFileSync(TLS_CERT), key: readFileSync(TLS_KEY) },
   logger: { level: process.env.LOG_LEVEL ?? 'info' },
 });
+setLogger(app.log);
 
 await configureApp(app, manager, async (a) => {
   await a.register(registerRoutes, { manager, healthDeptDid });

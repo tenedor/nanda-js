@@ -1,8 +1,22 @@
 # Food Truck Scenario
 
-A citizen asks their personal representative agent to set up a food truck business. The personal rep starts with a single contact — the government local business support agent — and discovers all others through NANDA resolution (lean index → AgentFacts → endpoint). It autonomously acquires credentials in dependency order: business registration → provisional restaurant license → food truck rental → health inspection approval → final restaurant license → street vending permit. Each credential is issued as a W3C VerifiableCredential and verified by the receiving agent before proceeding.
+This scenario shows a citizen getting their personal representative agent's help setting up a food truck business. Starting from a single government support contact, the citizen's agent discovers agents representing the various government and commercial services it needs to coordinate with and it researches, plans, and executes the steps to acquire the necessary licenses and permits to open the business. This demo illustrates key technologies like finding agents using a NANDA index and requiring cryptographically verifiable evidence of stakeholder approvals. That said, the demo skips details like confirming user permission for sensitive actions or waiting for a real-world health inspection to occur.
 
-For the complete API definitions and step-by-step interaction sequence, see [agent-apis.md](agent-apis.md) and [scenario-script.md](scenario-script.md).
+## The Scenario Play-By-Play
+
+The citizen sends a single message: start a food truck business. The personal rep immediately acknowledges and gets to work.
+
+First, it resolves the one contact it was given — the local government support agent — by querying the NANDA lean index, fetching the agent's verifiable facts, then calling the agent directly to ask what agencies are involved.
+
+With three new contacts in hand — business licensing, the parking department, and a food truck vendor — it fans out to research requirements from each, building up a complete picture of the dependency chain.
+
+Then it executes. Business registration first — no prerequisites. Provisional license next, presenting the registration credential. Truck rental in parallel, also using that registration. Health inspection, presenting the rental. Final license, presenting the provisional license and inspection approval. Street vending permit last, presenting the final license and rental together.
+
+To go deeper:
+- [agent-apis.md](agent-apis.md) shows the complete API definitions.
+- [scenario-script.md](scenario-script.md) describes the exact step-by-step interaction sequence.
+- [logs/](logs/) contains full logs from a run of the simulation, including pre-rendered pretty-printed views. `cat` the colored personal rep log or open the no-color version in an editor.
+- Or run it yourself! See below.
 
 ## Services (ports 8460–8469)
 
@@ -40,9 +54,12 @@ The citizen script posts the objective and polls for status every 3 seconds. The
 Stream pretty-printed logs from all services:
 
 ```bash
+python3 scripts/docker-address-map.py -f docker-compose.food-truck.yml -o /tmp/addr.json
 docker compose -f docker-compose.food-truck.yml logs -f \
-  | python3 scripts/pretty-logs.py --color
+  | python3 scripts/pretty-logs.py --color --address-map /tmp/addr.json
 ```
+
+The address map step resolves internal container IPs to service names in the log output. Run it once after the containers are up; re-run it after a `down -v` restart.
 
 Watch just the personal rep (status updates + incoming requests):
 

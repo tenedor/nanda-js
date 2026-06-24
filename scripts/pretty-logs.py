@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""pretty-logs-v2.py — robust pretty-printer for NANDA Docker Compose logs.
+"""pretty-logs.py — pretty-printer for NANDA Docker Compose logs.
 
 Handles all line types in multi-service compose output:
   - Container health state lines  (Waiting / Healthy / Starting / ...)
@@ -8,9 +8,9 @@ Handles all line types in multi-service compose output:
 
 Usage:
   docker compose -f docker-compose.food-truck.yml logs -f \
-    | python3 scripts/pretty-logs-v2.py --color
+    | python3 scripts/pretty-logs.py --color
 
-  python3 scripts/pretty-logs-v2.py -i raw.log [-o pretty.log] [--color]
+  python3 scripts/pretty-logs.py -i raw.log [-o pretty.log] [--color]
 """
 
 import re
@@ -18,24 +18,29 @@ import sys
 import json
 import argparse
 from datetime import datetime, timezone
+from urllib.parse import urlparse, unquote
 
 # ── Constants ─────────────────────────────────────────────────────────────────
 
 LEVELS = {10: 'TRACE', 20: 'DEBUG', 30: 'INFO', 40: 'WARN', 50: 'ERROR', 60: 'FATAL'}
 
-# JSON fields rendered explicitly; excluded from the generic extra-field block.
-CORE_FIELDS = {'level', 'time', 'pid', 'hostname', 'msg', 'reqId',
-               'req', 'res', 'responseTime', 'statusUpdate', 'version'}
+# Fields handled explicitly; excluded from the generic extra-field block.
+CORE_FIELDS = {
+    'level', 'time', 'pid', 'hostname', 'msg', 'reqId',
+    'req', 'res', 'responseTime', 'statusUpdate', 'version',
+    'direction', 'kind', 'url', 'method', 'body',
+    'remoteIp', 'localIp', 'statusCode', 'status',
+}
 
 # ── ANSI helpers ──────────────────────────────────────────────────────────────
 
-RESET  = '\033[0m'
-BOLD   = '\033[1m'
-DIM    = '\033[2m'
-CYAN   = '\033[36m'
-GREEN  = '\033[32m'
-YELLOW = '\033[33m'
-RED    = '\033[31m'
+RESET         = '\033[0m'
+BOLD          = '\033[1m'
+DIM           = '\033[2m'
+CYAN          = '\033[36m'
+GREEN         = '\033[32m'
+YELLOW        = '\033[33m'
+RED           = '\033[31m'
 BRIGHT_RED    = '\033[91m'
 BRIGHT_GREEN  = '\033[92m'
 BRIGHT_YELLOW = '\033[93m'
@@ -78,6 +83,24 @@ def fmt_ts(ts_ms):
     return datetime.fromtimestamp(ts_ms / 1000, tz=timezone.utc).strftime('%H:%M:%S.%f')[:-3]
 
 
+# ── URL helpers ───────────────────────────────────────────────────────────────
+
+def split_url(url):
+    """Split 'https://host:port/path' into ('host:port', '/path')."""
+    parsed = urlparse(url)
+    peer = parsed.netloc
+    path = parsed.path or '/'
+    if parsed.query:
+        path += '?' + parsed.query
+    return peer, path
+
+
+def trim_path(path):
+    """Decode percent-encoding in a path for readability; trim if very long."""
+    decoded = unquote(path)
+    return decoded[:100] + '…' if len(decoded) > 100 else decoded
+
+
 # ── Line classifiers ─────────────────────────────────────────────────────────
 
 CONTAINER_RE = re.compile(r'^Container\s+(\S+)\s+(\S+)\s*$')
@@ -100,72 +123,107 @@ def classify(raw):
 
 def fmt_container(name, state, use_color):
     state_color = HEALTH_COLOR.get(state, '')
-    label = c('[container]', DIM, use_color=use_color)
+    label  = c('[container]', DIM, use_color=use_color)
     name_s = c(name, DIM, use_color=use_color)
     state_s = c(state, state_color, use_color=use_color) if use_color and state_color else state
     return f"{label} {name_s}  {state_s}"
 
 
 def fmt_plain(service, text, use_color):
-    svc = c(f"[{service}]", DIM, use_color=use_color) if service else ''
+    svc    = c(f"[{service}]", DIM, use_color=use_color) if service else ''
     text_s = c(text, DIM, use_color=use_color)
     prefix = f"{svc} " if svc else ''
     return f"{prefix}{text_s}"
 
 
-def fmt_json(obj, service, use_color):
-    ts_ms = obj.get('time', 0)
-    ts = fmt_ts(ts_ms) if ts_ms else '??:??:??.???'
+def fmt_network(obj, ts_s, svc_s, use_color, address_map=None):
+    """Format an inbound or outbound network request/response log entry."""
+    direction = obj['direction']   # 'sent' | 'received'
+    kind      = obj['kind']        # 'request' | 'response'
+    method    = obj.get('method', '?')
+    body      = obj.get('body')
+    req_id    = obj.get('reqId', '')
+    id_s      = (' ' + c(f"[{req_id}]", DIM, use_color=use_color)) if req_id else ''
+
+    if direction == 'sent' and kind == 'request':
+        # This service is sending an outbound request.
+        label_s  = c('OUT/REQ', CYAN, use_color=use_color)
+        arrow_s  = c('→', CYAN, use_color=use_color)
+        peer, path = split_url(obj.get('url', ''))
+        peer_s   = c(peer, DIM, use_color=use_color)
+        status_s = ''
+
+    elif direction == 'received' and kind == 'response':
+        # This service received a response to an outbound request.
+        label_s  = c('OUT/REPLY', DIM, use_color=use_color)
+        arrow_s  = c('←', DIM, use_color=use_color)
+        peer, path = split_url(obj.get('url', ''))
+        peer_s   = c(peer, DIM, use_color=use_color)
+        status   = obj.get('status')
+        status_s = ('  ' + status_code_color(status, use_color)) if status is not None else ''
+
+    elif direction == 'received' and kind == 'request':
+        # This service received an inbound request.
+        label_s  = c('IN/REQ', BRIGHT_MAGENTA, use_color=use_color)
+        arrow_s  = c('←', BRIGHT_MAGENTA, use_color=use_color)
+        raw_ip   = obj.get('remoteIp', '?')
+        peer_s   = c((address_map or {}).get(raw_ip, raw_ip), DIM, use_color=use_color)
+        path     = obj.get('url', '?')
+        status_s = ''
+
+    else:
+        # direction == 'sent' and kind == 'response'
+        # This service is sending a reply to an inbound request.
+        label_s  = c('IN/REPLY', GREEN, use_color=use_color)
+        arrow_s  = c('→', GREEN, use_color=use_color)
+        raw_ip   = obj.get('remoteIp', '?')
+        peer_s   = c((address_map or {}).get(raw_ip, raw_ip), DIM, use_color=use_color)
+        path     = obj.get('url', '?')
+        status   = obj.get('statusCode')
+        status_s = ('  ' + status_code_color(status, use_color)) if status is not None else ''
+
+    method_s = c(method, CYAN, use_color=use_color)
+    path_s   = c(trim_path(path), BRIGHT_CYAN, use_color=use_color)
+    header   = f"{ts_s} {svc_s}{label_s} {arrow_s} {peer_s}{id_s}{status_s}  {method_s} {path_s}"
+
+    lines = [header]
+    if body is not None:
+        body_s = json.dumps(body, separators=(',', ':')) if isinstance(body, (dict, list)) else str(body)
+        key_s  = c('  body:', DIM, use_color=use_color)
+        lines.append(f"{key_s} {body_s}")
+
+    return '\n'.join(lines)
+
+
+def fmt_json(obj, service, use_color, address_map=None):
+    ts_ms      = obj.get('time', 0)
+    ts         = fmt_ts(ts_ms) if ts_ms else '??:??:??.???'
     level_name = LEVELS.get(obj.get('level', 30), str(obj.get('level', '?')))
-    msg = obj.get('msg', '')
-    req_id = obj.get('reqId', '')
+    msg        = obj.get('msg', '')
 
-    ts_s    = c(f"[{ts}]", DIM, use_color=use_color)
-    svc_s   = (c(f"[{service}]", BOLD, use_color=use_color) + ' ') if service else ''
-    level_s = c(f"{level_name:<5}", LEVEL_COLOR.get(level_name, ''), use_color=use_color)
-    id_s    = (' ' + c(f"[{req_id}]", DIM, use_color=use_color)) if req_id else ''
+    ts_s  = c(f"[{ts}]", DIM, use_color=use_color)
+    svc_s = (c(f"[{service}]", BOLD, use_color=use_color) + ' ') if service else ''
 
-    lines = []
+    # ── Network request/response logs ─────────────────────────────────────────
+    if obj.get('direction') and obj.get('kind'):
+        return fmt_network(obj, ts_s, svc_s, use_color, address_map=address_map)
 
     # ── Status update (personal-rep workflow progress) ────────────────────────
     if 'statusUpdate' in obj:
-        msg_s = c(msg, BOLD, use_color=use_color)
-        lines.append(f"{ts_s} {svc_s}{level_s} {msg_s}")
-        update = obj['statusUpdate']
-        lines.append('  ' + c(update, BOLD, '\033[34m', use_color=use_color))
-        return '\n'.join(lines)
-
-    # ── Incoming request ──────────────────────────────────────────────────────
-    req = obj.get('req')
-    if req and msg == 'incoming request':
-        method = c(req.get('method', '?'), CYAN, use_color=use_color)
-        url    = _trim_url(req.get('url', '?'))
-        url_s  = c(url, BRIGHT_CYAN, use_color=use_color)
-        src    = c(req.get('remoteAddress', '?'), DIM, use_color=use_color)
-        host   = c(req.get('host', ''), DIM, use_color=use_color)
-        arrow  = c('→', CYAN, use_color=use_color)
-        header = c(f"{ts_s} {svc_s}{level_s} {arrow} {method} {url_s}{id_s}", DIM, use_color=use_color)
-        lines.append(f"{ts_s} {svc_s}{level_s} {arrow} {method} {url_s}{id_s}")
-        lines.append(c(f"  {src} → {host}", DIM, use_color=use_color))
-        return '\n'.join(lines)
-
-    # ── Request completed ─────────────────────────────────────────────────────
-    res = obj.get('res')
-    if res and msg == 'request completed':
-        code   = res.get('statusCode', '?')
-        code_s = status_code_color(code, use_color)
-        rt     = obj.get('responseTime', '')
-        rt_s   = c(f"  {rt:.1f}ms", DIM, use_color=use_color) if isinstance(rt, (int, float)) else ''
-        arrow  = c('←', DIM, use_color=use_color)
-        return f"{ts_s} {svc_s}{level_s} {arrow} {code_s}{rt_s}{id_s}"
+        level_s  = c(f"{level_name:<5}", LEVEL_COLOR.get(level_name, ''), use_color=use_color)
+        msg_s    = c(msg, BOLD, use_color=use_color)
+        update_s = c(obj['statusUpdate'], BOLD, '\033[34m', use_color=use_color)
+        return f"{ts_s} {svc_s}{level_s} {msg_s}\n  {update_s}"
 
     # ── Generic JSON entry ────────────────────────────────────────────────────
-    msg_s = c(msg, BOLD, use_color=use_color)
+    req_id  = obj.get('reqId', '')
+    id_s    = (' ' + c(f"[{req_id}]", DIM, use_color=use_color)) if req_id else ''
+    level_s = c(f"{level_name:<5}", LEVEL_COLOR.get(level_name, ''), use_color=use_color)
+    msg_s   = c(msg, BOLD, use_color=use_color)
     version = obj.get('version', '')
-    ver_s = (' ' + c(f"({version})", DIM, use_color=use_color)) if version else ''
-    lines.append(f"{ts_s} {svc_s}{level_s} {msg_s}{ver_s}{id_s}")
+    ver_s   = (' ' + c(f"({version})", DIM, use_color=use_color)) if version else ''
+    lines   = [f"{ts_s} {svc_s}{level_s} {msg_s}{ver_s}{id_s}"]
 
-    # Extra fields not already rendered
     for key, value in obj.items():
         if key in CORE_FIELDS:
             continue
@@ -180,51 +238,49 @@ def fmt_json(obj, service, use_color):
     return '\n'.join(lines)
 
 
-def _trim_url(url):
-    """Decode percent-encoded characters for readability, trim if still long."""
-    from urllib.parse import unquote
-    decoded = unquote(url)
-    return decoded[:100] + '…' if len(decoded) > 100 else decoded
-
-
 # ── Main processing ───────────────────────────────────────────────────────────
 
-def process(lines, out, use_color=False):
+def process(lines, out, use_color=False, address_map=None):
     for raw in lines:
         raw = raw.rstrip('\n')
         if not raw.strip():
             continue
 
-        kind, name, payload = classify(raw)
+        line_type, name, payload = classify(raw)
 
-        if kind == 'container':
+        if line_type == 'container':
             out.write(fmt_container(name, payload, use_color) + '\n')
 
-        elif kind == 'service':
+        elif line_type == 'service':
             try:
                 obj = json.loads(payload)
-                out.write(fmt_json(obj, name, use_color) + '\n\n')
+                out.write(fmt_json(obj, name, use_color, address_map=address_map) + '\n\n')
             except json.JSONDecodeError:
-                # Plain text from service (node warnings, etc.)
                 out.write(fmt_plain(name, payload, use_color) + '\n')
 
         else:
-            # Unrecognised line — pass through dimmed
             out.write(c(raw, DIM, use_color=use_color) + '\n')
 
 
 def main():
-    parser = argparse.ArgumentParser(description='Pretty-print NANDA JSON logs (v2).')
+    parser = argparse.ArgumentParser(description='Pretty-print NANDA JSON logs.')
     parser.add_argument('-i', '--input',  help='Input file (default: stdin)')
     parser.add_argument('-o', '--output', help='Output file (default: stdout)')
     parser.add_argument('--color', action='store_true', help='Colorize output with ANSI codes')
+    parser.add_argument('--address-map', metavar='PATH',
+                        help='JSON file mapping IP addresses to service names')
     args = parser.parse_args()
+
+    address_map: dict = {}
+    if args.address_map:
+        with open(args.address_map) as f:
+            address_map = json.load(f)
 
     in_s  = open(args.input,  'r') if args.input  else sys.stdin
     out_s = open(args.output, 'w') if args.output else sys.stdout
 
     try:
-        process(in_s, out_s, use_color=args.color)
+        process(in_s, out_s, use_color=args.color, address_map=address_map)
     finally:
         if args.input:
             in_s.close()

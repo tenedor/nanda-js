@@ -1,5 +1,6 @@
 import type { FastifyInstance } from 'fastify';
 import type { AgentIdentityManager } from '@nanda/agent';
+import { getLogger } from '@nanda/shared';
 import { runWorkflow, INITIAL_STATE, type WorkflowState } from './workflow.js';
 
 export function registerRoutes(
@@ -12,7 +13,7 @@ export function registerRoutes(
   const setState = (update: Partial<WorkflowState>) => {
     state = { ...state, ...update };
     if (update.statusUpdate !== undefined) {
-      app.log.info({ statusUpdate: update.statusUpdate }, 'Personal rep status update');
+      getLogger().info({ statusUpdate: update.statusUpdate }, 'Personal rep status update');
     }
   };
 
@@ -55,7 +56,7 @@ export function registerRoutes(
 
       runWorkflow(localSupportEntry.did, manager, leanIndexUrl, setState).catch((err: unknown) => {
         const message = err instanceof Error ? err.message : String(err);
-        app.log.error({ err }, 'Workflow failed');
+        getLogger().error({ err }, 'Workflow failed');
         setState({ isFailed: true, statusUpdate: `Workflow halted: ${message}` });
       });
 

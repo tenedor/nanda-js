@@ -1,1 +1,1 @@
-npm test --workspaces
+npm test --workspaces --if-present
